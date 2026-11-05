@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golden Hour</title>
+<style>
+  :root { --bg:#fff; --fg:#1a1a1a; --muted:#666; --card:#f5f5f4; --red:#c62828; --green:#2e7d32; --line:#ddd; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#aaa; --card:#1e1e1e; --red:#ef5350; --green:#66bb6a; --line:#333; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui, "Noto Sans Devanagari", sans-serif; }
+  main { max-width:640px; margin:0 auto; padding:16px; }
+  .urgent { background:var(--red); color:#fff; padding:12px 16px; border-radius:10px; font-weight:600; }
+  .urgent a { color:#fff; }
+  h1 { font-size:1.4rem; margin:16px 0 4px; }
+  .muted { color:var(--muted); font-size:.9rem; }
+  #mic { width:100%; padding:22px; font-size:1.2rem; border:0; border-radius:14px; background:var(--green); color:#fff; cursor:pointer; margin:16px 0 8px; }
+  #mic.rec { background:var(--red); }
+  #mic:disabled { opacity:.5; }
+  form { display:flex; gap:8px; }
+  input { flex:1; padding:10px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--fg); font:inherit; }
+  button.small { padding:10px 14px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--fg); cursor:pointer; font:inherit; }
+  .card { background:var(--card); border-radius:10px; padding:12px 16px; margin:12px 0; }
+  #log p { margin:6px 0; }
+  .you { color:var(--muted); }
+  dl { display:grid; grid-template-columns:max-content 1fr; gap:4px 12px; margin:0; }
+  dt { color:var(--muted); } dd { margin:0; word-break:break-word; }
+  pre { white-space:pre-wrap; word-break:break-word; font:inherit; margin:8px 0; }
+  ol li { margin:6px 0; }
+</style>
+</head>
+<body>
+<main>
+  <div class="urgent">पैसे कटे हैं? अभी <a href="tel:1930">1930</a> पर कॉल करें — पहला घंटा सबसे ज़रूरी है।</div>
+  <h1>Golden Hour</h1>
+  <p class="muted">बोलिए क्या हुआ — हिंदी, English या Hinglish में। Speak in Hindi, English or Hinglish.</p>
+
+  <button id="mic">🎤 बोलने के लिए दबाएँ / Tap to speak</button>
+  <form id="typed"><input id="text" placeholder="या यहाँ लिखें / or type here"><button class="small">Send</button></form>
+
+  <div id="log" class="card" hidden></div>
+  <div class="card"><dl id="fields"></dl></div>
+  <div id="done" hidden>
+    <div class="card"><b>अभी यह करें / Do this now</b><ol id="steps"></ol></div>
+    <div class="card"><b>cybercrime.gov.in complaint</b> <button class="small" data-copy="complaint">Copy</button><pre id="complaint"></pre></div>
+    <div class="card"><b>Email to your bank</b> <button class="small" data-copy="email">Copy</button><pre id="email"></pre></div>
+  </div>
+  <p class="muted">This tool only guides you to official channels (1930, your bank, cybercrime.gov.in). It is not a government service and cannot recover money. Powered by Gnani.ai Prisma + Timbre.</p>
+</main>
+<script>
+const LABELS = {amount:"Amount", datetime:"When", payment_mode:"Paid via", txn_id:"UTR / Txn ID",
+                scammer_contact:"Scammer contact", bank:"Bank", scam_type:"Scam type"};
+let caseData = {}, history = "", rec = null;
+const $ = id => document.getElementById(id);
+
+function render() {
+  $("fields").replaceChildren(...Object.entries(LABELS).flatMap(([k, l]) => {
+    const dt = document.createElement("dt"), dd = document.createElement("dd"), v = caseData[k];
+    dt.textContent = l;
+    dd.textContent = v == null ? "—" : (k === "amount" ? "₹" + Number(v).toLocaleString("en-IN") : v);
+    return [dt, dd];
+  }));
+}
+function say(cls, t) { const p = document.createElement("p"); p.className = cls; p.textContent = t; $("log").append(p); $("log").hidden = false; }
+
+async function send(fd) {
+  fd.append("case", JSON.stringify(caseData)); fd.append("history", history);
+  $("mic").disabled = true;
+  try {
+    const r = await fetch("/turn", {method: "POST", body: fd});
+    const j = await r.json();
+    if (!r.ok) { say("", "⚠️ " + j.detail); return; }
+    caseData = j.case; history += " " + j.transcript;
+    say("you", "You: " + j.transcript);
+    if (j.question) say("", j.question);
+    if (j.checklist) {
+      $("steps").replaceChildren(...j.checklist.map(s => { const li = document.createElement("li"); li.textContent = s; return li; }));
+      $("complaint").textContent = j.complaint; $("email").textContent = j.bank_email; $("done").hidden = false;
+    }
+    render();
+    if (j.audio) new Audio("data:audio/wav;base64," + j.audio).play();
+  } catch (e) { say("", "⚠️ Network error, please try again."); }
+  finally { $("mic").disabled = false; }
+}
+
+// Record mic as 16 kHz mono WAV (Prisma REST takes <=30 s; we stop at 25 s).
+async function startRec() {
+  const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+  const ctx = new AudioContext(), src = ctx.createMediaStreamSource(stream);
+  const node = ctx.createScriptProcessor(4096, 1, 1), chunks = [];
+  node.onaudioprocess = e => chunks.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+  src.connect(node); node.connect(ctx.destination);
+  rec = {stream, ctx, node, chunks, timer: setTimeout(stopRec, 25000)};
+  $("mic").classList.add("rec"); $("mic").textContent = "⏹ रोकें / Stop";
+}
+function stopRec() {
+  if (!rec) return;
+  const {stream, ctx, node, chunks, timer} = rec; rec = null; clearTimeout(timer);
+  node.disconnect(); stream.getTracks().forEach(t => t.stop()); ctx.close();
+  $("mic").classList.remove("rec"); $("mic").textContent = "🎤 बोलने के लिए दबाएँ / Tap to speak";
+  const fd = new FormData(); fd.append("audio", toWav(chunks, ctx.sampleRate), "speech.wav"); send(fd);
+}
+function toWav(chunks, rate) {
+  const all = new Float32Array(chunks.reduce((n, c) => n + c.length, 0)); let o = 0;
+  for (const c of chunks) { all.set(c, o); o += c.length; }
+  const step = rate / 16000, n = Math.floor(all.length / step), buf = new DataView(new ArrayBuffer(44 + n * 2));
+  const str = (p, s) => [...s].forEach((ch, i) => buf.setUint8(p + i, ch.charCodeAt(0)));
+  str(0, "RIFF"); buf.setUint32(4, 36 + n * 2, true); str(8, "WAVEfmt "); buf.setUint32(16, 16, true);
+  buf.setUint16(20, 1, true); buf.setUint16(22, 1, true); buf.setUint32(24, 16000, true); buf.setUint32(28, 32000, true);
+  buf.setUint16(32, 2, true); buf.setUint16(34, 16, true); str(36, "data"); buf.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) { const s = Math.max(-1, Math.min(1, all[Math.floor(i * step)])); buf.setInt16(44 + i * 2, s * 0x7fff, true); }
+  return new Blob([buf], {type: "audio/wav"});
+}
+
+$("mic").onclick = () => rec ? stopRec() : startRec().catch(() => say("", "⚠️ Microphone blocked — please type instead."));
+$("typed").onsubmit = e => { e.preventDefault(); const t = $("text").value.trim(); if (!t) return;
+  $("text").value = ""; const fd = new FormData(); fd.append("text", t); send(fd); };
+document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => navigator.clipboard.writeText($(b.dataset.copy).textContent));
+render();
+</script>
+</body>
+</html>
