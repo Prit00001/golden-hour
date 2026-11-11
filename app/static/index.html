@@ -4,83 +4,174 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Golden Hour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#fff; --fg:#1a1a1a; --muted:#666; --card:#f5f5f4; --red:#c62828; --green:#2e7d32; --line:#ddd; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#aaa; --card:#1e1e1e; --red:#ef5350; --green:#66bb6a; --line:#333; } }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui, "Noto Sans Devanagari", sans-serif; }
-  main { max-width:640px; margin:0 auto; padding:16px; }
-  .urgent { background:var(--red); color:#fff; padding:12px 16px; border-radius:10px; font-weight:600; }
-  .urgent a { color:#fff; }
-  h1 { font-size:1.4rem; margin:16px 0 4px; }
-  .muted { color:var(--muted); font-size:.9rem; }
-  #mic { width:100%; padding:22px; font-size:1.2rem; border:0; border-radius:14px; background:var(--green); color:#fff; cursor:pointer; margin:16px 0 8px; }
-  #mic.rec { background:var(--red); }
-  #mic:disabled { opacity:.5; }
-  form { display:flex; gap:8px; }
-  input { flex:1; padding:10px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--fg); font:inherit; }
-  button.small { padding:10px 14px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--fg); cursor:pointer; font:inherit; }
-  .card { background:var(--card); border-radius:10px; padding:12px 16px; margin:12px 0; }
-  #log p { margin:6px 0; }
-  .you { color:var(--muted); }
-  dl { display:grid; grid-template-columns:max-content 1fr; gap:4px 12px; margin:0; }
-  dt { color:var(--muted); } dd { margin:0; word-break:break-word; }
-  pre { white-space:pre-wrap; word-break:break-word; font:inherit; margin:8px 0; }
-  ol li { margin:6px 0; }
+  :root {
+    --bg:#f6f4ef; --fg:#1c1b19; --muted:#6b675f; --card:#fff; --soft:#efece5; --line:#e2ded4;
+    --red:#c8312b; --red-soft:#fbe9e7; --gold:#b7791f; --gold-soft:#fdf3e1; --green:#2f7d4f; --green-soft:#e6f3ea;
+    --shadow:0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.05);
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg:#121110; --fg:#f0ede6; --muted:#a29d93; --card:#1c1b19; --soft:#25231f; --line:#33302b;
+    --red:#ef5b52; --red-soft:#3a1d1b; --gold:#e3a748; --gold-soft:#352a17; --green:#5cbf83; --green-soft:#1b3125;
+    --shadow:none;
+  } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.55 Mukta, system-ui, "Noto Sans Devanagari", sans-serif; }
+  button, input { font:inherit; color:inherit; }
+
+  .alert { background:var(--red); color:#fff; }
+  .alert div { max-width:1040px; margin:0 auto; padding:10px 16px; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .alert a { background:#fff; color:var(--red); font-weight:700; text-decoration:none; padding:6px 16px; border-radius:999px; white-space:nowrap; }
+
+  main { max-width:1040px; margin:0 auto; padding:24px 16px 40px; display:grid; gap:24px; grid-template-columns:minmax(0,1fr) 340px; align-items:start; }
+  @media (max-width: 820px) { main { grid-template-columns:minmax(0,1fr); } }
+  header { grid-column:1/-1; }
+  h1 { margin:0; font-size:2rem; line-height:1.1; display:flex; align-items:center; gap:10px; }
+  h1 .dot { width:14px; height:14px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 5px var(--gold-soft); }
+  .muted { color:var(--muted); }
+  header p { margin:6px 0 0; }
+
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:var(--shadow); }
+  h2 { font-size:1rem; margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+
+  /* conversation */
+  #log { display:flex; flex-direction:column; gap:10px; min-height:180px; max-height:46vh; overflow-y:auto; padding:4px 2px; }
+  .msg { max-width:85%; padding:10px 14px; border-radius:16px; white-space:pre-wrap; word-break:break-word; animation:in .2s ease-out; }
+  .bot { background:var(--soft); border-bottom-left-radius:4px; align-self:flex-start; }
+  .you { background:var(--gold-soft); border-bottom-right-radius:4px; align-self:flex-end; }
+  .err { background:var(--red-soft); color:var(--red); align-self:flex-start; }
+  .typing { align-self:flex-start; color:var(--muted); padding:6px 14px; }
+  .typing i { display:inline-block; width:7px; height:7px; margin:0 2px; border-radius:50%; background:currentColor; animation:blink 1s infinite; }
+  .typing i:nth-child(2) { animation-delay:.15s; } .typing i:nth-child(3) { animation-delay:.3s; }
+  @keyframes blink { 50% { opacity:.25; } }
+  @keyframes in { from { opacity:0; transform:translateY(4px); } }
+
+  .controls { display:flex; flex-direction:column; align-items:center; gap:8px; padding:20px 0 4px; }
+  #mic { width:92px; height:92px; border-radius:50%; border:0; background:var(--green); color:#fff; font-size:2.2rem; cursor:pointer; box-shadow:0 6px 20px rgba(47,125,79,.35); transition:transform .1s, background .2s; }
+  #mic:hover { transform:scale(1.04); }
+  #mic:focus-visible, .btn:focus-visible, input:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+  #mic.rec { background:var(--red); box-shadow:0 0 0 0 rgba(200,49,43,.5); animation:pulse 1.4s infinite; }
+  #mic:disabled { opacity:.45; cursor:wait; transform:none; }
+  @keyframes pulse { 70% { box-shadow:0 0 0 18px rgba(200,49,43,0); } 100% { box-shadow:0 0 0 0 rgba(200,49,43,0); } }
+  #micLabel { font-weight:500; min-height:1.5em; }
+  form { display:flex; gap:8px; margin-top:12px; }
+  input { flex:1; min-width:0; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:var(--bg); }
+  .btn { padding:10px 16px; border:1px solid var(--line); border-radius:12px; background:var(--soft); cursor:pointer; font-weight:500; white-space:nowrap; }
+  .btn.primary { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+  .btn.sm { padding:4px 12px; font-size:.85rem; border-radius:999px; }
+
+  /* case details */
+  aside { display:flex; flex-direction:column; gap:16px; }
+  .bar { height:6px; background:var(--soft); border-radius:99px; overflow:hidden; margin-bottom:12px; }
+  .bar span { display:block; height:100%; width:0; background:var(--gold); transition:width .4s; }
+  #fields { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  #fields li { display:grid; grid-template-columns:22px 1fr; gap:2px 8px; align-items:start; }
+  #fields .ic { grid-row:span 2; width:20px; height:20px; border-radius:50%; border:2px solid var(--line); margin-top:3px; font-size:.7rem; display:grid; place-items:center; }
+  #fields .ok .ic { background:var(--green); border-color:var(--green); color:#fff; }
+  #fields small { color:var(--muted); font-size:.8rem; line-height:1.2; }
+  #fields b { font-weight:500; word-break:break-word; line-height:1.3; }
+  #fields li:not(.ok) b { color:var(--muted); font-weight:400; }
+
+  /* results */
+  #done { grid-column:1/-1; display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); }
+  #done .steps { grid-column:1/-1; border-color:var(--green); background:var(--green-soft); }
+  #steps { margin:0; padding-left:1.4em; display:grid; gap:6px; }
+  #steps li::marker { font-weight:700; color:var(--green); }
+  pre { white-space:pre-wrap; word-break:break-word; font-size:15px; font-family:inherit; margin:0; max-height:320px; overflow:auto; background:var(--bg); border-radius:10px; padding:12px; }
+
+  footer { grid-column:1/-1; font-size:.85rem; }
+  [hidden] { display:none !important; }
 </style>
 </head>
 <body>
+<div class="alert"><div>
+  <span>पैसे कटे हैं? पहला घंटा सबसे ज़रूरी है। · Money gone? The first hour matters most.</span>
+  <a href="tel:1930">📞 Call 1930</a>
+</div></div>
+
 <main>
-  <div class="urgent">पैसे कटे हैं? अभी <a href="tel:1930">1930</a> पर कॉल करें — पहला घंटा सबसे ज़रूरी है।</div>
-  <h1>Golden Hour</h1>
-  <p class="muted">बोलिए क्या हुआ — हिंदी, English या Hinglish में। Speak in Hindi, English or Hinglish.</p>
+  <header>
+    <h1><span class="dot"></span>Golden Hour</h1>
+    <p class="muted">बोलिए क्या हुआ — हिंदी, English या Hinglish में। हम आपकी शिकायत तैयार करेंगे।<br>
+      Tell us what happened. We'll prepare your complaint and bank email.</p>
+  </header>
 
-  <button id="mic">🎤 बोलने के लिए दबाएँ / Tap to speak</button>
-  <form id="typed"><input id="text" placeholder="या यहाँ लिखें / or type here"><button class="small">Send</button></form>
+  <section class="card">
+    <div id="log" aria-live="polite"></div>
+    <div class="controls">
+      <button id="mic" aria-label="Tap to speak">🎤</button>
+      <div id="micLabel" class="muted">बोलने के लिए दबाएँ · Tap to speak</div>
+    </div>
+    <form id="typed"><input id="text" placeholder="या यहाँ लिखें · or type here" autocomplete="off"><button class="btn primary">Send</button></form>
+  </section>
 
-  <div id="log" class="card" hidden></div>
-  <div class="card"><dl id="fields"></dl></div>
+  <aside>
+    <div class="card">
+      <h2>Your case <span id="count" class="muted">0/7</span></h2>
+      <div class="bar"><span id="progress"></span></div>
+      <ul id="fields"></ul>
+    </div>
+  </aside>
+
   <div id="done" hidden>
-    <div class="card"><b>अभी यह करें / Do this now</b><ol id="steps"></ol></div>
-    <div class="card"><b>cybercrime.gov.in complaint</b> <button class="small" data-copy="complaint">Copy</button><pre id="complaint"></pre></div>
-    <div class="card"><b>Email to your bank</b> <button class="small" data-copy="email">Copy</button><pre id="email"></pre></div>
+    <div class="card steps"><h2>✅ अभी यह करें · Do this now</h2><ol id="steps"></ol></div>
+    <div class="card"><h2>cybercrime.gov.in complaint <button class="btn sm" data-copy="complaint">Copy</button></h2><pre id="complaint"></pre></div>
+    <div class="card"><h2>Email to your bank <button class="btn sm" data-copy="email">Copy</button></h2><pre id="email"></pre></div>
   </div>
-  <p class="muted">This tool only guides you to official channels (1930, your bank, cybercrime.gov.in). It is not a government service and cannot recover money. Powered by Gnani.ai Prisma + Timbre.</p>
+
+  <footer class="muted">This tool only guides you to official channels (1930, your bank, cybercrime.gov.in). It is not a government service and cannot recover money. Powered by Gnani.ai Prisma + Timbre.</footer>
 </main>
 <script>
 const LABELS = {amount:"Amount", datetime:"When", payment_mode:"Paid via", txn_id:"UTR / Txn ID",
                 scammer_contact:"Scammer contact", bank:"Bank", scam_type:"Scam type"};
+const IDLE = "बोलने के लिए दबाएँ · Tap to speak";
 let caseData = {}, history = "", rec = null;
 const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
 function render() {
-  $("fields").replaceChildren(...Object.entries(LABELS).flatMap(([k, l]) => {
-    const dt = document.createElement("dt"), dd = document.createElement("dd"), v = caseData[k];
-    dt.textContent = l;
-    dd.textContent = v == null ? "—" : (k === "amount" ? "₹" + Number(v).toLocaleString("en-IN") : v);
-    return [dt, dd];
+  let filled = 0;
+  $("fields").replaceChildren(...Object.entries(LABELS).map(([k, l]) => {
+    const v = caseData[k], ok = v != null, li = el("li", ok ? "ok" : "");
+    if (ok) filled++;
+    li.append(el("span", "ic", ok ? "✓" : ""), el("small", "", l),
+              el("b", "", !ok ? "—" : (k === "amount" ? "₹" + Number(v).toLocaleString("en-IN") : v)));
+    return li;
   }));
+  const n = Object.keys(LABELS).length;
+  $("count").textContent = filled + "/" + n;
+  $("progress").style.width = (100 * filled / n) + "%";
 }
-function say(cls, t) { const p = document.createElement("p"); p.className = cls; p.textContent = t; $("log").append(p); $("log").hidden = false; }
+function say(cls, t) { const m = el("div", "msg " + cls, t); $("log").append(m); $("log").scrollTop = $("log").scrollHeight; return m; }
+function busy(on) {
+  $("mic").disabled = on;
+  $("micLabel").textContent = on ? "सुन रहे हैं… · Working…" : IDLE;
+  $("typing")?.remove();
+  if (on) { const t = el("div", "typing"); t.id = "typing"; t.append(el("i"), el("i"), el("i")); $("log").append(t); $("log").scrollTop = $("log").scrollHeight; }
+}
 
 async function send(fd) {
   fd.append("case", JSON.stringify(caseData)); fd.append("history", history);
-  $("mic").disabled = true;
+  busy(true);
   try {
     const r = await fetch("/turn", {method: "POST", body: fd});
     const j = await r.json();
-    if (!r.ok) { say("", "⚠️ " + j.detail); return; }
+    busy(false);
+    if (!r.ok) { say("err", "⚠️ " + j.detail); return; }
     caseData = j.case; history += " " + j.transcript;
-    say("you", "You: " + j.transcript);
-    if (j.question) say("", j.question);
+    say("you", j.transcript);
+    if (j.question) say("bot", j.question);
     if (j.checklist) {
-      $("steps").replaceChildren(...j.checklist.map(s => { const li = document.createElement("li"); li.textContent = s; return li; }));
+      say("bot", "✅ आपकी शिकायत तैयार है — नीचे देखें। · Your complaint is ready below.");
+      $("steps").replaceChildren(...j.checklist.map(s => el("li", "", s)));
       $("complaint").textContent = j.complaint; $("email").textContent = j.bank_email; $("done").hidden = false;
+      $("done").scrollIntoView({behavior: "smooth", block: "start"});
     }
     render();
     if (j.audio) new Audio("data:audio/wav;base64," + j.audio).play();
-  } catch (e) { say("", "⚠️ Network error, please try again."); }
-  finally { $("mic").disabled = false; }
+  } catch (e) { busy(false); say("err", "⚠️ Network error, please try again."); }
 }
 
 // Record mic as 16 kHz mono WAV (Prisma REST takes <=30 s; we stop at 25 s).
@@ -90,14 +181,15 @@ async function startRec() {
   const node = ctx.createScriptProcessor(4096, 1, 1), chunks = [];
   node.onaudioprocess = e => chunks.push(new Float32Array(e.inputBuffer.getChannelData(0)));
   src.connect(node); node.connect(ctx.destination);
-  rec = {stream, ctx, node, chunks, timer: setTimeout(stopRec, 25000)};
-  $("mic").classList.add("rec"); $("mic").textContent = "⏹ रोकें / Stop";
+  const t0 = Date.now(), tick = setInterval(() => $("micLabel").textContent = "⏺ " + Math.round((Date.now() - t0) / 1000) + "s · रोकने के लिए दबाएँ / Tap to stop", 250);
+  rec = {stream, ctx, node, chunks, tick, timer: setTimeout(stopRec, 25000)};
+  $("mic").classList.add("rec"); $("mic").textContent = "⏹"; $("mic").setAttribute("aria-label", "Stop");
 }
 function stopRec() {
   if (!rec) return;
-  const {stream, ctx, node, chunks, timer} = rec; rec = null; clearTimeout(timer);
+  const {stream, ctx, node, chunks, timer, tick} = rec; rec = null; clearTimeout(timer); clearInterval(tick);
   node.disconnect(); stream.getTracks().forEach(t => t.stop()); ctx.close();
-  $("mic").classList.remove("rec"); $("mic").textContent = "🎤 बोलने के लिए दबाएँ / Tap to speak";
+  $("mic").classList.remove("rec"); $("mic").textContent = "🎤"; $("mic").setAttribute("aria-label", "Tap to speak");
   const fd = new FormData(); fd.append("audio", toWav(chunks, ctx.sampleRate), "speech.wav"); send(fd);
 }
 function toWav(chunks, rate) {
@@ -112,10 +204,14 @@ function toWav(chunks, rate) {
   return new Blob([buf], {type: "audio/wav"});
 }
 
-$("mic").onclick = () => rec ? stopRec() : startRec().catch(() => say("", "⚠️ Microphone blocked — please type instead."));
+$("mic").onclick = () => rec ? stopRec() : startRec().catch(() => say("err", "⚠️ Microphone blocked — please type instead."));
 $("typed").onsubmit = e => { e.preventDefault(); const t = $("text").value.trim(); if (!t) return;
   $("text").value = ""; const fd = new FormData(); fd.append("text", t); send(fd); };
-document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => navigator.clipboard.writeText($(b.dataset.copy).textContent));
+document.querySelectorAll("[data-copy]").forEach(b => b.onclick = async () => {
+  await navigator.clipboard.writeText($(b.dataset.copy).textContent);
+  b.textContent = "Copied ✓"; setTimeout(() => b.textContent = "Copy", 1500);
+});
+say("bot", "नमस्ते। घबराइए मत — बताइए क्या हुआ, कितने पैसे कटे और किस बैंक से।\nHello. Don't panic — tell me what happened, how much money and from which bank.");
 render();
 </script>
 </body>
