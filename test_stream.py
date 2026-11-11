@@ -59,6 +59,16 @@ async def main():
     assert len(ws.sent) == n and n > old, "cancelled replies must stop sending"
     assert call.case["datetime"] and call.case["txn_id"] == "412345678901"
 
+    # Barge-in: the caller talks over the agent, so the reply stops and nothing more is sent.
+    call.start("SBI", {"speech_end": now, "stt_done": now})
+    await asyncio.sleep(0.1)
+    call.barge_in()
+    await asyncio.sleep(0.05)
+    n = len(ws.sent)
+    await asyncio.sleep(0.2)
+    assert call.reply.cancelled() and len(ws.sent) == n, "barge-in must stop the reply"
+    call.barge_in()  # no reply playing: harmless
+
 
 asyncio.run(main())
 print("stream ok")

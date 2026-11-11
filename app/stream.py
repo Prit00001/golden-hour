@@ -1,7 +1,8 @@
 """Live call over one WebSocket: browser mic -> Gnani streaming STT -> flow -> Gnani SSE TTS -> browser.
 
 Browser -> server: binary 1,024-byte frames (512 samples of 16 kHz s16le mono = 32 ms),
-  or JSON {"type": "text", "text"} for typed input, {"type": "init", "case", "history"} to resume.
+  or JSON {"type": "text", "text"} for typed input, {"type": "init", "case", "history"} to resume,
+  {"type": "barge_in"} when the caller talks over the agent (the browser has already stopped playback).
 Server -> browser: JSON {"type": "state" | "turn" | "timings" | "error"} and binary 16 kHz s16le audio.
 Gnani's server-side VAD decides when an utterance ends, so there is no local VAD.
 Nothing is stored: the case lives in this connection and is gone when it closes.
@@ -56,6 +57,12 @@ class Call:
         if self.reply and not self.reply.done():
             self.reply.cancel()  # a newer utterance supersedes the old reply
         self.reply = asyncio.create_task(self.respond(said, marks))
+
+    def barge_in(self):
+        """Caller spoke over the reply: stop synthesising and sending it. Their speech becomes the next turn."""
+        if self.reply and not self.reply.done():
+            self.reply.cancel()
+            print("[barge_in] reply cancelled")
 
     async def respond(self, said: str, marks: dict):
         out, speak = flow.advance(self.case, self.history, said)
@@ -119,6 +126,8 @@ async def run(ws: WebSocket):
                 j = json.loads(m["text"])
                 if j.get("type") == "init":
                     call.case, call.history = {**flow.new_case(), **(j.get("case") or {})}, j.get("history", "")
+                elif j.get("type") == "barge_in":
+                    call.barge_in()
                 elif j.get("type") == "text" and j.get("text", "").strip():
                     now = time.monotonic()
                     call.start(j["text"].strip(), {"speech_end": now, "stt_done": now})

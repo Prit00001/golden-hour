@@ -209,10 +209,10 @@ async function startCall() {
     await new Promise((ok, fail) => { ws.onopen = ok; ws.onerror = ws.onclose = fail; setTimeout(fail, 3000); });
     const ctx = new AudioContext();
     await ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([WORKLET], {type: "text/javascript"})));
-    const node = new AudioWorkletNode(ctx, "down16k"), silence = new ArrayBuffer(1024), c = {ws, ctx, stream, playEnd: 0};
+    const node = new AudioWorkletNode(ctx, "down16k"), silence = new ArrayBuffer(1024);
+    const c = {ws, ctx, stream, playEnd: 0, srcs: new Set(), drop: false, held: [], loud: 0};
     ctx.createMediaStreamSource(stream).connect(node); node.connect(ctx.destination);  // node outputs silence; keeps it pulled
-    // ponytail: mic is muted while the agent speaks so it can't hear itself; barge-in (step 2) replaces this.
-    node.port.onmessage = e => { if (ws.readyState === 1) ws.send(ctx.currentTime < c.playEnd + 0.3 ? silence : e.data); };
+    node.port.onmessage = e => { if (ws.readyState === 1) ws.send(gate(c, e.data) ? e.data : silence); };
     ws.onmessage = e => typeof e.data === "string" ? onMsg(JSON.parse(e.data)) : play(e.data);
     ws.onclose = () => { if (call === c) { endCall(); say("err", "⚠️ Call disconnected. Tap the mic to reconnect, or type."); } };
     ws.send(JSON.stringify({type: "init", case: caseData, history}));
@@ -234,18 +234,41 @@ function setState(s) {
   $("micLabel").textContent = STATES[s] || s;
 }
 function onMsg(j) {
-  if (j.type === "turn") show(j);
+  if (j.type === "turn") { call.drop = false; show(j); }
   else if (j.type === "state") setState(j.state);
   else if (j.type === "timings") $("hud").textContent = "ms after end of speech\n" +
     Object.entries(j.ms).map(([k, v]) => k.padEnd(17) + String(v).padStart(6)).join("\n");
   else if (j.type === "error") { say("err", "⚠️ " + j.message); if (j.fallback) noLive = true; }
 }
+// Barge-in. While the agent talks, STT gets silence (so it never transcribes its own voice) and each mic
+// frame is checked for loudness. BARGE_FRAMES loud frames in a row = the caller is talking over it:
+// stop playback, tell the server to cancel the reply, and send STT the held frames so the first word isn't lost.
+const BARGE_RMS = 0.03, BARGE_FRAMES = 6, HOLD = 10;  // ponytail: fixed energy gate (echo-cancelled mic); tune on real phones
+function gate(c, buf) {
+  if (c.ctx.currentTime >= c.playEnd + 0.3) { c.loud = 0; c.held = []; return true; }  // not speaking: pass through
+  const pcm = new Int16Array(buf);
+  const rms = Math.sqrt(pcm.reduce((a, v) => a + v * v, 0) / pcm.length) / 0x8000;
+  c.held.push(buf); if (c.held.length > HOLD) c.held.shift();
+  c.loud = rms > BARGE_RMS ? c.loud + 1 : 0;
+  if (c.loud < BARGE_FRAMES) return false;
+  stopPlayback(c);
+  c.ws.send(JSON.stringify({type: "barge_in"}));
+  c.held.slice(0, -1).forEach(b => c.ws.send(b)); c.held = []; c.loud = 0;
+  setState("hearing");
+  return true;
+}
+function stopPlayback(c) {
+  c.srcs.forEach(s => { try { s.stop(); } catch (e) {} }); c.srcs.clear();
+  c.playEnd = 0; c.drop = true;  // drop audio still in flight from the cancelled reply, until the next turn
+}
 function play(buf) {
+  if (call.drop) return;
   const f = Float32Array.from(new Int16Array(buf), v => v / 0x8000);
   const b = call.ctx.createBuffer(1, f.length, 16000); b.copyToChannel(f, 0);
   const src = call.ctx.createBufferSource(); src.buffer = b; src.connect(call.ctx.destination);
   const at = Math.max(call.ctx.currentTime + 0.05, call.playEnd);  // queue right after the previous chunk: no gaps
   src.start(at); call.playEnd = at + b.duration;
+  call.srcs.add(src); src.onended = () => call && call.srcs.delete(src);
 }
 
 // Record mic as 16 kHz mono WAV (Prisma REST takes <=30 s; we stop at 25 s).
@@ -289,7 +312,7 @@ $("mic").onclick = async () => {
   startRec().catch(blocked);
 };
 $("typed").onsubmit = e => { e.preventDefault(); const t = $("text").value.trim(); if (!t) return; $("text").value = "";
-  if (call) return call.ws.send(JSON.stringify({type: "text", text: t}));
+  if (call) { stopPlayback(call); return call.ws.send(JSON.stringify({type: "text", text: t})); }
   const fd = new FormData(); fd.append("text", t); send(fd); };
 document.addEventListener("keydown", e => { if (e.key === "`" && e.target.tagName !== "INPUT") $("hud").hidden = !$("hud").hidden; });
 document.querySelectorAll("[data-copy]").forEach(b => b.onclick = async () => {
