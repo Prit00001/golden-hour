@@ -106,7 +106,8 @@ async def run(ws: WebSocket):
     headers = {"x-api-key-id": env().get("GNANI_API_KEY", ""), "language_code": "indic-auto",
                "model": "prisma-v3.0", "format": "transcribe", "x-sample-rate": "16000",
                "x-min-silence-ms": str(SILENCE_MS), "x-idle-timeout-sec": "300",
-               "keyterms": json.dumps(gnani.KEYTERMS, ensure_ascii=False), "topic": gnani.TOPIC}
+               # HTTP headers must be ASCII (websockets>=16 enforces it): \uXXXX escapes, same JSON once parsed.
+               "keyterms": json.dumps(gnani.KEYTERMS), "topic": gnani.TOPIC}
     try:
         stt = await websockets.connect(STT_URL, additional_headers=headers, open_timeout=10)
     except Exception as e:

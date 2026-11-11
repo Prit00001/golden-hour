@@ -1,0 +1,11 @@
+# Render blueprint: New > Blueprint > pick this repo. Render asks for GNANI_API_KEY once (sync: false = secret, not in git).
+services:
+  - type: web
+    name: golden-hour
+    runtime: docker
+    plan: free
+    region: singapore  # closest Render region to Gnani's India servers
+    healthCheckPath: /
+    envVars:
+      - key: GNANI_API_KEY
+        sync: false

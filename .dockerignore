@@ -1,0 +1,6 @@
+.env
+.git
+__pycache__/
+*.wav
+reports/
+research_notes/
