@@ -64,12 +64,14 @@ def _has(low, key):
     return key in low
 
 
-def _find(text, table):
+def find_all(text, table):
+    """Every entry mentioned, in table order ("SBI nahi, HDFC" -> both, so a correction can pick the new one)."""
     low = text.lower()
-    for name, keys in table.items():
-        if any(_has(low, k) for k in keys):
-            return name
-    return None
+    return [name for name, keys in table.items() if any(_has(low, k) for k in keys)]
+
+
+def _find(text, table):
+    return (find_all(text, table) or [None])[0]
 
 
 def _join_spaced_digits(text):

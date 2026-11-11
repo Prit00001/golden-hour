@@ -17,6 +17,8 @@ case = merge(case, {"datetime": "aaj 3 baje", "txn_id": "412345678901", "bank": 
              said + " aaj 3 baje")
 assert case["bank"] == "SBI"
 assert case["txn_id"] == "412345678901"
+assert next_question(case).startswith("उन्होंने"), "scam type is the only field left"
+case["scam_type"] = "fake KYC update"
 assert next_question(case) is None
 
 c = complaint(case)
@@ -49,6 +51,55 @@ from app.flow import advance, bare_amount
 assert bare_amount("40,000 tha") == "40,000" and bare_amount("98765 43210") is None
 out, speak = advance({}, "", "98765 43210 se call aaya")
 assert out["case"]["amount"] is None and speak == out["question"]  # first turn: a phone number is not the amount
-out, _ = advance(out["case"], "98765 43210 se call aaya", "40,000")
+assert out["case"]["confirming"] == "scammer_contact"  # the number is read back first
+out, _ = advance(out["case"], "98765 43210 se call aaya", "haan")
+out, _ = advance(out["case"], "98765 43210 se call aaya haan", "40,000")
 assert out["case"]["amount"] == 40000  # bare number answering "how much?"
 print("advance ok")
+
+# Step 3: corrections, ID read-back, "don't know", urgency, timestamp, verdict.
+from datetime import datetime
+from app.flow import IST, fraud_time, spoken_id
+
+NOW = datetime(2026, 11, 11, 15, 0, tzinfo=IST).timestamp()  # Wed 3 pm IST
+at = lambda ts: datetime.fromtimestamp(ts, IST).strftime("%d %H:%M")
+assert at(fraud_time("आज दोपहर 2 बजे", NOW)) == "11 14:00"
+assert at(fraud_time("2 बजे", NOW)) == "11 14:00"           # bare hour: latest past 2:00/14:00
+assert at(fraud_time("kal raat 11 baje", NOW)) == "10 23:00"
+assert at(fraud_time("subah 10 baje", NOW)) == "11 10:00"
+assert at(fraud_time("raat 2 baje", NOW)) == "11 02:00"
+assert at(fraud_time("40 मिनट पहले", NOW)) == "11 14:20"
+assert at(fraud_time("4 pm", NOW)) == "10 16:00"            # can't be in the future: yesterday
+assert fraud_time("kal", NOW) is None
+assert spoken_id("412345678901") == "4 1 2 3, 4 5 6 7, 8 9 0 1" and spoken_id("9876543210") == "9 8 7 6 5, 4 3 2 1 0"
+
+def turn(case, hist, said):
+    out, speak = advance(case, hist, said, now=NOW)
+    return out["case"], hist + " " + said, out, speak
+
+c, h, out, speak = turn({}, "", "SBI से 40,000 रुपये गए UPI से, आज दोपहर 2 बजे")
+assert c["fraud_ts"] == NOW - 3600 and c["urged"] and speak.startswith("यह अभी हाल ही में हुआ है")
+assert c["meta"]["amount"] == {"confirmed": False, "source_text": "SBI से 40,000 रुपये गए UPI से, आज दोपहर 2 बजे"}
+c, h, out, speak = turn(c, h, "नहीं, 50,000 थे, और बैंक HDFC था, SBI नहीं")   # corrections overwrite
+assert c["amount"] == 50000 and c["bank"] == "HDFC Bank", c
+assert not speak.startswith("यह अभी"), "urgency is said once"
+c, h, out, _ = turn(c, h, "पता नहीं।")                                          # scammer contact skipped
+assert c["scammer_contact"] == "not known" and out["question"].startswith("उन्होंने")
+c, h, out, _ = turn(c, h, "बोला बिजली का बिल बकाया है")
+assert c["scam_type"] == "electricity bill scam"
+c, h, out, speak = turn(c, h, "UTR 4123 4567 8902")                             # read back, not finished
+assert c["confirming"] == "txn_id" and "4 1 2 3, 4 5 6 7, 8 9 0 2" in speak and "checklist" not in out
+c, h, out, speak = turn(c, h, "नहीं, 4123 4567 8901")                           # wrong: corrected, read back again
+assert c["txn_id"] == "412345678901" and c["confirming"] == "txn_id" and "8 9 0 1" in speak
+c, h, out, speak = turn(c, h, "हाँ, सही है।")                                  # confirmed: done, with verdict
+assert c["meta"]["txn_id"]["confirmed"] and c["confirming"] is None
+assert out["verdict"] == "यह 1 घंटे पहले हुआ है, इसलिए पैसा रोके जाने का अभी भी मौका है।" and speak.startswith(out["verdict"])
+assert "Rs. 50,000" in out["complaint"] and "HDFC Bank" in out["bank_email"]
+assert "On 11 Nov 2026, 02:00 PM IST," in out["complaint"], out["complaint"]
+
+c2, h2, _, _ = turn({**c, "txn_id": None, "confirming": None}, h, "UTR 412345678901")
+c2, h2, out, _ = turn(c2, h2, "गलत है")                                      # "no" alone: ask for it again
+assert c2["txn_id"] is None and out["question"].startswith("बैंक के SMS")
+c3, _, out, _ = turn({**c, "fraud_ts": NOW - 3 * 86400}, h, "हाँ")
+assert out["verdict"].startswith("इसे एक दिन से ज़्यादा")
+print("step3 ok")

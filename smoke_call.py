@@ -16,7 +16,10 @@ from app.gnani import tts
 URL = sys.argv[1] if len(sys.argv) > 1 else "ws://127.0.0.1:8000/ws/call"
 SAYS = ["मेरे एसबीआई खाते से चालीस हज़ार रुपये कट गए, यूपीआई से गए।",
         "आज दोपहर दो बजे।",
-        "यूटीआर है चार एक दो तीन चार पाँच छह सात आठ नौ शून्य एक।"]
+        "पता नहीं।",
+        "बोला बिजली का बिल बकाया है।",
+        "यूटीआर है चार एक दो तीन चार पाँच छह सात आठ नौ शून्य एक।",
+        "हाँ, सही है।"]
 FRAME, PACE = 1024, 0.032  # 512 samples at 16 kHz, sent in real time like a mic
 
 
@@ -39,7 +42,7 @@ async def main():
                     continue
                 j = json.loads(m)
                 if j["type"] == "turn":
-                    print(f"\nheard : {j['transcript']}\nreply : {j['question'] or 'checklist + complaint'}")
+                    print(f"\nheard : {j['transcript']}\nreply : {j['question'] or j.get('verdict', '') + ' + checklist'}\ncase  : { {k: v for k, v in j['case'].items() if v is not None and k != 'meta'} }")
                 elif j["type"] == "timings":
                     print(f"audio : {audio / 32000:.1f} s of reply speech\nms    : {j['ms']}")
                     firsts.append(j["ms"].get("first_audio_sent"))
