@@ -17,7 +17,7 @@ It does not file anything or promise recovery. It gets the victim to the right p
 1. **The caller taps the mic** (and optionally picks a language). The agent greets them and says it is not a government service and cannot recover money.
 2. **The caller explains in their own words**, for example "मेरे SBI खाते से 40,000 रुपये कट गए, UPI से।" The agent fills in amount, bank and payment mode from that one sentence.
 3. **It asks only what's still missing:** when it happened, the scammer's number or UPI ID, what they said, and the UTR. "पता नहीं" (don't know) skips a question, and "नहीं, 50,000 थे" corrects a field.
-4. **If the fraud was recent,** it says once that every minute counts, and a countdown ("⏱ 40m ago") appears on screen.
+4. **If the fraud was recent,** it says once that every minute counts, and a countdown ("40m ago") appears next to the Call 1930 button.
 5. **It reads the UTR back digit by digit** ("4 1 2 3, 4 5 6 7, 8 9 0 1 — सही है?") and waits for a yes.
 6. **It speaks a verdict and the steps.** The verdict is something like "यह 40 मिनट पहले हुआ है, इसलिए पैसा रोके जाने का अभी भी मौका है।" The page shows a **Call 1930** button, an **Email your bank** button (pre-filled), the case card and the complaint.
 
@@ -61,6 +61,7 @@ The eval also found a real bug: regional-language number words weren't understoo
 - **Nothing stored.** The case lives in the open connection and the page, and is gone when the call ends. Server logs hold timings only, never transcripts.
 - **Synthetic data only.** All test and eval data is made up; there is no real PII.
 - **Secrets.** The API key comes from the environment (a Render secret in production), never from git.
+- **Abuse limits.** There is no login, and every call spends Gnani credit, so `app/guard.py` caps live calls (3 at once and 30 an hour per visitor, 20 at once and 400 a day in total), typed turns, and the size of every input. Requests from other websites are refused. The page runs under a strict Content Security Policy (no external scripts, styles or fonts), and the container runs as a non-root user. The limits live in memory, so they reset on restart and need Redis if the app ever runs on more than one instance.
 
 ## How it works
 
@@ -80,7 +81,8 @@ barge-in: the page hears the caller over the agent → stops playback → server
 | `app/flow.py` | The conversation: questions, corrections, read-back, urgency, verdict, checklist, complaint, all languages |
 | `app/rules.py` | Field extraction: amounts, banks, payment modes, scam types, times and number words in every language |
 | `app/stream.py` | The live call: STT relay, streaming TTS, barge-in, the greeting, timings |
-| `app/server.py` | The page, `WS /ws/call`, and `POST /turn` (the fallback) |
+| `app/server.py` | The page, `WS /ws/call`, `POST /turn` (the fallback), and security headers |
+| `app/guard.py` | Rate limits, input size caps, and the same-origin check |
 | `app/gnani.py` | Prisma and Timbre clients |
 | `app/static/index.html` | The whole front end: a single page, no build step |
 | `eval/` | Accuracy under noise, live latency, cost; `REPORT.md` |
@@ -96,7 +98,7 @@ python3 -m uvicorn app.server:app --port 8000
 Open http://localhost:8000 in Chrome and tap the mic. Press the backtick key (`` ` ``) for the latency panel.
 
 ```bash
-python3 test_flow.py && python3 test_stream.py    # offline tests
+python3 test_flow.py && python3 test_stream.py && python3 test_guard.py   # offline tests
 python3 smoke_call.py ws://127.0.0.1:8000/ws/call kn   # a full live call in hi | kn | ta (uses Gnani credit)
 python3 -m eval.run                               # accuracy under noise (uses credit; cached in eval/cache/)
 python3 -m eval.latency wss://golden-hour-bigo.onrender.com/ws/call 2
@@ -112,7 +114,7 @@ Anywhere else:
 
 ```bash
 docker build -t golden-hour .
-docker run -p 8000:8000 -e GNANI_API_KEY=... golden-hour
+docker run -p 8000:8000 --env-file .env golden-hour
 ```
 
 ## Limits and next steps
