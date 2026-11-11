@@ -3,6 +3,7 @@
 Browser -> server: binary 1,024-byte frames (512 samples of 16 kHz s16le mono = 32 ms),
   or JSON {"type": "text", "text"} for typed input, {"type": "init", "case", "history"} to resume,
   {"type": "barge_in"} when the caller talks over the agent (the browser has already stopped playback).
+  All of it is untrusted: sizes, message counts and call length are capped (app/guard.py).
 Server -> browser: JSON {"type": "state" | "turn" | "timings" | "error"} and binary 16 kHz s16le audio.
 Gnani's server-side VAD decides when an utterance ends, so there is no local VAD.
 Nothing is stored: the case lives in this connection and is gone when it closes.
@@ -16,7 +17,7 @@ import time
 import websockets
 from fastapi import WebSocket
 
-from app import flow, gnani
+from app import flow, gnani, guard
 from app.llm import env
 
 STT_URL = "wss://api.vachana.ai/stt/v3/stream"
@@ -71,7 +72,7 @@ class Call:
 
     async def respond(self, said: str, marks: dict, lang_hint=None):
         out, speak = flow.advance(self.case, self.history, said, lang_hint=lang_hint)
-        self.case, self.history = out["case"], self.history + " " + said
+        self.case, self.history = out["case"], (self.history + " " + said)[-guard.MAX_HISTORY:]
         marks["extract_done"] = time.monotonic()
         await self.send(type="turn", **out)
         await self.speak(speak, marks, flow.lang(self.case))
@@ -107,8 +108,7 @@ class Call:
 
 
 async def run(ws: WebSocket):
-    await ws.accept()
-    call = Call(ws)
+    call = Call(ws)  # server.py has already accepted the socket
     # ?lang=kn locks STT and replies to the caller's chosen language: auto-detect mishears short regional replies
     # ("ஆமாம்" came back as Devanagari "आमाम"). No choice = indic-auto.
     chosen = ws.query_params.get("lang")
@@ -127,26 +127,38 @@ async def run(ws: WebSocket):
         await ws.close()
         return
 
-    async def up():  # browser -> Gnani
+    async def up():  # browser -> Gnani; returning hangs up
+        audio = msgs = 0
         while True:
             m = await ws.receive()
             if m["type"] == "websocket.disconnect":
                 return
             if m.get("bytes"):
+                audio += len(m["bytes"])
+                if len(m["bytes"]) > guard.MAX_FRAME or audio > 2 * 32000 * guard.CALL_SECONDS:
+                    return  # not our page: frames are 1,024 bytes at 32,000 bytes a second
                 await stt.send(m["bytes"])
             elif m.get("text"):
-                j = json.loads(m["text"])
-                if j.get("type") == "init":
-                    call.case, call.history = {**flow.new_case(), **(j.get("case") or {})}, j.get("history", "")
+                msgs += 1
+                if len(m["text"]) > guard.MAX_WS_TEXT or msgs > 200:
+                    return
+                try:
+                    j = json.loads(m["text"])
+                except ValueError:
+                    continue
+                kind, text = (j.get("type"), j.get("text")) if isinstance(j, dict) else (None, None)
+                if kind == "init":
+                    call.case = flow.clean_case(j.get("case"))
+                    call.history = str(j.get("history") or "")[-guard.MAX_HISTORY:]
                     if chosen:
                         call.case["language"] = chosen
                     if not call.history.strip():
                         call.greet()
-                elif j.get("type") == "barge_in":
+                elif kind == "barge_in":
                     call.barge_in()
-                elif j.get("type") == "text" and j.get("text", "").strip():
+                elif kind == "text" and isinstance(text, str) and text.strip():
                     now = time.monotonic()
-                    call.start(j["text"].strip(), {"speech_end": now, "stt_done": now})
+                    call.start(text.strip()[:guard.MAX_TEXT], {"speech_end": now, "stt_done": now})
 
     async def down():  # Gnani -> browser
         async for raw in stt:
@@ -159,11 +171,13 @@ async def run(ws: WebSocket):
                 end = now - (SILENCE_MS + m.get("latency", 0)) / 1000
                 call.start(m["text"].strip(), {"speech_end": end, "stt_done": now}, m.get("detected_language_code"))
             elif m["type"] == "error":
-                await call.send(type="error", message=m.get("message", "Speech error"))
+                await call.send(type="error", message="Speech error, please say that again or type it.")
 
     tasks = [asyncio.create_task(up()), asyncio.create_task(down())]
     try:
-        await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+        done, _ = await asyncio.wait(tasks, timeout=guard.CALL_SECONDS, return_when=asyncio.FIRST_COMPLETED)
+        if not done:
+            await call.send(type="error", message="Call time limit reached. Tap the mic to carry on.")
     finally:
         for t in tasks + ([call.reply] if call.reply else []):
             t.cancel()

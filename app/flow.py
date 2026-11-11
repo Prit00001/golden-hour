@@ -240,6 +240,22 @@ def new_case() -> dict:
     return {f: None for f in FIELDS}
 
 
+def clean_case(raw) -> dict:
+    """The browser holds the case between turns, so what comes back is untrusted: keep only the keys
+    advance() writes, with the right types and bounded lengths. A real case passes through unchanged."""
+    raw = raw if isinstance(raw, dict) else {}
+    text = lambda v, n=120: v[:n] if isinstance(v, str) else None  # noqa: E731
+    case = {f: text(raw.get(f)) for f in FIELDS}
+    amount, ts, meta = raw.get("amount"), raw.get("fraud_ts"), raw.get("meta")
+    case["amount"] = amount if type(amount) is int and 0 < amount < 10 ** 10 else None
+    case["meta"] = {f: {"confirmed": m.get("confirmed") is True, "source_text": text(m.get("source_text"), 500) or ""}
+                    for f, m in (meta if isinstance(meta, dict) else {}).items() if f in FIELDS and isinstance(m, dict)}
+    case["confirming"] = raw.get("confirming") if raw.get("confirming") in READ_BACK else None
+    case["fraud_ts"] = ts if type(ts) in (int, float) and 0 < ts < 4e9 else None  # also rejects NaN/Infinity
+    case["urged"] = raw.get("urged") is True
+    return case
+
+
 def lang(case: dict) -> str:
     """Reply language: the caller's, if we have it; Hindi until we know; English for languages we don't."""
     lg = (case.get("language") or "hi").split("-")[0].lower()
