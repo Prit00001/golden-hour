@@ -82,6 +82,7 @@
   pre { white-space:pre-wrap; word-break:break-word; font-size:15px; font-family:inherit; margin:0; max-height:320px; overflow:auto; background:var(--bg); border-radius:10px; padding:12px; }
 
   footer { grid-column:1/-1; font-size:.85rem; }
+  #hud { position:fixed; right:12px; bottom:12px; margin:0; padding:10px 12px; background:#000d; color:#9fe8c8; font:12px/1.5 ui-monospace, monospace; border-radius:10px; z-index:9; white-space:pre; }
   [hidden] { display:none !important; }
 </style>
 </head>
@@ -123,6 +124,7 @@
 
   <footer class="muted">This tool only guides you to official channels (1930, your bank, cybercrime.gov.in). It is not a government service and cannot recover money. Powered by Gnani.ai Prisma + Timbre.</footer>
 </main>
+<pre id="hud" hidden>latency HUD: waiting for a live-call turn…</pre>
 <script>
 const LABELS = {amount:"Amount", datetime:"When", payment_mode:"Paid via", txn_id:"UTR / Txn ID",
                 scammer_contact:"Scammer contact", bank:"Bank", scam_type:"Scam type"};
@@ -152,6 +154,20 @@ function busy(on) {
   if (on) { const t = el("div", "typing"); t.id = "typing"; t.append(el("i"), el("i"), el("i")); $("log").append(t); $("log").scrollTop = $("log").scrollHeight; }
 }
 
+function show(j) {
+  caseData = j.case; history += " " + j.transcript;
+  say("you", j.transcript);
+  if (j.question) say("bot", j.question);
+  if (j.checklist) {
+    say("bot", "✅ आपकी शिकायत तैयार है — नीचे देखें। · Your complaint is ready below.");
+    $("steps").replaceChildren(...j.checklist.map(s => el("li", "", s)));
+    $("complaint").textContent = j.complaint; $("email").textContent = j.bank_email; $("done").hidden = false;
+    $("done").scrollIntoView({behavior: "smooth", block: "start"});
+  }
+  render();
+}
+
+// Fallback path: one recorded clip or typed line per POST /turn.
 async function send(fd) {
   fd.append("case", JSON.stringify(caseData)); fd.append("history", history);
   busy(true);
@@ -160,18 +176,76 @@ async function send(fd) {
     const j = await r.json();
     busy(false);
     if (!r.ok) { say("err", "⚠️ " + j.detail); return; }
-    caseData = j.case; history += " " + j.transcript;
-    say("you", j.transcript);
-    if (j.question) say("bot", j.question);
-    if (j.checklist) {
-      say("bot", "✅ आपकी शिकायत तैयार है — नीचे देखें। · Your complaint is ready below.");
-      $("steps").replaceChildren(...j.checklist.map(s => el("li", "", s)));
-      $("complaint").textContent = j.complaint; $("email").textContent = j.bank_email; $("done").hidden = false;
-      $("done").scrollIntoView({behavior: "smooth", block: "start"});
-    }
-    render();
+    show(j);
     if (j.audio) new Audio("data:audio/wav;base64," + j.audio).play();
   } catch (e) { busy(false); say("err", "⚠️ Network error, please try again."); }
+}
+
+// Live call over WS /ws/call: an AudioWorklet downsamples the mic to 16 kHz and posts 512-sample
+// (1,024-byte) frames; the server relays them to Gnani streaming STT and sends back 16 kHz PCM speech.
+const WORKLET = `registerProcessor("down16k", class extends AudioWorkletProcessor {
+  constructor() { super(); this.step = sampleRate / 16000; this.pos = 0; this.acc = 0; this.n = 0; this.out = new Int16Array(512); this.i = 0; }
+  process([input]) {
+    for (const s of input[0] || []) {
+      this.acc += s; this.n++;
+      if (++this.pos >= this.step) {  // average each window: a cheap low-pass before decimating
+        this.pos -= this.step;
+        this.out[this.i++] = Math.max(-1, Math.min(1, this.acc / this.n)) * 0x7fff; this.acc = 0; this.n = 0;
+        if (this.i === 512) { this.port.postMessage(this.out.buffer, [this.out.buffer]); this.out = new Int16Array(512); this.i = 0; }
+      }
+    }
+    return true;
+  }
+});`;
+const STATES = {listening: "🎙️ सुन रहे हैं, बोलिए · Listening — just speak", hearing: "👂 सुन रहे हैं… · Hearing you…",
+                speaking: "🔊 बोल रहे हैं · Speaking"};
+let call = null, noLive = false;
+
+async function startCall() {
+  const stream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true, noiseSuppression: true, autoGainControl: true}});
+  const ws = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/ws/call");
+  ws.binaryType = "arraybuffer";
+  try {
+    await new Promise((ok, fail) => { ws.onopen = ok; ws.onerror = ws.onclose = fail; setTimeout(fail, 3000); });
+    const ctx = new AudioContext();
+    await ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([WORKLET], {type: "text/javascript"})));
+    const node = new AudioWorkletNode(ctx, "down16k"), silence = new ArrayBuffer(1024), c = {ws, ctx, stream, playEnd: 0};
+    ctx.createMediaStreamSource(stream).connect(node); node.connect(ctx.destination);  // node outputs silence; keeps it pulled
+    // ponytail: mic is muted while the agent speaks so it can't hear itself; barge-in (step 2) replaces this.
+    node.port.onmessage = e => { if (ws.readyState === 1) ws.send(ctx.currentTime < c.playEnd + 0.3 ? silence : e.data); };
+    ws.onmessage = e => typeof e.data === "string" ? onMsg(JSON.parse(e.data)) : play(e.data);
+    ws.onclose = () => { if (call === c) { endCall(); say("err", "⚠️ Call disconnected. Tap the mic to reconnect, or type."); } };
+    ws.send(JSON.stringify({type: "init", case: caseData, history}));
+    call = c;
+  } catch (e) { stream.getTracks().forEach(t => t.stop()); ws.close(); throw new Error("live call unavailable"); }
+  $("mic").classList.add("rec"); $("mic").textContent = "⏹"; $("mic").setAttribute("aria-label", "End call");
+  setState("listening");
+}
+function endCall() {
+  const c = call; call = null;
+  c.stream.getTracks().forEach(t => t.stop()); c.ctx.close(); if (c.ws.readyState < 2) c.ws.close();
+  $("mic").classList.remove("rec"); $("mic").textContent = "🎤"; $("mic").setAttribute("aria-label", "Tap to speak");
+  $("micLabel").textContent = IDLE;
+}
+function setState(s) {
+  if (!call) return;
+  const left = call.playEnd - call.ctx.currentTime;
+  if (s === "listening" && left > 0) return setTimeout(() => setState(s), left * 1000);  // still playing the reply
+  $("micLabel").textContent = STATES[s] || s;
+}
+function onMsg(j) {
+  if (j.type === "turn") show(j);
+  else if (j.type === "state") setState(j.state);
+  else if (j.type === "timings") $("hud").textContent = "ms after end of speech\n" +
+    Object.entries(j.ms).map(([k, v]) => k.padEnd(17) + String(v).padStart(6)).join("\n");
+  else if (j.type === "error") { say("err", "⚠️ " + j.message); if (j.fallback) noLive = true; }
+}
+function play(buf) {
+  const f = Float32Array.from(new Int16Array(buf), v => v / 0x8000);
+  const b = call.ctx.createBuffer(1, f.length, 16000); b.copyToChannel(f, 0);
+  const src = call.ctx.createBufferSource(); src.buffer = b; src.connect(call.ctx.destination);
+  const at = Math.max(call.ctx.currentTime + 0.05, call.playEnd);  // queue right after the previous chunk: no gaps
+  src.start(at); call.playEnd = at + b.duration;
 }
 
 // Record mic as 16 kHz mono WAV (Prisma REST takes <=30 s; we stop at 25 s).
@@ -204,9 +278,20 @@ function toWav(chunks, rate) {
   return new Blob([buf], {type: "audio/wav"});
 }
 
-$("mic").onclick = () => rec ? stopRec() : startRec().catch(() => say("err", "⚠️ Microphone blocked — please type instead."));
-$("typed").onsubmit = e => { e.preventDefault(); const t = $("text").value.trim(); if (!t) return;
-  $("text").value = ""; const fd = new FormData(); fd.append("text", t); send(fd); };
+const blocked = () => say("err", "⚠️ Microphone blocked — please type instead.");
+$("mic").onclick = async () => {
+  if (call) return endCall();
+  if (rec) return stopRec();
+  if (!noLive) {
+    try { return await startCall(); }
+    catch (e) { if (e.name === "NotAllowedError") return blocked(); noLive = true; }  // fall back to tap-to-record
+  }
+  startRec().catch(blocked);
+};
+$("typed").onsubmit = e => { e.preventDefault(); const t = $("text").value.trim(); if (!t) return; $("text").value = "";
+  if (call) return call.ws.send(JSON.stringify({type: "text", text: t}));
+  const fd = new FormData(); fd.append("text", t); send(fd); };
+document.addEventListener("keydown", e => { if (e.key === "`" && e.target.tagName !== "INPUT") $("hud").hidden = !$("hud").hidden; });
 document.querySelectorAll("[data-copy]").forEach(b => b.onclick = async () => {
   await navigator.clipboard.writeText($(b.dataset.copy).textContent);
   b.textContent = "Copied ✓"; setTimeout(() => b.textContent = "Copy", 1500);

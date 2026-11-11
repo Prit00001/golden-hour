@@ -42,3 +42,13 @@ assert extract("आज दोपहर 2 बजे")["datetime"] == "आज द�
 assert extract("SBI se 40,000 rupaye kat gaye")["amount"] == 40000  # "k" multiplier must not hit "kat"
 assert extract("50k gaye")["amount"] == 50000
 print("rules ok")
+
+# one conversation turn (shared by /turn and /ws/call)
+from app.flow import advance, bare_amount
+
+assert bare_amount("40,000 tha") == "40,000" and bare_amount("98765 43210") is None
+out, speak = advance({}, "", "98765 43210 se call aaya")
+assert out["case"]["amount"] is None and speak == out["question"]  # first turn: a phone number is not the amount
+out, _ = advance(out["case"], "98765 43210 se call aaya", "40,000")
+assert out["case"]["amount"] == 40000  # bare number answering "how much?"
+print("advance ok")

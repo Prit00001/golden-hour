@@ -1,9 +1,12 @@
 """Case state, follow-up questions, hard-coded recovery steps and complaint templates.
 
-Nothing here calls an LLM: the official steps must never be generated.
+The official steps are hard-coded and must never be generated; an LLM may only help extract fields.
 """
 import re
 from typing import Optional
+
+from app import rules
+from app.extract import extract
 
 FIELDS = ["amount", "datetime", "payment_mode", "txn_id", "scammer_contact", "bank", "scam_type", "language"]
 
@@ -80,6 +83,31 @@ def next_question(case: dict) -> Optional[str]:
         if case.get(f) is None:
             return QUESTIONS[lang][f]
     return None
+
+
+def bare_amount(said: str) -> Optional[str]:
+    """A bare "40,000" answering "how much?" has no ₹/rupee word for the rules to anchor on."""
+    nums = [n for n in re.findall(r"\d[\d,]*", rules._join_spaced_digits(said))
+            if len(n.replace(",", "")) <= 8]  # skip phone/UTR
+    return nums[0] if nums else None
+
+
+def advance(case: dict, history: str, said: str):
+    """One conversation turn. Returns (payload for the browser, text to speak)."""
+    case = {**new_case(), **case}
+    # The first turn answers no question, so a phone number there must not become the amount.
+    asked = next((f for f in ASK_ORDER if case.get(f) is None), None) if history.strip() else None
+    got = extract(said)
+    if asked == "amount" and got["amount"] is None:
+        got["amount"] = bare_amount(said)
+    case = merge(case, got, said)
+    question = next_question(case)
+    out = {"transcript": said, "case": case, "question": question}
+    if question:
+        return out, question
+    out["checklist"] = checklist(case)
+    out.update(complaint(case))
+    return out, " ".join(out["checklist"])
 
 
 def checklist(case: dict) -> list:
