@@ -103,3 +103,48 @@ assert c2["txn_id"] is None and out["question"].startswith("बैंक के 
 c3, _, out, _ = turn({**c, "fraud_ts": NOW - 3 * 86400}, h, "हाँ")
 assert out["verdict"].startswith("इसे एक दिन से ज़्यादा")
 print("step3 ok")
+
+# Step 4: languages, Hinglish, spoken numbers.
+from app.rules import language, normalize
+
+assert language("ನನ್ನ ಖಾತೆಯಿಂದ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು") == "kn" and language("என் கணக்கில் இருந்து பணம் போனது") == "ta"
+assert language("నా ఖాతా నుండి డబ్బు పోయింది") == "te" and language("আমার অ্যাকাউন্ট থেকে টাকা কেটে নিয়েছে") == "bn"
+assert language("माझ्या खात्यातून पैसे गेले आहेत") == "mr" and language("मेरे खाते से पैसे कट गए") == "hi"
+assert language("SBI se 40,000 kat gaye") == "hi" and language("My SBI account was debited") == "en"
+assert normalize("UTR चार एक दो तीन, नौ बजे") == "UTR 4 1 2 3, 9 बजे"
+assert normalize("do baje paise gaye") == "2 baje paise gaye" and normalize("I do not know") == "I do not know"
+assert normalize("৪০,০০০ টাকা") == "40,000 টাকা"
+assert extract("पचास हज़ार रुपये गए")["amount"] == 50000
+assert extract("ನಿನ್ನೆ ರಾತ್ರಿ 11 ಗಂಟೆಗೆ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು")["amount"] == 40000
+assert at(fraud_time("ನಿನ್ನೆ ರಾತ್ರಿ 11 ಗಂಟೆಗೆ", NOW)) == "10 23:00"
+assert at(fraud_time("இன்று மதியம் 2 மணிக்கு", NOW)) == "11 14:00"
+assert at(fraud_time("40 நிமிடங்களுக்கு முன்பு", NOW)) == "11 14:20"
+assert at(fraud_time("আজ দুপুর ২টায়", NOW)) == "11 14:00" and at(fraud_time("आज दुपारी 2 वाजता", NOW)) == "11 14:00"
+
+# Hinglish in -> Hindi out; STT's language code wins over script (Marathi in Devanagari).
+out, _ = advance({}, "", "SBI se 40,000 rupaye kat gaye UPI se", now=NOW)
+assert out["case"]["language"] == "hi" and out["question"].startswith("यह कब")
+out, _ = advance({}, "", "SBI मधून 40,000 रुपये गेले UPI ने", now=NOW, lang_hint="mr-IN")
+assert out["case"]["language"] == "mr" and out["question"] == "हे कधी झाले? अंदाजे वेळ सांगा."
+out, _ = advance({}, "", "My money is gone", now=NOW, lang_hint="ml-IN")
+assert out["question"].startswith("How much"), "languages we don't speak get English"
+
+# A whole Kannada call: free-text bank, "don't know", read-back confirmed with ಹೌದು, Kannada verdict.
+c, h = {}, ""
+for said, hint in [("ನನ್ನ ಖಾತೆಯಿಂದ UPI ಮೂಲಕ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು", "kn-IN"), ("ಗ್ರಾಮೀಣ ಬ್ಯಾಂಕ್", "kn-IN"),
+                   ("ಇಂದು ಮಧ್ಯಾಹ್ನ 2 ಗಂಟೆಗೆ", "kn-IN"), ("ಗೊತ್ತಿಲ್ಲ", "kn-IN"), ("ಪೊಲೀಸ್ ಎಂದು ಹೇಳಿದರು", "kn-IN"),
+                   ("UTR 412345678901", "kn-IN"), ("ಹೌದು", "kn-IN")]:
+    out, speak = advance(c, h, said, now=NOW, lang_hint=hint)
+    c, h = out["case"], h + " " + said
+assert c["language"] == "kn" and c["bank"] == "ಗ್ರಾಮೀಣ ಬ್ಯಾಂಕ್" and c["scammer_contact"] == "not known"
+assert c["scam_type"] == "digital arrest" and c["meta"]["txn_id"]["confirmed"] and c["fraud_ts"] == NOW - 3600
+assert out["verdict"] == "ಇದು 1 ಗಂಟೆ ಹಿಂದೆ ಆಗಿದೆ, ಆದ್ದರಿಂದ ಹಣವನ್ನು ತಡೆಹಿಡಿಯುವ ಸಾಧ್ಯತೆ ಇನ್ನೂ ಇದೆ."
+assert out["checklist"][0].startswith("ಗಾಬರಿಯಾಗಬೇಡಿ") and "Rs. 40,000" in out["complaint"]
+
+# Tamil: read-back rejected with இல்லை, then re-read.
+c, _ = advance({}, "", "என் SBI கணக்கில் இருந்து UPI மூலம் 40,000 ரூபாய் போனது, UTR 412345678901", now=NOW, lang_hint="ta-IN")
+c = c["case"]
+assert c["confirming"] == "txn_id"
+out, speak = advance(c, "x", "இல்லை, 412345678902", now=NOW, lang_hint="ta-IN")
+assert out["case"]["txn_id"] == "412345678902" and speak.startswith("நான் UTR இப்படி குறித்துக்கொண்டேன்: 4 1 2 3")
+print("languages ok")

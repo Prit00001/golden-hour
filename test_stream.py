@@ -39,9 +39,10 @@ async def main():
     await call.reply
     kinds = [m["type"] if isinstance(m, dict) else "audio" for m in ws.sent]
     assert kinds[:2] == ["turn", "state"] and kinds[-2:] == ["timings", "state"], kinds
-    assert ws.sent[0]["case"]["amount"] == 40000 and ws.sent[0]["question"].startswith("When")
+    assert ws.sent[0]["case"]["amount"] == 40000 and ws.sent[0]["question"].startswith("यह कब")  # Hinglish in, Hindi out
     chunks = [m for m in ws.sent if isinstance(m, bytes)]
-    assert b"".join(chunks) == b"When did this happen?Tell me the approximate time."
+    want = "यह कब हुआ?लगभग समय बताइए।".encode()
+    assert b"".join(chunks) == want[:len(want) // 2 * 2]  # a trailing odd byte is never sent as half a sample
     assert all(len(c) % 2 == 0 for c in chunks)
     assert set(ws.sent[-2]["ms"]) >= {"stt_done", "extract_done", "first_tts_byte", "first_audio_sent"}
 
@@ -68,6 +69,13 @@ async def main():
     await asyncio.sleep(0.2)
     assert call.reply.cancelled() and len(ws.sent) == n, "barge-in must stop the reply"
     call.barge_in()  # no reply playing: harmless
+
+    # Call start: the greeting + disclaimer is spoken (and warms the TTS connection).
+    ws2 = FakeWS(); call2 = stream.Call(ws2)
+    gnani.tts_stream = fake_tts
+    call2.greet(); await call2.reply
+    spoken = b"".join(m for m in ws2.sent if isinstance(m, bytes))
+    assert "सरकारी सेवा नहीं".encode() in spoken and ws2.sent[0] == {"type": "state", "state": "speaking"}
 
 
 asyncio.run(main())

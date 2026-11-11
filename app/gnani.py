@@ -25,9 +25,9 @@ def _key():
     return env()["GNANI_API_KEY"]
 
 
-def stt(audio: bytes, filename: str = "audio.wav", previous_text: str = "") -> dict:
-    """<=30 s audio -> {'transcript', 'detected_language_code', ...}"""
-    data = {"model": "prisma-v3.0", "language_code": "indic-auto", "format": "transcribe",
+def stt(audio: bytes, filename: str = "audio.wav", previous_text: str = "", lang: str = "") -> dict:
+    """<=30 s audio -> {'transcript', 'detected_language_code', ...}. lang="kn" locks the language."""
+    data = {"model": "prisma-v3.0", "language_code": f"{lang}-IN" if lang else "indic-auto", "format": "transcribe",
             "keyterms": json.dumps(KEYTERMS, ensure_ascii=False), "topic": TOPIC}
     if previous_text.strip():
         data["previous_text"] = previous_text[-600:]
@@ -39,7 +39,7 @@ def stt(audio: bytes, filename: str = "audio.wav", previous_text: str = "") -> d
 
 def _tts_body(text: str, lang: str, container: str) -> dict:
     return {"text": text, "model": "timbre-v3.0", "voice": "Shivani",
-            "language": "en-IN" if lang == "en" else "hi-IN",
+            "language": f"{lang}-IN",  # Shivani speaks all of flow.QUESTIONS' languages
             "audio_config": {"sample_rate": 16000, "num_channels": 1, "sample_width": 2,
                              "encoding": "linear_pcm", "container": container}}
 

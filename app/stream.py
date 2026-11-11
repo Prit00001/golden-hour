@@ -53,10 +53,10 @@ class Call:
     async def send(self, **msg):
         await self.ws.send_json(msg)
 
-    def start(self, said: str, marks: dict):
+    def start(self, said: str, marks: dict, lang_hint=None):
         if self.reply and not self.reply.done():
             self.reply.cancel()  # a newer utterance supersedes the old reply
-        self.reply = asyncio.create_task(self.respond(said, marks))
+        self.reply = asyncio.create_task(self.respond(said, marks, lang_hint))
 
     def barge_in(self):
         """Caller spoke over the reply: stop synthesising and sending it. Their speech becomes the next turn."""
@@ -64,16 +64,22 @@ class Call:
             self.reply.cancel()
             print("[barge_in] reply cancelled")
 
-    async def respond(self, said: str, marks: dict):
-        out, speak = flow.advance(self.case, self.history, said)
+    def greet(self):
+        """Spoken greeting + disclaimer at call start. Also opens the TTS connection, so turn 1 isn't cold."""
+        lg = flow.lang(self.case)
+        self.reply = asyncio.create_task(self.speak(flow.GREETING[lg], {"speech_end": time.monotonic()}, lg))
+
+    async def respond(self, said: str, marks: dict, lang_hint=None):
+        out, speak = flow.advance(self.case, self.history, said, lang_hint=lang_hint)
         self.case, self.history = out["case"], self.history + " " + said
         marks["extract_done"] = time.monotonic()
         await self.send(type="turn", **out)
-        await self.send(type="state", state="speaking")
+        await self.speak(speak, marks, flow.lang(self.case))
 
+    async def speak(self, text: str, marks: dict, lang: str):
+        await self.send(type="state", state="speaking")
         loop, stop, q = asyncio.get_running_loop(), threading.Event(), asyncio.Queue()
-        threading.Thread(target=_synth, args=(sentences(speak), self.case.get("language") or "hi", q, loop, stop),
-                         daemon=True).start()
+        threading.Thread(target=_synth, args=(sentences(text), lang, q, loop, stop), daemon=True).start()
         try:
             odd = b""  # carry a stray byte so every frame holds whole 16-bit samples
             while (chunk := await q.get()) is not None:
@@ -103,7 +109,12 @@ class Call:
 async def run(ws: WebSocket):
     await ws.accept()
     call = Call(ws)
-    headers = {"x-api-key-id": env().get("GNANI_API_KEY", ""), "language_code": "indic-auto",
+    # ?lang=kn locks STT and replies to the caller's chosen language: auto-detect mishears short regional replies
+    # ("ஆமாம்" came back as Devanagari "आमाम"). No choice = indic-auto.
+    chosen = ws.query_params.get("lang")
+    chosen = chosen if chosen in flow.QUESTIONS else None
+    headers = {"x-api-key-id": env().get("GNANI_API_KEY", ""),
+               "language_code": f"{chosen}-IN" if chosen else "indic-auto",
                "model": "prisma-v3.0", "format": "transcribe", "x-sample-rate": "16000",
                "x-min-silence-ms": str(SILENCE_MS), "x-idle-timeout-sec": "300",
                # HTTP headers must be ASCII (websockets>=16 enforces it): \uXXXX escapes, same JSON once parsed.
@@ -127,6 +138,10 @@ async def run(ws: WebSocket):
                 j = json.loads(m["text"])
                 if j.get("type") == "init":
                     call.case, call.history = {**flow.new_case(), **(j.get("case") or {})}, j.get("history", "")
+                    if chosen:
+                        call.case["language"] = chosen
+                    if not call.history.strip():
+                        call.greet()
                 elif j.get("type") == "barge_in":
                     call.barge_in()
                 elif j.get("type") == "text" and j.get("text", "").strip():
@@ -142,7 +157,7 @@ async def run(ws: WebSocket):
                 now = time.monotonic()
                 # No end-of-speech event arrives, so estimate it: VAD silence wait + Gnani's reported latency.
                 end = now - (SILENCE_MS + m.get("latency", 0)) / 1000
-                call.start(m["text"].strip(), {"speech_end": end, "stt_done": now})
+                call.start(m["text"].strip(), {"speech_end": end, "stt_done": now}, m.get("detected_language_code"))
             elif m["type"] == "error":
                 await call.send(type="error", message=m.get("message", "Speech error"))
 

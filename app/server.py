@@ -28,21 +28,26 @@ async def ws_call(ws: WebSocket):
 
 
 @app.post("/turn")
-def turn(case: str = Form("{}"), history: str = Form(""), text: str = Form(""),
+def turn(case: str = Form("{}"), history: str = Form(""), text: str = Form(""), lang: str = Form(""),
          audio: Optional[UploadFile] = File(None)):
+    lang = lang if lang in flow.QUESTIONS else ""
     if audio is not None:
         try:
-            said = gnani.stt(audio.file.read(), audio.filename or "audio.wav", history)["transcript"]
+            heard = gnani.stt(audio.file.read(), audio.filename or "audio.wav", history, lang)
+            said, hint = heard["transcript"], heard.get("detected_language_code")
         except Exception as e:
             raise HTTPException(502, f"Speech service failed, please type instead: {e}")
     else:
-        said = text.strip()
+        said, hint = text.strip(), None
     if not said:
         raise HTTPException(400, "Nothing heard, please try again.")
 
-    out, speak = flow.advance(json.loads(case or "{}"), history, said)
+    case = json.loads(case or "{}")
+    if lang:
+        case["language"] = lang
+    out, speak = flow.advance(case, history, said, lang_hint=hint)
     try:
-        out["audio"] = base64.b64encode(gnani.tts(speak, out["case"].get("language") or "hi")).decode()
+        out["audio"] = base64.b64encode(gnani.tts(speak, flow.lang(out["case"]))).decode()
     except Exception:
         out["audio"] = None  # text is still on screen; voice is a bonus
     return out

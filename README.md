@@ -1,6 +1,6 @@
 # Golden Hour
 
-A voice assistant for victims of UPI and bank fraud in India. It talks to the caller in Hindi or English, asks for the details the 1930 helpline and the bank need (amount, payment mode, bank, time, UTR), then gives the next steps, a ready-to-paste complaint and an email to the bank.
+A voice assistant for victims of UPI and bank fraud in India. It talks to the caller in Hindi, Hinglish, English, Kannada, Tamil, Telugu, Bengali or Marathi, asks for the details the 1930 helpline and the bank need (amount, payment mode, bank, time, UTR), then gives the next steps, a ready-to-paste complaint and an email to the bank.
 
 Built on Gnani's Prisma streaming speech-to-text and Timbre text-to-speech. Synthetic data only. Nothing is stored after a call ends.
 

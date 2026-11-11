@@ -57,6 +57,9 @@
   #mic:disabled { opacity:.45; cursor:wait; transform:none; }
   @keyframes pulse { 70% { box-shadow:0 0 0 18px rgba(200,49,43,0); } 100% { box-shadow:0 0 0 0 rgba(200,49,43,0); } }
   #micLabel { font-weight:500; min-height:1.5em; }
+  .langs { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:6px; }
+  .langs button { border:1px solid var(--line); background:var(--soft); border-radius:999px; padding:3px 12px; cursor:pointer; font-size:.9rem; }
+  .langs button[aria-pressed="true"] { background:var(--fg); color:var(--bg); border-color:var(--fg); }
   form { display:flex; gap:8px; margin-top:12px; }
   input { flex:1; min-width:0; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:var(--bg); }
   .btn { padding:10px 16px; border:1px solid var(--line); border-radius:12px; background:var(--soft); cursor:pointer; font-weight:500; white-space:nowrap; }
@@ -102,13 +105,16 @@
 <main>
   <header>
     <h1><span class="dot"></span>Golden Hour</h1>
-    <p class="muted">बोलिए क्या हुआ — हिंदी, English या Hinglish में। हम आपकी शिकायत तैयार करेंगे।<br>
+    <p class="muted">बोलिए क्या हुआ — हिंदी, Hinglish, English, ಕನ್ನಡ, தமிழ், తెలుగు, বাংলা या मराठी में। हम आपकी शिकायत तैयार करेंगे।<br>
       Tell us what happened. We'll prepare your complaint and bank email.</p>
   </header>
 
   <section class="card">
     <div id="log" aria-live="polite"></div>
     <div class="controls">
+      <div class="langs" role="group" aria-label="Language · भाषा">
+        <button data-lang="" aria-pressed="true">Auto</button><button data-lang="hi">हिंदी</button><button data-lang="en">English</button><button data-lang="kn">ಕನ್ನಡ</button><button data-lang="ta">தமிழ்</button><button data-lang="te">తెలుగు</button><button data-lang="bn">বাংলা</button><button data-lang="mr">मराठी</button>
+      </div>
       <button id="mic" aria-label="Tap to speak">🎤</button>
       <div id="micLabel" class="muted">बोलने के लिए दबाएँ · Tap to speak</div>
     </div>
@@ -197,7 +203,7 @@ function show(j) {
 
 // Fallback path: one recorded clip or typed line per POST /turn.
 async function send(fd) {
-  fd.append("case", JSON.stringify(caseData)); fd.append("history", history);
+  fd.append("case", JSON.stringify(caseData)); fd.append("history", history); fd.append("lang", chosenLang);
   busy(true);
   try {
     const r = await fetch("/turn", {method: "POST", body: fd});
@@ -227,11 +233,17 @@ const WORKLET = `registerProcessor("down16k", class extends AudioWorkletProcesso
 });`;
 const STATES = {listening: "🎙️ सुन रहे हैं, बोलिए · Listening — just speak", hearing: "👂 सुन रहे हैं… · Hearing you…",
                 speaking: "🔊 बोल रहे हैं · Speaking"};
-let call = null, noLive = false;
+let call = null, noLive = false, chosenLang = "";  // "" = auto-detect; a choice locks STT and replies to it
+document.querySelectorAll(".langs button").forEach(b => b.onclick = () => {
+  chosenLang = b.dataset.lang;
+  document.querySelectorAll(".langs button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  if (chosenLang) caseData.language = chosenLang;
+  if (call) endCall();  // the speech model is chosen when the call connects; tap the mic again
+});
 
 async function startCall() {
   const stream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true, noiseSuppression: true, autoGainControl: true}});
-  const ws = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/ws/call");
+  const ws = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/ws/call" + (chosenLang ? "?lang=" + chosenLang : ""));
   ws.binaryType = "arraybuffer";
   try {
     await new Promise((ok, fail) => { ws.onopen = ok; ws.onerror = ws.onclose = fail; setTimeout(fail, 3000); });
@@ -347,7 +359,8 @@ document.querySelectorAll("[data-copy]").forEach(b => b.onclick = async () => {
   await navigator.clipboard.writeText($(b.dataset.copy).textContent);
   b.textContent = "Copied ✓"; setTimeout(() => b.textContent = "Copy", 1500);
 });
-say("bot", "नमस्ते। घबराइए मत — बताइए क्या हुआ, कितने पैसे कटे और किस बैंक से।\nHello. Don't panic — tell me what happened, how much money and from which bank.");
+say("bot", "नमस्ते, मैं गोल्डन ऑवर हूँ। यह सरकारी सेवा नहीं है और पैसे वापस नहीं दिला सकती, पर 1930 और आपके बैंक तक जल्दी पहुँचने में मदद करूँगी। बताइए, क्या हुआ?\n" +
+  "Hello, I'm Golden Hour. I'm not a government service and can't recover money, but I'll get you to 1930 and your bank fast. Speak in Hindi, English, ಕನ್ನಡ, தமிழ், తెలుగు, বাংলা or मराठी.");
 render();
 </script>
 </body>
