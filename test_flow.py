@@ -148,3 +148,13 @@ assert c["confirming"] == "txn_id"
 out, speak = advance(c, "x", "இல்லை, 412345678902", now=NOW, lang_hint="ta-IN")
 assert out["case"]["txn_id"] == "412345678902" and speak.startswith("நான் UTR இப்படி குறித்துக்கொண்டேன்: 4 1 2 3")
 print("languages ok")
+
+# Eval-found fixes: regional number words, "টাকা" is not a clock, the time phrase with a number wins.
+assert extract("Axis Bank నుండి అరవై వేలు రూపాయలు పంపాను")["amount"] == 60000
+assert at(fraud_time(extract("ಇಂದು ಮಧ್ಯಾಹ್ನ ಎರಡು ಗಂಟೆಗೆ")["datetime"], NOW)) == "11 14:00"
+assert at(fraud_time(extract("நேற்று இரவு ஒன்பது மணிக்கு ஓடிபி சொன்னேன்")["datetime"], NOW)) == "10 21:00"
+assert at(fraud_time(extract("UPI দিয়ে 20,000 টাকা কেটে নিয়েছে আজ দুপুর 3টায়")["datetime"], NOW)) == "11 15:00"
+assert at(fraud_time(extract("12000 रुपये कट गए अभी 20 minute पहले")["datetime"], NOW)) == "11 14:40"
+r = extract("ನಾನು ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ ಕಳುಹಿಸಿದೆ, ಪುಲೀಸ್ ಎಂದು ಹೇಳಿದರು")
+assert r["payment_mode"] == "net banking" and r["scam_type"] == "digital arrest"
+print("eval fixes ok")

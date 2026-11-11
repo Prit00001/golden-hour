@@ -102,7 +102,7 @@ class Call:
         base = marks["speech_end"]
         ms = {k: round((v - base) * 1000) for k, v in marks.items() if k != "speech_end"}
         print(f"[timings] {json.dumps(ms)}")  # timings only; transcripts are never logged
-        await self.send(type="timings", ms=ms)
+        await self.send(type="timings", ms=ms, chars=len(text))  # chars: TTS usage, for cost
         await self.send(type="state", state="listening")
 
 

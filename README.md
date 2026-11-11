@@ -16,6 +16,19 @@ Open http://localhost:8000 in Chrome and tap the mic. Press the backtick key (``
 
 Tests: `python3 test_flow.py && python3 test_stream.py` (offline), `python3 smoke_call.py` (live call; needs the server running and costs a few rupees of Gnani credit).
 
+## Evaluation
+
+[`eval/REPORT.md`](eval/REPORT.md) has the full numbers. In short:
+- **Field accuracy:** 98.2% on 34 synthetic cases in 7 languages, and 92.8% under 5 dB babble or a telephone band.
+- **Latency:** 36 live turns on the deployed app, first reply audio p50 1.12 s and p90 1.22 s, all under 1.5 s.
+- **Usage:** about 52 s of STT and 1,100 TTS characters per call.
+
+```bash
+python3 -m eval.run                 # accuracy under noise (Gnani credits; cached in eval/cache/)
+python3 -m eval.latency wss://golden-hour-bigo.onrender.com/ws/call 2
+python3 -m eval.test_eval           # offline check of the eval maths
+```
+
 ## Deploy (Render, free)
 
 The live call needs a long-lived WebSocket, which serverless hosts such as Vercel don't keep open. Render runs the Docker image instead.

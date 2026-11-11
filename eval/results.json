@@ -1,0 +1,5039 @@
+{
+ "accuracy": {
+  "cases": 34,
+  "stt_calls": 221,
+  "now": "2026-11-11 15:00 IST",
+  "by_condition": {
+   "clean": {
+    "n": 34,
+    "wer": 0.163,
+    "field_accuracy": 0.982,
+    "case_all_correct": 0.941,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 0.8,
+     "scammer_contact": 0.8,
+     "scam_type": 1.0,
+     "time": 1.0
+    }
+   },
+   "babble 15dB": {
+    "n": 34,
+    "wer": 0.171,
+    "field_accuracy": 0.973,
+    "case_all_correct": 0.912,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 0.8,
+     "scammer_contact": 0.8,
+     "scam_type": 1.0,
+     "time": 0.889
+    }
+   },
+   "babble 5dB": {
+    "n": 34,
+    "wer": 0.212,
+    "field_accuracy": 0.928,
+    "case_all_correct": 0.794,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 0.957,
+     "payment_mode": 0.955,
+     "txn_id": 0.6,
+     "scammer_contact": 0.6,
+     "scam_type": 1.0,
+     "time": 0.778
+    }
+   },
+   "pink 15dB": {
+    "n": 34,
+    "wer": 0.164,
+    "field_accuracy": 0.973,
+    "case_all_correct": 0.912,
+    "language_id": 0.971,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 0.8,
+     "scammer_contact": 0.8,
+     "scam_type": 0.95,
+     "time": 1.0
+    }
+   },
+   "pink 5dB": {
+    "n": 34,
+    "wer": 0.162,
+    "field_accuracy": 0.964,
+    "case_all_correct": 0.882,
+    "language_id": 0.971,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 0.8,
+     "scammer_contact": 0.8,
+     "scam_type": 0.95,
+     "time": 0.889
+    }
+   },
+   "phone band": {
+    "n": 34,
+    "wer": 0.181,
+    "field_accuracy": 0.928,
+    "case_all_correct": 0.765,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 0.957,
+     "payment_mode": 1.0,
+     "txn_id": 0.8,
+     "scammer_contact": 0.8,
+     "scam_type": 0.75,
+     "time": 1.0
+    }
+   }
+  },
+  "by_language_clean": {
+   "hi": {
+    "n": 12,
+    "wer": 0.198,
+    "field_accuracy": 1.0,
+    "case_all_correct": 1.0,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 1.0,
+     "scammer_contact": 1.0,
+     "scam_type": 1.0,
+     "time": 1.0
+    }
+   },
+   "en": {
+    "n": 5,
+    "wer": 0.027,
+    "field_accuracy": 0.938,
+    "case_all_correct": 0.8,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 1.0,
+     "scammer_contact": 0.5,
+     "scam_type": 1.0,
+     "time": 1.0
+    }
+   },
+   "kn": {
+    "n": 5,
+    "wer": 0.183,
+    "field_accuracy": 0.929,
+    "case_all_correct": 0.8,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 0.0,
+     "scammer_contact": 1.0,
+     "scam_type": 1.0,
+     "time": 1.0
+    }
+   },
+   "ta": {
+    "n": 5,
+    "wer": 0.119,
+    "field_accuracy": 1.0,
+    "case_all_correct": 1.0,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 1.0,
+     "scam_type": 1.0,
+     "time": 1.0
+    }
+   },
+   "te": {
+    "n": 3,
+    "wer": 0.114,
+    "field_accuracy": 1.0,
+    "case_all_correct": 1.0,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 1.0,
+     "scam_type": 1.0,
+     "time": 1.0
+    }
+   },
+   "bn": {
+    "n": 2,
+    "wer": 0.404,
+    "field_accuracy": 1.0,
+    "case_all_correct": 1.0,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "scam_type": 1.0,
+     "time": 1.0
+    }
+   },
+   "mr": {
+    "n": 2,
+    "wer": 0.192,
+    "field_accuracy": 1.0,
+    "case_all_correct": 1.0,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "scam_type": 1.0,
+     "time": 1.0
+    }
+   }
+  },
+  "regional_auto_vs_locked_clean": {
+   "auto": {
+    "n": 17,
+    "wer": 0.285,
+    "field_accuracy": 0.962,
+    "case_all_correct": 0.882,
+    "language_id": 0.647,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 0.667,
+     "scammer_contact": 1.0,
+     "scam_type": 0.889,
+     "time": 1.0
+    }
+   },
+   "locked": {
+    "n": 17,
+    "wer": 0.179,
+    "field_accuracy": 0.981,
+    "case_all_correct": 0.941,
+    "language_id": 1.0,
+    "per_field": {
+     "amount": 1.0,
+     "bank": 1.0,
+     "payment_mode": 1.0,
+     "txn_id": 0.667,
+     "scammer_contact": 1.0,
+     "scam_type": 1.0,
+     "time": 1.0
+    }
+   }
+  },
+  "clean_failures": [
+   {
+    "case": 16,
+    "lang": "en",
+    "heard": "They took the money to the UPI ID refund.help@payatm, 8200 rupees this morning at. 10 AM",
+    "got": {
+     "scammer_contact": "refund.help@payatm",
+     "amount": 8200,
+     "time": "11 10:00"
+    },
+    "missed": [
+     "scammer_contact"
+    ]
+   },
+   {
+    "case": 19,
+    "lang": "kn",
+    "heard": "ಯುಟಿಆರ್ ಸಂಖ್ಯೆ 567212349012.",
+    "got": {
+     "txn_id": "567212349012"
+    },
+    "missed": [
+     "txn_id"
+    ]
+   }
+  ],
+  "rows": [
+   {
+    "case": 0,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "मेरे SBI खाते से 40,000 रुपये कट गए, आज दोपहर 1:00 बजे के KYC अपडेट के नाम पर कॉल आया था। PhonePe से पैसे गए?",
+    "detected": "hi-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "fake KYC update",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 0,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "मेरे SBI खाते से 40,000 रुपये कट गए, आज दोपहर 1:00 बजे के KYC update के नाम पर call आया था। PhonePe से पैसे गए।",
+    "detected": "hi-IN",
+    "wer": 0.167,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "fake KYC update",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 0,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "मेरे SBI खाते से 40,000 रुपए कट गए। आज दोपहर 1:00 बजे KYC update के नाम पर call आया था PhonePe से। पैसे गए।",
+    "detected": "hi-IN",
+    "wer": 0.167,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "fake KYC update",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 0,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "मेरे SBI खाते से 40,000 रुपये कट गए, आज दोपहर 1:00 बजे के KYC update के नाम पर call आया था। PhonePe से पैसे गए।",
+    "detected": "hi-IN",
+    "wer": 0.167,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "fake KYC update",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 0,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "मेरे SBI खाते से 40,000 रुपये कट गए, आज दोपहर 1:00 बजे के वाई सी अपडेट के नाम पर कॉल आया था। PhonePe से पैसे गए।",
+    "detected": "hi-IN",
+    "wer": 0.167,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": false,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": null,
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 0,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "SBI खाते से 40,000 रुपये कट गए, आज दोपहर 1:00 बजे KYC अपडेट के नाम पर कॉल आया था। PhonePe से पैसे गए।",
+    "detected": "hi-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "fake KYC update",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 1,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "कल एक आदमी ने खुद को CBI officer बताया और digital arrest की धमकी दी। मैंने net banking से 2,00,000 रुपये भेज दिए। HDFC Bank से।",
+    "detected": "hi-IN",
+    "wer": 0.296,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 200000,
+     "bank": "HDFC Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 1,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "कल एक आदमी ने खुद को CBI officer बताया और digital arrest की धमकी दी। मैंने net banking से 2,00,000 रुपये भेज दिए। HDFC Bank से।",
+    "detected": "hi-IN",
+    "wer": 0.296,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 200000,
+     "bank": "HDFC Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 1,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "कल एक आदमी ने खुद को CBI officer बताया और digital arrest की धमकी दी। मैंने net banking से 2,00,000 रुपए भेज दिए। HDFC Bank से।",
+    "detected": "hi-IN",
+    "wer": 0.333,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 200000,
+     "bank": "HDFC Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 1,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "कल एक आदमी ने ख़ुद को CBI officer बताया और digital arrest की धमकी दी। मैंने net banking से 2,00,000 रुपये भेज दिए। HDFC Bank से।",
+    "detected": "hi-IN",
+    "wer": 0.333,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 200000,
+     "bank": "HDFC Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 1,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "कल एक आदमी ने खुद को CBI officer बताया और digital arrest की धमकी दी। मैंने net banking से 2,00,000 रुपये भेज दिए। HDFC Bank से।",
+    "detected": "hi-IN",
+    "wer": 0.296,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 200000,
+     "bank": "HDFC Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 1,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "एक आदमी ने खुद को CBI officer बताया और digital arrest की धमकी दी। मैंने net banking से 2,00,000 रुपए भेज दिए। HDFC Bank से।",
+    "detected": "hi-IN",
+    "wer": 0.37,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 200000,
+     "bank": "HDFC Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 2,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "UTR नंबर है 412345678901।",
+    "detected": "hi-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "412345678901"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 2,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "UTR नंबर है 412345678901।",
+    "detected": "hi-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "412345678901"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 2,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "UTR नंबर है 41234567890।",
+    "detected": "hi-IN",
+    "wer": 0.25,
+    "fields": {
+     "txn_id": false
+    },
+    "got": {
+     "txn_id": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 2,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "UTR number है: 412345678901।",
+    "detected": "en-IN",
+    "wer": 0.25,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "412345678901"
+    },
+    "language_ok": false
+   },
+   {
+    "case": 2,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "UTR number है: 412345678901।",
+    "detected": "en-IN",
+    "wer": 0.25,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "412345678901"
+    },
+    "language_ok": false
+   },
+   {
+    "case": 2,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "UTR नंबर है: 412345678901।",
+    "detected": "hi-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "412345678901"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 3,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "मुझे 9876543210 नंबर से call आया था।",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "scammer_contact": true
+    },
+    "got": {
+     "scammer_contact": "9876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 3,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "मुझे 9876543210 नंबर से call आया था।",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "scammer_contact": true
+    },
+    "got": {
+     "scammer_contact": "9876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 3,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "मुझे 987543210 नंबर से call आया था।",
+    "detected": "hi-IN",
+    "wer": 0.286,
+    "fields": {
+     "scammer_contact": false
+    },
+    "got": {
+     "scammer_contact": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 3,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "मुझे 9876543210 नंबर से call आया था।",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "scammer_contact": true
+    },
+    "got": {
+     "scammer_contact": "9876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 3,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "मुझे 9876543210 नंबर से कॉल आया था।",
+    "detected": "hi-IN",
+    "wer": 0.0,
+    "fields": {
+     "scammer_contact": true
+    },
+    "got": {
+     "scammer_contact": "9876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 3,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "9876543210 नंबर से call आया था।",
+    "detected": "hi-IN",
+    "wer": 0.286,
+    "fields": {
+     "scammer_contact": true
+    },
+    "got": {
+     "scammer_contact": "9876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 4,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "parcel में drugs मिलने की बात कह कर डराया। मैंने Google Pay से 25000 रुपये दे दिए, Punjab National Bank का खाता है।",
+    "detected": "hi-IN",
+    "wer": 0.318,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 25000,
+     "bank": "Punjab National Bank",
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 4,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "parcel में drugs मिलने की बात कह कर डराया। मैंने Google Pay से 25000 रुपए दे दिए, Punjab National Bank का खाता है।",
+    "detected": "hi-IN",
+    "wer": 0.364,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 25000,
+     "bank": "Punjab National Bank",
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 4,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "parcel में drugs मिलने की बात कह कर डराया। मैंने Google Pay से 25000 रुपए दे दिए पंजाब नेशनल बैंक का खाता।",
+    "detected": "hi-IN",
+    "wer": 0.273,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 25000,
+     "bank": "Punjab National Bank",
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 4,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "parcel में drugs मिलने की बात कह कर डराया। मैंने Google Pay से 25000 रुपये दे दिए, Punjab National Bank का खाता है।",
+    "detected": "hi-IN",
+    "wer": 0.318,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 25000,
+     "bank": "Punjab National Bank",
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 4,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "parcel में drugs मिलने की बात कह कर डराया। मैंने Google Pay से 25000 रुपये दे दिए पंजाब नेशनल बैंक का खाता।",
+    "detected": "hi-IN",
+    "wer": 0.227,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 25000,
+     "bank": "Punjab National Bank",
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 4,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "parcel में drugs मिलने की बात कह कर डराया। मैंने Google Pay से 25000 रुपये दे दिए, Punjab National Bank का खाता है।",
+    "detected": "hi-IN",
+    "wer": 0.318,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 25000,
+     "bank": "Punjab National Bank",
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 5,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "बिजली का बिल बकाया है बोलकर link भेजा। link खोलते ही मेरे Bank of Baroda खाते से 18500 रुपये निकल गए।",
+    "detected": "hi-IN",
+    "wer": 0.095,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 18500,
+     "bank": "Bank of Baroda",
+     "scam_type": "electricity bill scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 5,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "बिजली का bill बकाया है बोलकर link भेजा। link खोलते ही मेरे Bank of Baroda खाते से 18500 रुपये निकल गए।",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 18500,
+     "bank": "Bank of Baroda",
+     "scam_type": "electricity bill scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 5,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "बिजली का bill बकाया है बोलकर link भेजा। link खोलते ही मेरे Bank of Baroda खाते से 18500 रुपए निकल गए।",
+    "detected": "hi-IN",
+    "wer": 0.19,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 18500,
+     "bank": "Bank of Baroda",
+     "scam_type": "electricity bill scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 5,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "बिजली का bill बकाया है बोलकर link भेजा। link खोलते ही मेरे Bank of Baroda खाते से 18500 रुपये निकल गए।",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 18500,
+     "bank": "Bank of Baroda",
+     "scam_type": "electricity bill scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 5,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "बिजली का bill बकाया है बोलकर link भेजा। link खोलते ही मेरे Bank of Baroda खाते से 18500 रुपये निकल गए।",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 18500,
+     "bank": "Bank of Baroda",
+     "scam_type": "electricity bill scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 5,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "का बिल बकाया है बोलकर link भेजा। link खोलते ही मेरे Bank of Baroda खाते से 18500 रुपये निकल गए।",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 18500,
+     "bank": "Bank of Baroda",
+     "scam_type": "electricity bill scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 6,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "work from home task के नाम पर मुझसे कुल 75000 रुपये UPI से ले लिए, खाता Canara Bank में है।",
+    "detected": "hi-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 75000,
+     "bank": "Canara Bank",
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 6,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "work from home task के नाम पर मुझसे कुल 75000 रुपये UPI से ले लिए, खाता Canara Bank में है।",
+    "detected": "hi-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 75000,
+     "bank": "Canara Bank",
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 6,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "work from home task के नाम पर मुझसे कुल 75000 रुपये UPI से ले गए। खाता Canara Bank में है।",
+    "detected": "hi-IN",
+    "wer": 0.35,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 75000,
+     "bank": "Canara Bank",
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 6,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "work from home task के नाम पर मुझसे कुल 75000 रुपये UPI से ले लिए, खाता Canara Bank में है।",
+    "detected": "hi-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 75000,
+     "bank": "Canara Bank",
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 6,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "work from home task के नाम पर मुझसे कुल 75000 रुपये UPI से ले लिए, खाता Canara Bank में है।",
+    "detected": "hi-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 75000,
+     "bank": "Canara Bank",
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 6,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "work from home task के नाम पर मुझसे कुल 75000 रुपये UPI से ले लिए, खाता Canara Bank में है।",
+    "detected": "hi-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 75000,
+     "bank": "Canara Bank",
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 7,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "share trading app में invest करवाया, 1,50,000 रुपये चले गए। Kotak Bank से net banking से भेजे थे।",
+    "detected": "hi-IN",
+    "wer": 0.571,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 150000,
+     "bank": "Kotak Mahindra Bank",
+     "payment_mode": "net banking",
+     "scam_type": "investment scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 7,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "share trading app में invest करवाया और 1,50,000 रुपए चले गए। Kotak Bank से net banking से भेजे थे।",
+    "detected": "hi-IN",
+    "wer": 0.619,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 150000,
+     "bank": "Kotak Mahindra Bank",
+     "payment_mode": "net banking",
+     "scam_type": "investment scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 7,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "share trading app में invest करवाया और 1,50,000 रुपए चले गए। Kotak Bank से net banking से भेजे थे UPI।",
+    "detected": "hi-IN",
+    "wer": 0.667,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": false,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 150000,
+     "bank": "Kotak Mahindra Bank",
+     "payment_mode": "UPI",
+     "scam_type": "investment scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 7,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "share trading app में invest करवाया। 1,50,000 रुपये चले गए, Kotak Bank से net banking से भेजे थे।",
+    "detected": "hi-IN",
+    "wer": 0.571,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 150000,
+     "bank": "Kotak Mahindra Bank",
+     "payment_mode": "net banking",
+     "scam_type": "investment scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 7,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "share trading app में invest करवाया, 1,50,000 रुपये चले गए। Kotak Bank से net banking से भेजे थे।",
+    "detected": "hi-IN",
+    "wer": 0.571,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 150000,
+     "bank": "Kotak Mahindra Bank",
+     "payment_mode": "net banking",
+     "scam_type": "investment scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 7,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "trading app में invest करवाया, 1,50,000 रुपये चले गए। Kotak Bank से net banking से भेजे थे।",
+    "detected": "hi-IN",
+    "wer": 0.571,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 150000,
+     "bank": "Kotak Mahindra Bank",
+     "payment_mode": "net banking",
+     "scam_type": "investment scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 8,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "किसी ने OTP मांगा और मैंने बता दिया, \"ICICI के debit card से 12000 रुपये कट गए अभी 20 minute पहले।\"",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 12000,
+     "bank": "ICICI Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "11 14:40"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 8,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "किसी ने OTP मांगा और मैंने बता दिया, \"ICICI के debit card से 12000 रुपए कट गए अभी 20 minute पहले।\"",
+    "detected": "hi-IN",
+    "wer": 0.19,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 12000,
+     "bank": "ICICI Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "11 14:40"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 8,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "OTP मांगा और मैंने बता दिया, ICICI के debit card से 12000 रुपए कट गए अभी 20 minute पहले।",
+    "detected": "hi-IN",
+    "wer": 0.286,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 12000,
+     "bank": "ICICI Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "11 14:40"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 8,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "किसी ने OTP मांगा और मैंने बता दिया, ICICI के debit card से 12000 रुपये कट गए अभी 20 minute पहले।",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 12000,
+     "bank": "ICICI Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "11 14:40"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 8,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "किसी ने OTP मांगा और मैंने बता दिया। ICICI के debit card से 12000 रुपये कट गए अभी 20 minute पहले।",
+    "detected": "hi-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 12000,
+     "bank": "ICICI Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "11 14:40"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 8,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "मैंने OTP मांगा और मैंने बता दिया ICICI के debit card से 12,000 रुपये कट गए अभी 20 minute पहले।",
+    "detected": "hi-IN",
+    "wer": 0.238,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 12000,
+     "bank": "ICICI Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "11 14:40"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 9,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "रिफंड दिलाने के नाम पर क्यूआर कोड स्कैन करवाया, Paytm से 9,999 रुपये गए। Axis Bank का account है।",
+    "detected": "hi-IN",
+    "wer": 0.211,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 9999,
+     "bank": "Axis Bank",
+     "payment_mode": "UPI",
+     "scam_type": "refund scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 9,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "रिफंड दिलाने के नाम पर क्यूआर कोड स्कैन करवाया, Paytm से 9,999 रुपये गए। Axis Bank का account है।",
+    "detected": "hi-IN",
+    "wer": 0.211,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 9999,
+     "bank": "Axis Bank",
+     "payment_mode": "UPI",
+     "scam_type": "refund scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 9,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "refund दिलाने के नाम पर QR code scan करवाया, Paytm से 9999 रुपए का Nexus Bank का account है।",
+    "detected": "hi-IN",
+    "wer": 0.421,
+    "fields": {
+     "amount": true,
+     "bank": false,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 9999,
+     "bank": null,
+     "payment_mode": "UPI",
+     "scam_type": "refund scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 9,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "refund दिलाने के नाम पर QR code scan करवाया, Paytm से 9999 रुपये गए। Axis Bank का account है।",
+    "detected": "hi-IN",
+    "wer": 0.316,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 9999,
+     "bank": "Axis Bank",
+     "payment_mode": "UPI",
+     "scam_type": "refund scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 9,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "refund दिलाने के नाम पर QR code scan करवाया, Paytm से 9999 रुपये गए। Axis Bank का account है।",
+    "detected": "hi-IN",
+    "wer": 0.316,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 9999,
+     "bank": "Axis Bank",
+     "payment_mode": "UPI",
+     "scam_type": "refund scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 9,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "fund दिलाने के नाम पर QR code scan करवाया, Paytm से 9999 रुपये गए। Axis Bank का account है।",
+    "detected": "hi-IN",
+    "wer": 0.316,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": false
+    },
+    "got": {
+     "amount": 9999,
+     "bank": "Axis Bank",
+     "payment_mode": "UPI",
+     "scam_type": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 10,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "लॉटरी जीतने की बात कही और processing fees के 5000 रुपये मांगे, मैंने Union Bank से UPI कर दिया।",
+    "detected": "hi-IN",
+    "wer": 0.211,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 5000,
+     "bank": "Union Bank of India",
+     "payment_mode": "UPI",
+     "scam_type": "lottery scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 10,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "लॉटरी जीतने की बात कही और processing fees के 5000 रुपये मांगे। मैंने Union Bank से UPI कर दिया।",
+    "detected": "hi-IN",
+    "wer": 0.211,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 5000,
+     "bank": "Union Bank of India",
+     "payment_mode": "UPI",
+     "scam_type": "lottery scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 10,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "लॉटरी जीतने के बाद कहीं और processing fees के 5000 रुपए मांगे, मैंने Union Bank से UPI करके।",
+    "detected": "hi-IN",
+    "wer": 0.526,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 5000,
+     "bank": "Union Bank of India",
+     "payment_mode": "UPI",
+     "scam_type": "lottery scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 10,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "लॉटरी जीतने की बात कही और processing fees के 5000 रुपये मांगे। मैंने Union Bank से UPI कर दिया।",
+    "detected": "hi-IN",
+    "wer": 0.211,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 5000,
+     "bank": "Union Bank of India",
+     "payment_mode": "UPI",
+     "scam_type": "lottery scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 10,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "लॉटरी जीतने की बात कही और processing fees के 5000 रुपये मांगे। मैंने Union Bank से UPI कर दिया।",
+    "detected": "hi-IN",
+    "wer": 0.211,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 5000,
+     "bank": "Union Bank of India",
+     "payment_mode": "UPI",
+     "scam_type": "lottery scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 10,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "लॉटरी जीतने की बात कही और processing fees के 5000 रुपये मांगे। मैंने Union Bank से UPI कर दिया।",
+    "detected": "hi-IN",
+    "wer": 0.211,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 5000,
+     "bank": "Union Bank of India",
+     "payment_mode": "UPI",
+     "scam_type": "lottery scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 11,
+    "lang": "hi",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "ठग का UPI ID था lucky.winner@ybl, उस पर मैंने 30,000 रुपये भेजे।",
+    "detected": "hi-IN",
+    "wer": 0.0,
+    "fields": {
+     "scammer_contact": true,
+     "amount": true,
+     "payment_mode": true
+    },
+    "got": {
+     "scammer_contact": "lucky.winner@ybl",
+     "amount": 30000,
+     "payment_mode": "UPI"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 11,
+    "lang": "hi",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "आपका UPI ID था lucky.winner@ybl, उस पर मैंने 30,000 रुपये भेजे।",
+    "detected": "hi-IN",
+    "wer": 0.154,
+    "fields": {
+     "scammer_contact": true,
+     "amount": true,
+     "payment_mode": true
+    },
+    "got": {
+     "scammer_contact": "lucky.winner@ybl",
+     "amount": 30000,
+     "payment_mode": "UPI"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 11,
+    "lang": "hi",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "आपका UPI ID था lucky.winner@ybl, उस पर मैंने 30,000 रुपये भेजे।",
+    "detected": "hi-IN",
+    "wer": 0.154,
+    "fields": {
+     "scammer_contact": true,
+     "amount": true,
+     "payment_mode": true
+    },
+    "got": {
+     "scammer_contact": "lucky.winner@ybl",
+     "amount": 30000,
+     "payment_mode": "UPI"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 11,
+    "lang": "hi",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "धक्का UPI ID था lucky.winner@ybl, उस पर मैंने 30,000 रुपये भेजे।",
+    "detected": "hi-IN",
+    "wer": 0.154,
+    "fields": {
+     "scammer_contact": true,
+     "amount": true,
+     "payment_mode": true
+    },
+    "got": {
+     "scammer_contact": "lucky.winner@ybl",
+     "amount": 30000,
+     "payment_mode": "UPI"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 11,
+    "lang": "hi",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "ठग का UPI ID था lucky.winner@ybl, उस पर मैंने 30,000 रुपये भेजे।",
+    "detected": "hi-IN",
+    "wer": 0.0,
+    "fields": {
+     "scammer_contact": true,
+     "amount": true,
+     "payment_mode": true
+    },
+    "got": {
+     "scammer_contact": "lucky.winner@ybl",
+     "amount": 30000,
+     "payment_mode": "UPI"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 11,
+    "lang": "hi",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "आपका UPI ID था lucky.winner@ybl, उस पर मैंने 30,000 रुपये भेजे।",
+    "detected": "hi-IN",
+    "wer": 0.154,
+    "fields": {
+     "scammer_contact": true,
+     "amount": true,
+     "payment_mode": true
+    },
+    "got": {
+     "scammer_contact": "lucky.winner@ybl",
+     "amount": 30000,
+     "payment_mode": "UPI"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 12,
+    "lang": "en",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "Someone called, pretending to be from customs, said my parcel had drugs, and I transferred 1,00,000 rupees by net banking from my Yes Bank account.",
+    "detected": "en-IN",
+    "wer": 0.077,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "Yes Bank",
+     "payment_mode": "net banking"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 12,
+    "lang": "en",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "Someone called, pretending to be from customs, said my parcel had drugs, and I transferred 1 lakh rupees by net banking from my Yes Bank account.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "Yes Bank",
+     "payment_mode": "net banking"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 12,
+    "lang": "en",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "Called pretending to be from customs, and I transferred 1 lakh rupees by net banking from my Yes Bank account.",
+    "detected": "en-IN",
+    "wer": 0.231,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "Yes Bank",
+     "payment_mode": "net banking"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 12,
+    "lang": "en",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "Someone called, pretending to be from customs. Said my parcel had drugs, and I transferred 1 lakh rupees by net banking from my Yes Bank account.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "Yes Bank",
+     "payment_mode": "net banking"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 12,
+    "lang": "en",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "Someone called, pretending to be from customs. Said my parcel had drugs, and I transferred 1 lakh rupees by net banking from my Yes Bank account.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "Yes Bank",
+     "payment_mode": "net banking"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 12,
+    "lang": "en",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "Someone called pretending to be from customs, said my parcel had drugs, and I transferred 1,00,000 rupees by net banking from my Yes Bank account.",
+    "detected": "en-IN",
+    "wer": 0.077,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "Yes Bank",
+     "payment_mode": "net banking"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 13,
+    "lang": "en",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "My HDFC credit card was charged 15,000 rupees yesterday night after I shared an OTP.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 13,
+    "lang": "en",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "My HDFC credit card was charged 15,000 rupees yesterday night after I shared an OTP.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 13,
+    "lang": "en",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "My HDFC credit card was charged 15,000 rupees yesterday night after I shared an OTP.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 13,
+    "lang": "en",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "My HDFC credit card was charged 15,000 rupees yesterday night after I shared an OTP.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 13,
+    "lang": "en",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "My HDFC credit card was charged 15,000 rupees yesterday night after I shared an OTP.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 13,
+    "lang": "en",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "My HDFC credit card was charged 15,000 rupees yesterday night after I shared an OTP.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 14,
+    "lang": "en",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "The UTR is 309876543210.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "309876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 14,
+    "lang": "en",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "The UTR is 309876543210.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "309876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 14,
+    "lang": "en",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "The UTR is 309876543210.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "309876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 14,
+    "lang": "en",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "The UTR is 309876543210.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "309876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 14,
+    "lang": "en",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "The UTR is 309876543210.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "309876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 14,
+    "lang": "en",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "UTR is 309876543210.",
+    "detected": "en-IN",
+    "wer": 0.25,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "309876543210"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 15,
+    "lang": "en",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "I paid 45,000 rupees through Google Pay to a fake electricity board number. 9123456789 from my State Bank account.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "scammer_contact": true
+    },
+    "got": {
+     "amount": 45000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "electricity bill scam",
+     "scammer_contact": "9123456789"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 15,
+    "lang": "en",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "I paid 45,000 rupees through Google Pay to a fake electricity board number. 9123456789 from my State Bank account.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "scammer_contact": true
+    },
+    "got": {
+     "amount": 45000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "electricity bill scam",
+     "scammer_contact": "9123456789"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 15,
+    "lang": "en",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "Get 45,000 rupees through Google Pay to a fake electricity board number: 9123456789. From my State Bank account.",
+    "detected": "en-IN",
+    "wer": 0.105,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "scammer_contact": true
+    },
+    "got": {
+     "amount": 45000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "electricity bill scam",
+     "scammer_contact": "9123456789"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 15,
+    "lang": "en",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "I paid 45,000 rupees through Google Pay to a fake electricity board number. 9123456789 from my State Bank account.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "scammer_contact": true
+    },
+    "got": {
+     "amount": 45000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "electricity bill scam",
+     "scammer_contact": "9123456789"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 15,
+    "lang": "en",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "I paid 45,000 rupees through Google Pay to a fake electricity board number. 9123456789 from my State Bank account.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "scammer_contact": true
+    },
+    "got": {
+     "amount": 45000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "electricity bill scam",
+     "scammer_contact": "9123456789"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 15,
+    "lang": "en",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "I paid 45,000 rupees through Google Pay to a fake electricity board number 9123456789. From my State Bank account.",
+    "detected": "en-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "scammer_contact": true
+    },
+    "got": {
+     "amount": 45000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "scam_type": "electricity bill scam",
+     "scammer_contact": "9123456789"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 16,
+    "lang": "en",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "They took the money to the UPI ID refund.help@payatm, 8200 rupees this morning at. 10 AM",
+    "detected": "en-IN",
+    "wer": 0.059,
+    "fields": {
+     "scammer_contact": false,
+     "amount": true,
+     "time": true
+    },
+    "got": {
+     "scammer_contact": "refund.help@payatm",
+     "amount": 8200,
+     "time": "11 10:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 16,
+    "lang": "en",
+    "condition": "babble 15dB",
+    "mode": "auto",
+    "heard": "They took the money to the UPI ID refund.help@payatm, 8200 rupees this morning at. 10 AM",
+    "detected": "en-IN",
+    "wer": 0.059,
+    "fields": {
+     "scammer_contact": false,
+     "amount": true,
+     "time": true
+    },
+    "got": {
+     "scammer_contact": "refund.help@payatm",
+     "amount": 8200,
+     "time": "11 10:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 16,
+    "lang": "en",
+    "condition": "babble 5dB",
+    "mode": "auto",
+    "heard": "They took the money to the UPI ID refund.help@payatm, 8200 rupees this morning at. N A R",
+    "detected": "en-IN",
+    "wer": 0.235,
+    "fields": {
+     "scammer_contact": false,
+     "amount": true,
+     "time": false
+    },
+    "got": {
+     "scammer_contact": "refund.help@payatm",
+     "amount": 8200,
+     "time": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 16,
+    "lang": "en",
+    "condition": "pink 15dB",
+    "mode": "auto",
+    "heard": "They took the money to the UPI ID refund.help@payatm, 8200 rupees. This morning at 10 am.",
+    "detected": "en-IN",
+    "wer": 0.059,
+    "fields": {
+     "scammer_contact": false,
+     "amount": true,
+     "time": true
+    },
+    "got": {
+     "scammer_contact": "refund.help@payatm",
+     "amount": 8200,
+     "time": "11 10:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 16,
+    "lang": "en",
+    "condition": "pink 5dB",
+    "mode": "auto",
+    "heard": "They took the money to the UPI ID refund.help@payatm, 8,200 rupees. This morning at 10 am.",
+    "detected": "en-IN",
+    "wer": 0.059,
+    "fields": {
+     "scammer_contact": false,
+     "amount": true,
+     "time": true
+    },
+    "got": {
+     "scammer_contact": "refund.help@payatm",
+     "amount": 8200,
+     "time": "11 10:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 16,
+    "lang": "en",
+    "condition": "phone band",
+    "mode": "auto",
+    "heard": "He took the money to the UPI ID refund.help@payapm, 8,200 rupees. This morning at 10 am.",
+    "detected": "en-IN",
+    "wer": 0.118,
+    "fields": {
+     "scammer_contact": false,
+     "amount": true,
+     "time": true
+    },
+    "got": {
+     "scammer_contact": "refund.help@payapm",
+     "amount": 8200,
+     "time": "11 10:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 17,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "ನನ್ನ SBI ಖಾತೆಯಿಂದ UPI ಮೂಲಕ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು, ಇಂದು ಮಧ್ಯಾಹ್ನ ಎರಡು ಗಂಟೆಗೆ.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 17,
+    "lang": "kn",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "ನನ್ನ SBI ಖಾತೆಯಿಂದ UPI ಮೂಲಕ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು, ಇಂದು ಮಧ್ಯಾಹ್ನ ಎರಡು ಗಂಟೆಗೆ.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 17,
+    "lang": "kn",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "ನನ್ನ SBI ಖಾತೆಯಿಂದ UPI ಮೂಲಕ 40,000 ರೂಪಾಯಿ ಹಣವನ್ನು ಇಂದು ಮಧ್ಯಾಹ್ನ ಎರಡು ಗಂಟೆಗೆ.",
+    "detected": "kn-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 17,
+    "lang": "kn",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "ನನ್ನ SBI ಖಾತೆಯಿಂದ UPI ಮೂಲಕ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು, ಇಂದು ಮಧ್ಯಾಹ್ನ 2 ಗಂಟೆಗೆ.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 17,
+    "lang": "kn",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "ನನ್ನ SBI ಖಾತೆಯಿಂದ UPI ಮೂಲಕ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು, ಇಂದು ಮಧ್ಯಾಹ್ನ 2 ಗಂಟೆಗೆ.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 17,
+    "lang": "kn",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "ನನ್ನ SBI ಖಾತೆಯಿಂದ UPI ಮೂಲಕ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು, ಇಂದು ಮಧ್ಯಾಹ್ನ ಎರಡು ಗಂಟೆಗೆ.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 17,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "ನನ್ನ SBI ಖಾತೆಯಿಂದ UPI ಮೂಲಕ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು, ಇಂದು ಮಧ್ಯಾಹ್ನ ಎರಡು ಗಂಟೆಗೆ.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 18,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "ಪುಲೀಸ್ ಎಂದು ಹೇಳಿ ಕರೆ ಮಾಡಿದರು, ನಾನು Canara Bank ನಿಂದ ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ 1,20,000 ರೂಪಾಯಿ ಕಳುಹಿಸಿದೆ.",
+    "detected": "kn-IN",
+    "wer": 0.067,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 120000,
+     "bank": "Canara Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 18,
+    "lang": "kn",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "ಪೊಲೀಸ್ ಎಂದು ಹೇಳಿ ಕರೆ ಮಾಡಿದರು, ನಾನು Canara Bank ನಿಂದ ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ 1,20,000 ರೂಪಾಯಿ ಕಳುಹಿಸಿದೆ.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 120000,
+     "bank": "Canara Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 18,
+    "lang": "kn",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "ಪೊಲೀಸ್ ಎಂದು ಹೇಳಿ ಕರೆ ಮಾಡಿದರು, ನಾನು Canara Bank ನಿಂದ ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ 1,20,000 ರೂಪಾಯಿ ಕಳುಹಿಸಿದ್ದೇನೆ.",
+    "detected": "kn-IN",
+    "wer": 0.067,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 120000,
+     "bank": "Canara Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 18,
+    "lang": "kn",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "ಪುಲಿಸ್ ಎಂದು ಹೇಳಿ ಕರೆ ಮಾಡಿದರು, ನಾನು Canara Bank ನಿಂದ ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ 1,20,000 ರೂಪಾಯಿ ಕಳುಹಿಸಿದೆ.",
+    "detected": "kn-IN",
+    "wer": 0.067,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": false
+    },
+    "got": {
+     "amount": 120000,
+     "bank": "Canara Bank",
+     "payment_mode": "net banking",
+     "scam_type": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 18,
+    "lang": "kn",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "ಪೊಲೀಸ್ ಎಂದು ಹೇಳಿ ಕರೆ ಮಾಡಿದರು, ನಾನು Canara Bank ನಿಂದ ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ 1,20,000 ರೂಪಾಯಿ ಕಳುಹಿಸಿದೆ.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 120000,
+     "bank": "Canara Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 18,
+    "lang": "kn",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "ಎಂದು ಹೇಳಿ ಕರೆ ಮಾಡಿದರು, ನಾನು Canara Bank ನಿಂದ ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ 1,20,000 ರೂಪಾಯಿ ಕಳುಹಿಸಿದೆ.",
+    "detected": "kn-IN",
+    "wer": 0.067,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": false
+    },
+    "got": {
+     "amount": 120000,
+     "bank": "Canara Bank",
+     "payment_mode": "net banking",
+     "scam_type": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 18,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "ಪೊಲೀಸ್ ಎಂದು ಹೇಳಿ ಕರೆ ಮಾಡಿದರು, ನಾನು Canara Bank ನಿಂದ ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ 1,20,000 ರೂಪಾಯಿ ಕಳುಹಿಸಿದೆ.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 120000,
+     "bank": "Canara Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 19,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "ಯುಟಿಆರ್ ಸಂಖ್ಯೆ 567212349012.",
+    "detected": "kn-IN",
+    "wer": 0.667,
+    "fields": {
+     "txn_id": false
+    },
+    "got": {
+     "txn_id": "567212349012"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 19,
+    "lang": "kn",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "ಯುಟಿಆರ್ ಸಂಖ್ಯೆ 567112349012.",
+    "detected": "kn-IN",
+    "wer": 0.667,
+    "fields": {
+     "txn_id": false
+    },
+    "got": {
+     "txn_id": "567112349012"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 19,
+    "lang": "kn",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "UTR ಸಂಖ್ಯೆ 567112349012.",
+    "detected": "kn-IN",
+    "wer": 0.333,
+    "fields": {
+     "txn_id": false
+    },
+    "got": {
+     "txn_id": "567112349012"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 19,
+    "lang": "kn",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "UTR ಸಂಖ್ಯೆ 567112349012.",
+    "detected": "kn-IN",
+    "wer": 0.333,
+    "fields": {
+     "txn_id": false
+    },
+    "got": {
+     "txn_id": "567112349012"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 19,
+    "lang": "kn",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "UTR ಸಂಖ್ಯೆ 567112349012.",
+    "detected": "kn-IN",
+    "wer": 0.333,
+    "fields": {
+     "txn_id": false
+    },
+    "got": {
+     "txn_id": "567112349012"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 19,
+    "lang": "kn",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "UTR ಸಂಖ್ಯೆ 567112349012.",
+    "detected": "kn-IN",
+    "wer": 0.333,
+    "fields": {
+     "txn_id": false
+    },
+    "got": {
+     "txn_id": "567112349012"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 19,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "ಯುಟಿಆರ್ ಸಂಖ್ಯೆ 567112349012.",
+    "detected": "kn-IN",
+    "wer": 0.667,
+    "fields": {
+     "txn_id": false
+    },
+    "got": {
+     "txn_id": "567112349012"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 20,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "ಪಾರ್ಸೆಲ್‌ನಲ್ಲಿ ಡ್ರಗ್ಸ್ ಇದೆ ಎಂದು ಹೆದರಿಸಿದರು, PhonePe ಮೂಲಕ 35,000 ರೂಪಾಯಿ ಕೊಟ್ಟೆ.",
+    "detected": "kn-IN",
+    "wer": 0.182,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 35000,
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 20,
+    "lang": "kn",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "ಪಾರ್ಸೆಲ್‌ನಲ್ಲಿ ಡ್ರಗ್ಸ್ ಇದೆ ಎಂದು ಹೆದರಿಸಿದರು, PhonePe ಮೂಲಕ 35,000 ರೂಪಾಯಿ ಕೊಟ್ಟೆ.",
+    "detected": "kn-IN",
+    "wer": 0.182,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 35000,
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 20,
+    "lang": "kn",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "ಪಾರ್ಸಲ್ ನಲ್ಲಿ drugs ಇದೆ ಎಂದು ಹೆದರಿಸಿದರು, PhonePe ಮೂಲಕ 35,000 ರೂಪಾಯಿ ಕೊಟ್ಟೆ.",
+    "detected": "kn-IN",
+    "wer": 0.182,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 35000,
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 20,
+    "lang": "kn",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "ಪಾರ್ಸೆಲ್‌ನಲ್ಲಿ drugs ಇದೆ ಎಂದು ಹೆದರಿಸಿದರು, PhonePe ಮೂಲಕ 35,000 ರೂಪಾಯಿ ಕೊಟ್ಟೆ.",
+    "detected": "kn-IN",
+    "wer": 0.273,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 35000,
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 20,
+    "lang": "kn",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "ಪಾರ್ಸಲ್‌ನಲ್ಲಿ drugs ಇದೆ ಎಂದು ಹೆದರಿಸಿದರು, PhonePe ಮೂಲಕ 35,000 ರೂಪಾಯಿ ಕೊಟ್ಟೆ.",
+    "detected": "kn-IN",
+    "wer": 0.273,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 35000,
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 20,
+    "lang": "kn",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "ಪಾರ್ಸಲ್‌ನಲ್ಲಿ ಡ್ರಗ್ಸ್ ಇದೆ ಎಂದು ಹೆದರಿಸಿದರು, PhonePe ಮೂಲಕ 35,000 ರೂಪಾಯಿ ಕೊಟ್ಟೆ.",
+    "detected": "kn-IN",
+    "wer": 0.182,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": false
+    },
+    "got": {
+     "amount": 35000,
+     "payment_mode": "UPI",
+     "scam_type": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 20,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "ಪಾರ್ಸೆಲ್‌ನಲ್ಲಿ ಡ್ರಗ್ಸ್ ಇದೆ ಎಂದು ಹೆದರಿಸಿದರು, PhonePe ಮೂಲಕ 35,000 ರೂಪಾಯಿ ಕೊಟ್ಟೆ.",
+    "detected": "kn-IN",
+    "wer": 0.182,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 35000,
+     "payment_mode": "UPI",
+     "scam_type": "courier/parcel scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 21,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "9845012345 ನಂಬರ್‌ನಿಂದ ಕರೆ ಬಂತು, KYC ಅಪ್‌ಡೇಟ್ ಮಾಡಬೇಕು ಎಂದರು.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "scammer_contact": true,
+     "scam_type": true
+    },
+    "got": {
+     "scammer_contact": "9845012345",
+     "scam_type": "fake KYC update"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 21,
+    "lang": "kn",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "9845012345 ನಂಬರಿನಿಂದ ಕರೆ ಬಂತು, KYC update ಮಾಡಬೇಕು ಎಂದರು.",
+    "detected": "kn-IN",
+    "wer": 0.25,
+    "fields": {
+     "scammer_contact": true,
+     "scam_type": true
+    },
+    "got": {
+     "scammer_contact": "9845012345",
+     "scam_type": "fake KYC update"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 21,
+    "lang": "kn",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "9845012345 ನಂಬರ್‌ನಿಂದ ಕರೆ ಬಂತು, KYC ಅಪ್‌ಡೇಟ್ ಮಾಡಬೇಕು ಎಂದು.",
+    "detected": "kn-IN",
+    "wer": 0.125,
+    "fields": {
+     "scammer_contact": true,
+     "scam_type": true
+    },
+    "got": {
+     "scammer_contact": "9845012345",
+     "scam_type": "fake KYC update"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 21,
+    "lang": "kn",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "9845012345 ನಂಬರ್‌ನಿಂದ ಕರೆ ಬಂತು, KYC ಅಪ್‌ಡೇಟ್ ಮಾಡಬೇಕು ಎಂದರು.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "scammer_contact": true,
+     "scam_type": true
+    },
+    "got": {
+     "scammer_contact": "9845012345",
+     "scam_type": "fake KYC update"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 21,
+    "lang": "kn",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "9845012345 ನಂಬರಿನಿಂದ ಕರೆ ಬಂತು, KYC update ಮಾಡಬೇಕು ಎಂದರು.",
+    "detected": "kn-IN",
+    "wer": 0.25,
+    "fields": {
+     "scammer_contact": true,
+     "scam_type": true
+    },
+    "got": {
+     "scammer_contact": "9845012345",
+     "scam_type": "fake KYC update"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 21,
+    "lang": "kn",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "9845012345 ನಂಬರ್‌ನಿಂದ ಕರೆ ಬಂತು, KYC ಅಪ್‌ಡೇಟ್ ಮಾಡಬೇಕು ಎಂದರು.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "scammer_contact": true,
+     "scam_type": true
+    },
+    "got": {
+     "scammer_contact": "9845012345",
+     "scam_type": "fake KYC update"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 21,
+    "lang": "kn",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "9845012345 ನಂಬರ್‌ನಿಂದ ಕರೆ ಬಂತು, KYC ಅಪ್‌ಡೇಟ್ ಮಾಡಬೇಕು ಎಂದರು.",
+    "detected": "kn-IN",
+    "wer": 0.0,
+    "fields": {
+     "scammer_contact": true,
+     "scam_type": true
+    },
+    "got": {
+     "scammer_contact": "9845012345",
+     "scam_type": "fake KYC update"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 22,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "என் SBI கணக்கிலிருந்து UPI மூலம் 40,000 ரூபாய் போனது இன்று மதியம் இரண்டு மணிக்கு.",
+    "detected": "ta-IN",
+    "wer": 0.154,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 22,
+    "lang": "ta",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "என் SBI கணக்கிலிருந்து UPI மூலம் 40,000 ரூபாய் போனது இன்று மதியம் இரண்டு மணிக்கு.",
+    "detected": "ta-IN",
+    "wer": 0.154,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 22,
+    "lang": "ta",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "என் SBI கணக்கிலிருந்து UPI மூலம் 40,000 ரூபாய் போனது இன்று மதியம் இரண்டு மணிக்கு.",
+    "detected": "ta-IN",
+    "wer": 0.154,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 22,
+    "lang": "ta",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "என் SBI கணக்கிலிருந்து UPI மூலம் 40,000 ரூபாய் போனது, இன்று மதியம் 2 மணிக்கு.",
+    "detected": "ta-IN",
+    "wer": 0.154,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 22,
+    "lang": "ta",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "என் SBI கணக்கிலிருந்து UPI மூலம் 40,000 ரூபாய் போனது இன்று மதியம் இரண்டு மணிக்கு.",
+    "detected": "ta-IN",
+    "wer": 0.154,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 22,
+    "lang": "ta",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "கணக்கிலிருந்து UPI மூலம் 40,000 ரூபாய் போனது, இன்று மதியம் 2 மணிக்கு.",
+    "detected": "ta-IN",
+    "wer": 0.308,
+    "fields": {
+     "amount": true,
+     "bank": false,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": null,
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 22,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "என் SBI கணக்கிலிருந்து UPI மூலம் 40,000 ரூபாய் போனது இன்று மதியம் இரண்டு மணிக்கு.",
+    "detected": "ta-IN",
+    "wer": 0.154,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 40000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 14:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 23,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "Police என்று சொல்லி மிரட்டினார்கள். Indian Bank கணக்கிலிருந்து 80000 ரூபாய் net banking மூலம் அனுப்பினேன்.",
+    "detected": "ta-IN",
+    "wer": 0.357,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 80000,
+     "bank": "Indian Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 23,
+    "lang": "ta",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "Police என்று சொல்லி மிரட்டினார்கள். Indian Bank கணக்கிலிருந்து 80000 ரூபாய் net banking மூலம் அனுப்பினேன்.",
+    "detected": "ta-IN",
+    "wer": 0.357,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 80000,
+     "bank": "Indian Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 23,
+    "lang": "ta",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "Police என்று சொல்லி மிரட்டினார். Indian Bank கணக்கில் இருந்து 80,000 ரூபாய் net banking மூலம் அனுப்பினேன்.",
+    "detected": "ta-IN",
+    "wer": 0.286,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 80000,
+     "bank": "Indian Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 23,
+    "lang": "ta",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "Police என்று சொல்லி மிரட்டினார்கள். Indian Bank கணக்கிலிருந்து 80000 ரூபாய் net banking மூலம் அனுப்பினேன்.",
+    "detected": "ta-IN",
+    "wer": 0.357,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 80000,
+     "bank": "Indian Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 23,
+    "lang": "ta",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "Police என்று சொல்லி மிரட்டினார்கள். Indian Bank கணக்கிலிருந்து 80000 ரூபாய் net banking மூலம் அனுப்பினேன்.",
+    "detected": "ta-IN",
+    "wer": 0.357,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 80000,
+     "bank": "Indian Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 23,
+    "lang": "ta",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "கரட்டினார்கள். Indian Bank கணக்கில் இருந்து 80,000 ரூபாய் net banking மூலம் அனுப்பினேன்.",
+    "detected": "ta-IN",
+    "wer": 0.429,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": false
+    },
+    "got": {
+     "amount": 80000,
+     "bank": "Indian Bank",
+     "payment_mode": "net banking",
+     "scam_type": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 23,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "Police என்று சொல்லி மிரட்டினார்கள். Indian Bank கணக்கிலிருந்து 80000 ரூபாய் net banking மூலம் அனுப்பினேன்.",
+    "detected": "ta-IN",
+    "wer": 0.357,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 80000,
+     "bank": "Indian Bank",
+     "payment_mode": "net banking",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 24,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "UTR எண் 678901234567.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "678901234567"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 24,
+    "lang": "ta",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "UTR எண் 678901234567.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "678901234567"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 24,
+    "lang": "ta",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "UTR எண் 678901234567.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "678901234567"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 24,
+    "lang": "ta",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "UTR எண் 678901234567.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "678901234567"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 24,
+    "lang": "ta",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "UTR எண் 678901234567.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "678901234567"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 24,
+    "lang": "ta",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "UTR எண் 678901234567.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "678901234567"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 24,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "UTR எண் 678901234567.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "678901234567"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 25,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "வேலை தருவதாகச் சொல்லி, Google Pay மூலம் 15000 ரூபாய் வாங்கினார்கள்.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 25,
+    "lang": "ta",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "வேலை தருவதாகச் சொல்லி, Google Pay மூலம் 15000 ரூபாய் வாங்கினார்கள்.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 25,
+    "lang": "ta",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "வேலை தருவதாகச் சொல்லி, Google Pay மூலம் 15000 ரூபாய் வாங்கினார்கள்.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 25,
+    "lang": "ta",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "வேலை தருவதாகச் சொல்லி, Google Pay மூலம் 15000 ரூபாய் வாங்கினார்கள்.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 25,
+    "lang": "ta",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "வேலை தருவதாகச் சொல்லி, Google Pay மூலம் 15000 ரூபாய் வாங்கினார்கள்.",
+    "detected": "ta-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 15000,
+     "payment_mode": "UPI",
+     "scam_type": "job/task scam"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 25,
+    "lang": "ta",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "தருவதாகச் சொல்லி, Google Pay மூலம் 15000 ரூபாய் வாங்கினார்கள்.",
+    "detected": "ta-IN",
+    "wer": 0.111,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": false
+    },
+    "got": {
+     "amount": 15000,
+     "payment_mode": "UPI",
+     "scam_type": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 25,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "वेले तरुवादा के चुल्ली Google Pay मूलम 15000 रुपये वांगिनार।",
+    "detected": "hi-IN",
+    "wer": 0.778,
+    "fields": {
+     "amount": true,
+     "payment_mode": true,
+     "scam_type": false
+    },
+    "got": {
+     "amount": 15000,
+     "payment_mode": "UPI",
+     "scam_type": null
+    },
+    "language_ok": false
+   },
+   {
+    "case": 26,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "நேற்று இரவு ஒன்பது மணிக்கு ஓடிபி சொன்னேன், HDFC கார்டில் இருந்து 22,000 ரூபாய் போனது.",
+    "detected": "ta-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 22000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "10 21:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 26,
+    "lang": "ta",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "நேற்று இரவு ஒன்பது மணிக்கு ஓடிபி சொன்னேன், HDFC கார்டில் இருந்து 22,000 ரூபாய் போனது.",
+    "detected": "ta-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 22000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "10 21:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 26,
+    "lang": "ta",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "நேற்று இரவு 9 மணிக்கு ஓடிபி சொன்னேன், HDFC கார்டில் இருந்து 22,000 ரூபாய் போனது.",
+    "detected": "ta-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 22000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "10 21:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 26,
+    "lang": "ta",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "நேற்று இரவு ஒன்பது மணிக்கு ஓடிபி சொன்னேன் HDFC கார்டிலிருந்து 22,000 ரூபாய் போனது.",
+    "detected": "ta-IN",
+    "wer": 0.25,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 22000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "10 21:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 26,
+    "lang": "ta",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "நேற்று இரவு ஒன்பது மணிக்கு ஓடிபி சொன்னேன், HDFC கார்டில் இருந்து 22,000 ரூபாய் போனது.",
+    "detected": "ta-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 22000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "10 21:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 26,
+    "lang": "ta",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "இரவு ஒன்பது மணிக்கு ஓடிபி சொன்னேன், HDFC கார்டில் இருந்து 22,000 ரூபாய் போனது.",
+    "detected": "ta-IN",
+    "wer": 0.167,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 22000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "10 21:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 26,
+    "lang": "ta",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "நேற்று இரவு ஒன்பது மணிக்கு ஓடிபி சொன்னேன், HDFC கார்டில் இருந்து 22,000 ரூபாய் போனது.",
+    "detected": "ta-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "scam_type": true,
+     "time": true
+    },
+    "got": {
+     "amount": 22000,
+     "bank": "HDFC Bank",
+     "payment_mode": "card",
+     "scam_type": "OTP fraud",
+     "time": "10 21:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 27,
+    "lang": "te",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "నా SBI ఖాతా నుండి UPI ద్వారా 50,000 రూపాయలు పోయాయి, ఈరోజు ఉదయం 11 గంటలకు.",
+    "detected": "te-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 50000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 11:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 27,
+    "lang": "te",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "నా SBI ఖాతా నుండి UPI ద్వారా 50,000 రూపాయలు పోయాయి, ఈరోజు ఉదయం 11 గంటలకు.",
+    "detected": "te-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 50000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 11:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 27,
+    "lang": "te",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "నా SBI ఖాతా నుండి UPI ద్వారా 50,000 రూపాయలు పోయాయి, ఈ రోజు ఉదయం 11 గంటలకు.",
+    "detected": "te-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 50000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 11:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 27,
+    "lang": "te",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "నా SBI ఖాతా నుండి UPI ద్వారా 50,000 రూపాయలు పోయాయి, ఈరోజు ఉదయం 11 గంటలకు.",
+    "detected": "te-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 50000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 11:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 27,
+    "lang": "te",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "నా SBI ఖాతా నుండి UPI ద్వారా 50,000 రూపాయలు పోయాయి, ఈరోజు ఉదయం 11 గంటలకు.",
+    "detected": "te-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 50000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 11:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 27,
+    "lang": "te",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "నా SBI ఖాతా నుండి UPI ద్వారా 50,000 రూపాయలు పోయాయి, ఈ రోజు ఉదయం 11 గంటలకు.",
+    "detected": "te-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 50000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 11:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 27,
+    "lang": "te",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "నా SBI ఖాతా నుండి UPI ద్వారా 50,000 రూపాయలు పోయాయి, ఈరోజు ఉదయం 11 గంటలకు.",
+    "detected": "te-IN",
+    "wer": 0.143,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 50000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 11:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 28,
+    "lang": "te",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "పోలీస్ అని చెప్పి బెదిరించారు, Axis Bank నుండి అరవై వేలు రూపాయలు పంపాను.",
+    "detected": "te-IN",
+    "wer": 0.2,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 60000,
+     "bank": "Axis Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 28,
+    "lang": "te",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "Police అని చెప్పి బెదిరించారు. Axis Bank నుండి 60,000 రూపాయలు పంపాను.",
+    "detected": "te-IN",
+    "wer": 0.1,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 60000,
+     "bank": "Axis Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 28,
+    "lang": "te",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "Police అని చెప్పి బెదిరించారు. Axis Bank నుండి 60,000 రూపాయలు పంపారు.",
+    "detected": "te-IN",
+    "wer": 0.2,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 60000,
+     "bank": "Axis Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 28,
+    "lang": "te",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "పోలీస్ అని చెప్పి బెదిరించారు. Axis Bank నుండి 60,000 రూపాయలు పంపాను.",
+    "detected": "te-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 60000,
+     "bank": "Axis Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 28,
+    "lang": "te",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "Police అని చెప్పి బెదిరించారు. Axis Bank నుండి 60,000 రూపాయలు పంపారు.",
+    "detected": "te-IN",
+    "wer": 0.2,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 60000,
+     "bank": "Axis Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 28,
+    "lang": "te",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "Police అని చెప్పి బెదిరించారు. Axis Bank నుండి 60,000 రూపాయలు పంపాను.",
+    "detected": "te-IN",
+    "wer": 0.1,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 60000,
+     "bank": "Axis Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 28,
+    "lang": "te",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "పోలీస్ అని చెప్పి బెదిరించారు, Axis Bank నుండి అరవై వేలు రూపాయలు పంపాను.",
+    "detected": "te-IN",
+    "wer": 0.2,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 60000,
+     "bank": "Axis Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 29,
+    "lang": "te",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "UTR నంబర్ 789012345678.",
+    "detected": "te-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "789012345678"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 29,
+    "lang": "te",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "UTR నంబర్ 789012345678.",
+    "detected": "te-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "789012345678"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 29,
+    "lang": "te",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "UTR నంబర్ 789012345678.",
+    "detected": "te-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "789012345678"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 29,
+    "lang": "te",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "UTR నంబర్ 789012345678.",
+    "detected": "te-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "789012345678"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 29,
+    "lang": "te",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "UTR నంబర్ 789012345678.",
+    "detected": "te-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "789012345678"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 29,
+    "lang": "te",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "UTR నంబర్ 789012345678.",
+    "detected": "te-IN",
+    "wer": 0.0,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "789012345678"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 29,
+    "lang": "te",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "UTR number 789012345678.",
+    "detected": "en-IN",
+    "wer": 0.333,
+    "fields": {
+     "txn_id": true
+    },
+    "got": {
+     "txn_id": "789012345678"
+    },
+    "language_ok": false
+   },
+   {
+    "case": 30,
+    "lang": "bn",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "আমার SBI account থেকে UPI দিয়ে 20,000 টাকা কেটে নিয়েছে আজ দুপুর 3টায়।",
+    "detected": "bn-IN",
+    "wer": 0.308,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 20000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 15:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 30,
+    "lang": "bn",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "আমার SBI account থেকে UPI দিয়ে 20000 টাকা কেটে নিয়েছে আজ দুপুর 3:00।",
+    "detected": "bn-IN",
+    "wer": 0.231,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": false
+    },
+    "got": {
+     "amount": 20000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 30,
+    "lang": "bn",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "আমার SBI account থেকে UPI দিয়ে 20000 টাকা কেটে নিয়েছে আজ দুপুর 3:00।",
+    "detected": "bn-IN",
+    "wer": 0.231,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": false
+    },
+    "got": {
+     "amount": 20000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 30,
+    "lang": "bn",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "আমার SBI account থেকে UPI দিয়ে 20000 টাকা কেটে নিয়েছে আজ দুপুর 3টায়।",
+    "detected": "bn-IN",
+    "wer": 0.077,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 20000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 15:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 30,
+    "lang": "bn",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "আমার SBI account থেকে UPI দিয়ে 20000 টাকা কেটে নিয়েছে আজ দুপুর 3:00।",
+    "detected": "bn-IN",
+    "wer": 0.231,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": false
+    },
+    "got": {
+     "amount": 20000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": null
+    },
+    "language_ok": true
+   },
+   {
+    "case": 30,
+    "lang": "bn",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "আমার SBI অ্যাকাউন্ট থেকে UPI দিয়ে 20,000 টাকা কেটে নিয়েছে আজ দুপুর 3টায়।",
+    "detected": "bn-IN",
+    "wer": 0.231,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 20000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 15:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 30,
+    "lang": "bn",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "अमर, SBI account से UPI दिए 20,000 টাকা কেটে लिए आज दोपहर 3:00 बजे।",
+    "detected": "hi-IN",
+    "wer": 0.769,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 20000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 15:00"
+    },
+    "language_ok": false
+   },
+   {
+    "case": 31,
+    "lang": "bn",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "পুলিশ সে যে ফোন করেছিল, HDFC থেকে 1,00,000 টাকা পাঠিয়েছি।",
+    "detected": "bn-IN",
+    "wer": 0.5,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "HDFC Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 31,
+    "lang": "bn",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "পুলিশে যে phone করেছিল, HDFC থেকে 1,00,000 টাকা পাঠিয়েছি।",
+    "detected": "bn-IN",
+    "wer": 0.5,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "HDFC Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 31,
+    "lang": "bn",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "পুলিশ সে যে phone করেছিল, HDFC থেকে 1,00,000 টাকা পাঠিয়েছিল।",
+    "detected": "bn-IN",
+    "wer": 0.6,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "HDFC Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 31,
+    "lang": "bn",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "পুলিশে যে phone করেছিল, HDFC থেকে 1,00,000 টাকা পাঠিয়েছি।",
+    "detected": "bn-IN",
+    "wer": 0.5,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "HDFC Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 31,
+    "lang": "bn",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "পুলিশে যে phone করেছিল, HDFC থেকে 1,00,000 টাকা পাঠিয়েছি।",
+    "detected": "bn-IN",
+    "wer": 0.5,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "HDFC Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 31,
+    "lang": "bn",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "পুলিশে যে phone করেছিল, HDFC থেকে 1,00,000 টাকা পাঠিয়েছি।",
+    "detected": "bn-IN",
+    "wer": 0.5,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "HDFC Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 31,
+    "lang": "bn",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "पुलिस से जो phone করেছিল, HDFC से 1,00,000 টাকা पाठिए।",
+    "detected": "hi-IN",
+    "wer": 0.8,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 100000,
+     "bank": "HDFC Bank",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": false
+   },
+   {
+    "case": 32,
+    "lang": "mr",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "माझ्या SBI खात्यातून UPI में 30,000 रुपये गेले, आज दुपारी 1 वाजता.",
+    "detected": "mr-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 30000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 32,
+    "lang": "mr",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "माझ्या SBI खात्यातून UPI ने 30,000 रुपये गेले, आज दुपारी 1 वाजता.",
+    "detected": "mr-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 30000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 32,
+    "lang": "mr",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "माझ्या SBI खात्यातून UPI ने 30,000 रुपये गेले, आज दुपारी 1 वाजता.",
+    "detected": "mr-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 30000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 32,
+    "lang": "mr",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "माझ्या SBI खात्यातून UPI ने 30,000 रुपये गेले, आज दुपारी 1 वाजता.",
+    "detected": "mr-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 30000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 32,
+    "lang": "mr",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "माझ्या SBI खात्यातून UPI ने 30,000 रुपये गेले, आज दुपारी 1 वाजता.",
+    "detected": "mr-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 30000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 32,
+    "lang": "mr",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "माझ्या SBI खात्यातून UPI ने 30,000 रुपये गेले, आज दुपारी 1 वाजता.",
+    "detected": "mr-IN",
+    "wer": 0.0,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 30000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 13:00"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 32,
+    "lang": "mr",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "माझ्या SBI खात्यातून UPI में 30,000 रुपये गेले, आज दुपारी 1 वाजता.",
+    "detected": "hi-IN",
+    "wer": 0.083,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "payment_mode": true,
+     "time": true
+    },
+    "got": {
+     "amount": 30000,
+     "bank": "SBI",
+     "payment_mode": "UPI",
+     "time": "11 13:00"
+    },
+    "language_ok": false
+   },
+   {
+    "case": 33,
+    "lang": "mr",
+    "condition": "clean",
+    "mode": "locked",
+    "heard": "पोलीस असल्याचे सांगून धमकावले, Bank of Indiaतून 70,000 रुपये पाठवले.",
+    "detected": "mr-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 70000,
+     "bank": "Bank of India",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 33,
+    "lang": "mr",
+    "condition": "babble 15dB",
+    "mode": "locked",
+    "heard": "पोलीस असल्याचे सांगून धमकावले, Bank of Indiaतून 70,000 रुपये पाठवले.",
+    "detected": "mr-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 70000,
+     "bank": "Bank of India",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 33,
+    "lang": "mr",
+    "condition": "babble 5dB",
+    "mode": "locked",
+    "heard": "पोलीस असल्याचे सांगून धमकावले, Bank of Indiaतून 70,000 रुपये पैसे.",
+    "detected": "mr-IN",
+    "wer": 0.4,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 70000,
+     "bank": "Bank of India",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 33,
+    "lang": "mr",
+    "condition": "pink 15dB",
+    "mode": "locked",
+    "heard": "पोलीस असल्याचे सांगून धमकावले, Bank of Indiaतून 70,000 रुपये पाठवले.",
+    "detected": "mr-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 70000,
+     "bank": "Bank of India",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 33,
+    "lang": "mr",
+    "condition": "pink 5dB",
+    "mode": "locked",
+    "heard": "पोलीस असल्याचे सांगून धमकावले, Bank of Indiaतून 70,000 रुपये पाठवले.",
+    "detected": "mr-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 70000,
+     "bank": "Bank of India",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 33,
+    "lang": "mr",
+    "condition": "phone band",
+    "mode": "locked",
+    "heard": "पोलीस असल्याचे सांगून धमकावले, Bank of Indiaतून 70,000 रुपये पाठवले.",
+    "detected": "mr-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 70000,
+     "bank": "Bank of India",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": true
+   },
+   {
+    "case": 33,
+    "lang": "mr",
+    "condition": "clean",
+    "mode": "auto",
+    "heard": "पोलीस असल्याचे सांगून धमकावले, Bank of Indiaतून 70,000 रुपये पाठवले.",
+    "detected": "hi-IN",
+    "wer": 0.3,
+    "fields": {
+     "amount": true,
+     "bank": true,
+     "scam_type": true
+    },
+    "got": {
+     "amount": 70000,
+     "bank": "Bank of India",
+     "scam_type": "digital arrest"
+    },
+    "language_ok": false
+   }
+  ]
+ },
+ "latency": {
+  "golden-hour-bigo.onrender.com": {
+   "turns": {
+    "p50": 1122,
+    "p90": 1216,
+    "max": 1299,
+    "under_1500ms": 1.0,
+    "n": 36
+   },
+   "greeting": {
+    "p50": 448,
+    "p90": 789,
+    "max": 1029,
+    "under_1500ms": 1.0,
+    "n": 6
+   },
+   "by_language": {
+    "hi": {
+     "p50": 1120,
+     "p90": 1205,
+     "max": 1258,
+     "under_1500ms": 1.0,
+     "n": 12
+    },
+    "kn": {
+     "p50": 1125,
+     "p90": 1221,
+     "max": 1299,
+     "under_1500ms": 1.0,
+     "n": 12
+    },
+    "ta": {
+     "p50": 1122,
+     "p90": 1187,
+     "max": 1242,
+     "under_1500ms": 1.0,
+     "n": 12
+    }
+   },
+   "unanswered_turns": 0,
+   "calls": [
+    {
+     "lang": "hi",
+     "first_audio_ms": [
+      1145,
+      1207,
+      1025,
+      1073,
+      1194,
+      1043
+     ],
+     "tts_chars": 0,
+     "turns_answered": 6,
+     "greeting_ms": 1029,
+     "stt_seconds": 64.4
+    },
+    {
+     "lang": "hi",
+     "first_audio_ms": [
+      1141,
+      1066,
+      1122,
+      1054,
+      1258,
+      1119
+     ],
+     "tts_chars": 0,
+     "turns_answered": 6,
+     "greeting_ms": 462,
+     "stt_seconds": 59.4
+    },
+    {
+     "lang": "kn",
+     "first_audio_ms": [
+      1223,
+      1175,
+      1037,
+      1126,
+      1125,
+      1015
+     ],
+     "tts_chars": 0,
+     "turns_answered": 6,
+     "greeting_ms": 549,
+     "stt_seconds": 56.6
+    },
+    {
+     "lang": "kn",
+     "first_audio_ms": [
+      1210,
+      1181,
+      1110,
+      1119,
+      1299,
+      1120
+     ],
+     "tts_chars": 0,
+     "turns_answered": 6,
+     "greeting_ms": 434,
+     "stt_seconds": 57.9
+    },
+    {
+     "lang": "ta",
+     "first_audio_ms": [
+      1242,
+      1050,
+      1142,
+      1123,
+      1192,
+      1037
+     ],
+     "tts_chars": 0,
+     "turns_answered": 6,
+     "greeting_ms": 357,
+     "stt_seconds": 58.9
+    },
+    {
+     "lang": "ta",
+     "first_audio_ms": [
+      1138,
+      1122,
+      1115,
+      1121,
+      1114,
+      1131
+     ],
+     "tts_chars": 0,
+     "turns_answered": 6,
+     "greeting_ms": 423,
+     "stt_seconds": 55.2
+    }
+   ]
+  },
+  "127.0.0.1": {
+   "turns": {
+    "p50": 1070,
+    "p90": 1318,
+    "max": 1613,
+    "under_1500ms": 0.944,
+    "n": 18
+   },
+   "greeting": {
+    "p50": 454,
+    "p90": 759,
+    "max": 836,
+    "under_1500ms": 1.0,
+    "n": 3
+   },
+   "by_language": {
+    "hi": {
+     "p50": 1081,
+     "p90": 1367,
+     "max": 1613,
+     "under_1500ms": 0.833,
+     "n": 6
+    },
+    "kn": {
+     "p50": 1043,
+     "p90": 1266,
+     "max": 1364,
+     "under_1500ms": 1.0,
+     "n": 6
+    },
+    "ta": {
+     "p50": 1076,
+     "p90": 1220,
+     "max": 1299,
+     "under_1500ms": 1.0,
+     "n": 6
+    }
+   },
+   "unanswered_turns": -2,
+   "calls": [
+    {
+     "lang": "hi",
+     "first_audio_ms": [
+      1121,
+      1041,
+      1613,
+      1111,
+      1046,
+      1051
+     ],
+     "tts_chars": 1085,
+     "turns_answered": 7,
+     "greeting_ms": 836,
+     "stt_seconds": 52.7
+    },
+    {
+     "lang": "kn",
+     "first_audio_ms": [
+      1090,
+      993,
+      1364,
+      976,
+      1169,
+      996
+     ],
+     "tts_chars": 1077,
+     "turns_answered": 6,
+     "greeting_ms": 454,
+     "stt_seconds": 50.4
+    },
+    {
+     "lang": "ta",
+     "first_audio_ms": [
+      1138,
+      912,
+      1299,
+      1014,
+      1141,
+      954
+     ],
+     "tts_chars": 1246,
+     "turns_answered": 7,
+     "greeting_ms": 323,
+     "stt_seconds": 52.2
+    }
+   ]
+  }
+ },
+ "usage": {
+  "per_call": {
+   "stt_seconds": 51.8,
+   "tts_chars": 1136
+  },
+  "benchmark_inr_per_call": [
+   2.14,
+   3.84
+  ],
+  "note": "Gnani pricing is not public; INR uses Sarvam's public rates as a benchmark."
+ }
+}

@@ -268,7 +268,7 @@ def fraud_time(text: str, now: float) -> Optional[int]:
     if ago and re.search(rules.AGO, t):
         n = int(ago.group(1)) * (1 if re.match(rules.MINUTE, ago.group(2)) else 60)
         return int(now - n * 60)
-    clock = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(" + rules.CLOCK + ")", t)
+    clock = re.search(r"(?<![\d,])(\d{1,2})(?::(\d{2}))?\s*(" + rules.CLOCK + ")", t)
     if not clock:
         return int(now) if re.search(rules.NOW, t) else None
     h, m, unit = int(clock.group(1)) % 24, int(clock.group(2) or 0), clock.group(3)

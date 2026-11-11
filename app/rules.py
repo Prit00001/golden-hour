@@ -25,20 +25,21 @@ BANKS = {
 }
 
 PAYMENT = {
-    "UPI": ["upi", "यूपीआई", "gpay", "google pay", "गूगल पे", "phonepe", "phone pe", "फोनपे", "फ़ोनपे",
+    "UPI": ["upi", "यूपीआई", "ಯುಪಿಐ", "யுபிஐ", "యూపీఐ", "ইউপিআই", "gpay", "google pay", "गूगल पे", "phonepe", "phone pe", "फोनपे", "फ़ोनपे",
             "paytm", "पेटीएम", "bhim", "भीम", "qr", "क्यूआर", "स्कैन"],
-    "card": ["card", "कार्ड", "debit", "credit", "डेबिट", "क्रेडिट", "atm", "एटीएम"],
-    "net banking": ["net banking", "netbanking", "नेट बैंकिंग", "internet banking", "इंटरनेट बैंकिंग"],
+    "card": ["card", "कार्ड", "ಕಾರ್ಡ", "கார்ட", "కార్డ", "কার্ড", "debit", "credit", "डेबिट", "क्रेडिट", "atm", "एटीएम"],
+    "net banking": ["net banking", "netbanking", "नेट बैंकिंग", "internet banking", "इंटरनेट बैंकिंग", "नेट बँकिंग",
+                    "ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್", "நெட் பேங்கிங்", "నెట్ బ్యాంకింగ్", "নেট ব্যাঙ্কিং"],
     "wallet": ["wallet", "वॉलेट"],
 }
 
 SCAMS = {
     "digital arrest": ["cbi", "सीबीआई", "police", "पुलिस", "arrest", "गिरफ्तार", "अरेस्ट", "ed", "customs", "कस्टम",
-                       "ಪೊಲೀಸ್", "போலீஸ்", "పోలీస్", "পুলিশ", "पोलीस"],
+                       "ಪೊಲೀಸ್", "ಪುಲೀಸ್", "போலீஸ்", "పోలీస్", "পুলিশ", "पोलीस"],
     "courier/parcel scam": ["parcel", "पार्सल", "courier", "कूरियर", "fedex", "drugs", "ड्रग",
                             "ಪಾರ್ಸೆಲ್", "பார்சல்", "పార్సెల్", "পার্সেল"],
     "fake KYC update": ["kyc", "k yc", "के yc", "केवाईसी", "केवाई सी"],  # Prisma sometimes splits KYC
-    "OTP fraud": ["otp", "ओटीपी"],
+    "OTP fraud": ["otp", "ओटीपी", "ಒಟಿಪಿ", "ஓடிபி", "ఓటీపీ", "ওটিপি"],
     "refund scam": ["refund", "रिफंड", "cashback", "कैशबैक"],
     "job/task scam": ["job", "नौकरी", "task", "टास्क", "work from home", "वर्क फ्रॉम होम",
                         "ಕೆಲಸ", "வேலை", "ఉద్యోగ", "চাকরি", "नोकरी"],
@@ -56,7 +57,7 @@ MORNING = "सुबह|subah|morning|ಬೆಳಿಗ್ಗೆ|ಬೆಳಗ್�
 LATER = ("दोपहर|dopahar|afternoon|शाम|shaam|sham|evening|ಮಧ್ಯಾಹ್ನ|ಸಂಜೆ|மதியம்|மாலை|మధ్యాహ్నం|సాయంత్రం|"
          "দুপুর|বিকেল|সন্ধ্যা|दुपारी|संध्याकाळी")
 NIGHT = "रात|raat|night|ರಾತ್ರಿ|இரவு|రాత్రి|রাত|रात्री"
-CLOCK = r"बजे|baje|am|pm|a\.m\.|p\.m\.|ಗಂಟೆಗೆ|ಗಂಟೆ|மணிக்கு|மணி|గంటలకు|గంటకు|টায়|টা|वाजता"
+CLOCK = r"बजे|baje|am|pm|a\.m\.|p\.m\.|ಗಂಟೆಗೆ|ಗಂಟೆ|மணிக்கு|மணி|గంటలకు|గంటకు|টায়|টায়|টা(?!কা)|वाजता"
 MINUTE = "मिनट|min|minute|ನಿಮಿಷ|நிமிட|నిమిష|মিনিট|मिनिट"
 HOUR = "घंटे|घंटा|ghante|ghanta|hour|ಗಂಟೆ|மணி நேர|மணிநேர|గంట|ঘণ্টা|तास"
 AGO = "पहले|pehle|pahle|ago|ಹಿಂದೆ|முன்பு|முன்|క్రితం|আগে|पूर्वी|आधी"
@@ -64,7 +65,7 @@ AGO = "पहले|pehle|pahle|ago|ಹಿಂದೆ|முன்பு|முன
 WHEN = "(" + "|".join([TODAY, YESTERDAY, DAY_BEFORE, NOW, MORNING, LATER, NIGHT]) + ")"
 WHEN_SPAN = re.compile(
     WHEN + r"(?:(?:\s+\S+){0,3}?\s*\d{1,2}(?::\d{2})?\s*(?:" + CLOCK + "))?"
-    r"|\d{1,2}(?::\d{2})?\s*(?:" + CLOCK + ")"
+    r"|(?<![\d,])\d{1,2}(?::\d{2})?\s*(?:" + CLOCK + ")"
     r"|\d+\s*(?:" + MINUTE + "|" + HOUR + r")\S*\s*(?:" + AGO + ")",
     re.I,
 )
@@ -86,7 +87,23 @@ HINGLISH = ["hai", "se", "ka", "ki", "ke", "mera", "meri", "mere", "gaye", "gaya
 # Spoken numbers STT may leave as words (and typed Hinglish). "do" (2) only for Hinglish, never English text.
 NUM_WORDS = {"शून्य": 0, "ज़ीरो": 0, "जीरो": 0, "एक": 1, "दो": 2, "तीन": 3, "चार": 4, "पाँच": 5, "पांच": 5,
              "छह": 6, "छः": 6, "सात": 7, "आठ": 8, "नौ": 9, "दस": 10, "बीस": 20, "तीस": 30, "चालीस": 40,
-             "पचास": 50, "साठ": 60, "सत्तर": 70, "अस्सी": 80, "नब्बे": 90}
+             "पचास": 50, "साठ": 60, "सत्तर": 70, "अस्सी": 80, "नब्बे": 90, "ग्यारह": 11, "बारह": 12,
+             # Prisma writes small numbers as words in regional languages ("ಎರಡು ಗಂಟೆಗೆ", "అరవై వేలు")
+             "ಸೊನ್ನೆ": 0, "ಒಂದು": 1, "ಎರಡು": 2, "ಮೂರು": 3, "ನಾಲ್ಕು": 4, "ಐದು": 5, "ಆರು": 6, "ಏಳು": 7, "ಎಂಟು": 8,
+             "ಒಂಬತ್ತು": 9, "ಹತ್ತು": 10, "ಹನ್ನೊಂದು": 11, "ಹನ್ನೆರಡು": 12, "ಇಪ್ಪತ್ತು": 20, "ಮೂವತ್ತು": 30,
+             "ನಲವತ್ತು": 40, "ಐವತ್ತು": 50, "ಅರವತ್ತು": 60, "ಎಪ್ಪತ್ತು": 70, "ಎಂಬತ್ತು": 80, "ತೊಂಬತ್ತು": 90,
+             "பூஜ்ஜியம்": 0, "ஒன்று": 1, "இரண்டு": 2, "மூன்று": 3, "நான்கு": 4, "ஐந்து": 5, "ஆறு": 6, "ஏழு": 7,
+             "எட்டு": 8, "ஒன்பது": 9, "பத்து": 10, "பதினொன்று": 11, "பன்னிரண்டு": 12, "இருபது": 20, "முப்பது": 30,
+             "நாற்பது": 40, "ஐம்பது": 50, "அறுபது": 60, "எழுபது": 70, "எண்பது": 80, "தொண்ணூறு": 90,
+             "సున్నా": 0, "ఒకటి": 1, "రెండు": 2, "మూడు": 3, "నాలుగు": 4, "ఐదు": 5, "ఆరు": 6, "ఏడు": 7, "ఎనిమిది": 8,
+             "తొమ్మిది": 9, "పది": 10, "పదకొండు": 11, "పన్నెండు": 12, "ఇరవై": 20, "ముప్పై": 30, "నలభై": 40,
+             "యాభై": 50, "అరవై": 60, "డెబ్బై": 70, "ఎనభై": 80, "తొంభై": 90,
+             # Bengali নয় (9) is left out: it also means "not", which the read-back needs
+             "শূন্য": 0, "এক": 1, "দুই": 2, "তিন": 3, "চার": 4, "পাঁচ": 5, "ছয়": 6, "সাত": 7, "আট": 8, "দশ": 10,
+             "এগারো": 11, "বারো": 12, "কুড়ি": 20, "তিরিশ": 30, "চল্লিশ": 40, "পঞ্চাশ": 50, "ষাট": 60, "সত্তর": 70,
+             "আশি": 80, "নব্বই": 90,
+             "दोन": 2, "पाच": 5, "सहा": 6, "नऊ": 9, "दहा": 10, "अकरा": 11, "बारा": 12, "वीस": 20, "चाळीस": 40,
+             "पन्नास": 50, "ऐंशी": 80, "नव्वद": 90}
 ROMAN_NUMS = {"shunya": 0, "zero": 0, "ek": 1, "do": 2, "teen": 3, "char": 4, "chaar": 4, "paanch": 5,
               "panch": 5, "chhe": 6, "saat": 7, "aath": 8, "nau": 9, "das": 10, "bees": 20, "tees": 30,
               "chalis": 40, "chaalis": 40, "pachas": 50, "pachaas": 50}
@@ -129,7 +146,7 @@ def normalize(text):
     """Native digits -> 0-9 and spoken number words -> digits, so "चार एक दो" reads as 412."""
     t = (text or "").translate(INDIC_DIGITS)
     words = {**NUM_WORDS, **(ROMAN_NUMS if hinglish(t) else {})}
-    pat = r"(?<![\w\u0900-\u097f])(" + "|".join(sorted(words, key=len, reverse=True)) + r")(?![\w\u0900-\u097f])"
+    pat = r"(?<![\w\u0900-\u0dff])(" + "|".join(sorted(words, key=len, reverse=True)) + r")(?![\w\u0900-\u0dff])"
     return re.sub(pat, lambda m: str(words[m.group(1).lower()]), t, flags=re.I)
 
 
@@ -155,10 +172,11 @@ def extract(transcript: str) -> dict:
             amount = int(float(raw) * MULT.get((mult or "").lower(), 1))
             break
 
-    when = WHEN_SPAN.search(t)
+    spans = [m.group(0) for m in WHEN_SPAN.finditer(t)]
+    when = next((w for w in spans if re.search(r"\d", w)), spans[0] if spans else None)
     return {
         "amount": amount,
-        "datetime": when.group(0).strip() if when else None,
+        "datetime": when.strip() if when else None,
         "payment_mode": _find(t, PAYMENT),
         "txn_id": utr.group(0) if utr else None,
         "scammer_contact": upi.group(0) if upi else (phone.group(1) if phone else None),
