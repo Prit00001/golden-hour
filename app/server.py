@@ -6,31 +6,26 @@ Both are public and unauthenticated, so app/guard.py limits them and everything 
 treated as untrusted (flow.clean_case, size caps).
 """
 import base64
-import hashlib
 import json
-import re
 from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile, WebSocket
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import FileResponse, JSONResponse, Response
 
 from app import flow, gnani, guard, stream
 
 app = FastAPI(title="Golden Hour", docs_url=None, redoc_url=None, openapi_url=None)
-PAGE = (Path(__file__).parent / "static" / "index.html").read_text(encoding="utf-8")
-
-
-def _hashes(tag: str) -> str:
-    """CSP hashes of the page's inline <script>/<style>, so only the code shipped in index.html can run."""
-    return " ".join("'sha256-" + base64.b64encode(hashlib.sha256(body.encode()).digest()).decode() + "'"
-                    for body in re.findall(rf"<{tag}>(.*?)</{tag}>", PAGE, re.S))
-
+STATIC = (Path(__file__).parent / "static").resolve()  # the React build (web/ -> npm run build)
+INDEX = STATIC / "index.html"
+PAGE = INDEX.read_text(encoding="utf-8") if INDEX.exists() else \
+    "<!doctype html><title>Golden Hour</title><p>Front end not built. Run: cd web && npm ci && npm run build"
 
 HEADERS = {
-    # blob: is the mic AudioWorklet; data:/blob: media is the fallback reply audio. No third-party hosts at all.
-    "Content-Security-Policy": f"default-src 'none'; script-src {_hashes('script')} blob:; style-src {_hashes('style')}; "
-                               "connect-src 'self'; media-src data: blob:; img-src 'self' data:; "
+    # The build has no inline code, so only files from this server run. blob: is the mic AudioWorklet;
+    # data:/blob: media is the fallback reply audio. No third-party hosts at all (fonts are self-hosted).
+    "Content-Security-Policy": "default-src 'none'; script-src 'self' blob:; style-src 'self'; font-src 'self'; "
+                               "connect-src 'self'; media-src data: blob:; img-src 'self' data: blob:; "
                                "base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
     "Strict-Transport-Security": "max-age=31536000",
     "X-Content-Type-Options": "nosniff",
@@ -61,12 +56,9 @@ def _refuse(request: Request) -> Optional[JSONResponse]:
 async def harden(request: Request, call_next):
     response = _refuse(request) or await call_next(request)
     response.headers.update(HEADERS)
+    if request.url.path.startswith("/assets/") and response.status_code == 200:
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"  # content-hashed file names
     return response
-
-
-@app.get("/")
-def index():
-    return Response(PAGE, media_type="text/html")
 
 
 @app.websocket("/ws/call")
@@ -117,3 +109,14 @@ def turn(case: str = Form("{}"), history: str = Form(""), text: str = Form(""), 
     except Exception:
         out["audio"] = None  # text is still on screen; voice is a bonus
     return out
+
+
+@app.api_route("/{path:path}", methods=["GET", "HEAD"])
+def front_end(path: str):
+    """Built files as they are; any other path is a page of the single-page app (/assistant, /resources/...)."""
+    file = (STATIC / path).resolve()
+    if path and file.is_relative_to(STATIC) and file.is_file():
+        return FileResponse(file)
+    if "." in path.rsplit("/", 1)[-1]:
+        raise HTTPException(404, "Not found.")
+    return Response(PAGE, media_type="text/html")

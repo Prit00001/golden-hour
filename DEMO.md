@@ -15,15 +15,15 @@ For the submission video. Total 2:00. Record the screen with your voice, using t
 
 | Time | On screen | You say (narration in *italics*, lines to the bot in quotes) | The bot does |
 |---|---|---|---|
-| 0:00–0:12 | Home page, red **Call 1930** button at the top | *"When money is stolen over UPI, India's 1930 helpline can ask banks to hold it, but only in the first hours. Most victims lose that hour panicking. Golden Hour is a voice helpline for that hour."* | — |
-| 0:12–0:20 | Tap the mic button | *(stay quiet)* | Greets you and says it's not a government service and can't recover money. |
+| 0:00–0:12 | Home page: the hero, then scroll briefly past **Need help right now?** (1930, the portal, your bank) | *"When money is stolen over UPI, India's 1930 helpline can ask banks to hold it, but only in the first hours. Most victims lose that hour panicking. Golden Hour is a voice helpline for that hour."* | — |
+| 0:12–0:20 | Tap **Get Help Now** → the assistant page, then tap the mic | *(stay quiet)* | Greets you and says it's not a government service and can't recover money. |
 | 0:20–0:30 | Watch "Your case" fill in | "मेरे SBI खाते से 40,000 रुपये कट गए, UPI से।" | Amount, bank and payment mode tick ✓ at once. Asks when. |
-| 0:30–0:40 | The "30m ago" countdown appears next to Call 1930 | "30 मिनट पहले।" | Says every minute counts, then asks for the scammer's number. |
+| 0:30–0:40 | The "⏱ 30 minutes ago" chip appears in "What we know so far" | "30 मिनट पहले।" | Says every minute counts, then asks for the scammer's number. |
 | 0:40–0:47 | **Barge-in:** speak over it mid-sentence | "पता नहीं।" | Stops talking straight away, marks "not known", asks what they said. |
 | 0:47–0:53 | — | "बोला KYC अपडेट करना है।" | Scam type ✓. Asks for the UTR. |
 | 0:53–1:10 | Point at "confirming…" | "UTR है 4123 4567 8902।" then, after the read-back: "नहीं, 4123 4567 8901।" then: "हाँ।" | Reads it back digit by digit, takes the correction, reads it back again, then marks it ✓ confirmed. |
-| 1:10–1:25 | Scroll to the results | *"It ends with a verdict, the official steps, a card to read out on the 1930 call, the complaint for cybercrime.gov.in, and a pre-filled email to the bank."* | Speaks the verdict ("…पैसा रोके जाने का अभी भी मौका है") and the steps. |
-| 1:25–1:40 | **Reload the page** (fresh case), tap **ಕನ್ನಡ**, tap the mic | "ನನ್ನ SBI ಖಾತೆಯಿಂದ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು." *"Eight languages: Hindi, English, Kannada, Tamil, Telugu, Bengali, Marathi and Hinglish."* | Greets in Kannada, fills amount and bank, and asks the next question in Kannada. |
+| 1:10–1:25 | Scroll to **Your action plan** (five cards) | *"It ends with an action plan: what happened, what to do now, whom to call, the evidence to keep, and the complaint and bank email — which open in the complaint generator, pre-filled."* | Speaks the verdict ("…पैसा रोके जाने का अभी भी मौका है") and the steps. |
+| 1:25–1:40 | Tap **Start over**, tap the **ಕನ್ನಡ** pill (the whole site switches to Kannada), tap the mic | "ನನ್ನ SBI ಖಾತೆಯಿಂದ 40,000 ರೂಪಾಯಿ ಹೋಯಿತು." *"Eight languages: Hindi, English, Kannada, Tamil, Telugu, Bengali, Marathi and Hinglish."* | Greets in Kannada, fills amount and bank, and asks the next question in Kannada. |
 | 1:40–1:52 | Press the backtick key to show the latency panel, then show the README numbers | *"About 1.1 seconds from when you stop speaking to its reply. 98% of details captured correctly on clean speech, 93% in heavy noise, across seven languages."* | — |
 | 1:52–2:00 | Back to the home page | *"Built on Gnani Prisma and Timbre, no LLM, nothing stored. Next step: a phone line in front of 1930 itself."* | — |
 

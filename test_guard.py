@@ -36,10 +36,16 @@ web = TestClient(server.app)
 page = web.get("/")
 csp = page.headers["content-security-policy"]
 assert page.status_code == 200 and "default-src 'none'" in csp and "frame-ancestors 'none'" in csp
-assert "unsafe-inline" not in csp and "unsafe-eval" not in csp and csp.count("sha256-") == 2
+assert "unsafe-inline" not in csp and "unsafe-eval" not in csp and "script-src 'self' blob:;" in csp and "http" not in csp
 assert page.headers["x-content-type-options"] == "nosniff" and "max-age" in page.headers["strict-transport-security"]
 assert " on" not in " ".join(__import__("re").findall(r"<[^>]+>", page.text)).replace(" one", ""), "no inline handlers"
-assert all(web.get(p).status_code == 404 for p in ("/docs", "/redoc", "/openapi.json"))
+assert web.get("/openapi.json").status_code == 404  # API docs off: /docs and /redoc are just the app's page
+assert all("swagger" not in web.get(p).text.lower() and "redoc" not in web.get(p).text.lower() for p in ("/docs", "/redoc"))
+# Pages of the app all get the page; files outside the build, or that don't exist, don't.
+assert all(web.get(p).text == page.text for p in ("/assistant", "/resources/after-upi-fraud", "/no-such-page"))
+assert all(web.get(p).status_code == 404 for p in ("/missing.js", "/..%2fserver.py", "/assets/..%2f..%2fserver.py", "/%2e%2e/guard.py"))
+assert "def " not in web.get("/..%2f..%2fapp/server.py").text
+assert web.head("/assistant").status_code == 200
 assert web.post("/turn", data={"text": "hi"}, headers={"origin": "https://evil.example"}).status_code == 403
 assert web.post("/turn", data={"text": "hi", "case": "{not json"}).status_code == 400
 assert web.post("/turn", data={"text": "hi", "case": "[1, 2]"}).status_code == 200
