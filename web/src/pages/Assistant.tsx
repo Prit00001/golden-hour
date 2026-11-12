@@ -63,7 +63,7 @@ export default function Assistant() {
           </div>
 
           <section className="card mt-6 overflow-hidden">
-            <div ref={log} className="flex h-[26vh] min-h-[160px] flex-col md:h-[min(52vh,520px)] gap-3 overflow-y-auto p-5 md:p-6" aria-live="polite">
+            <div ref={log} className="flex h-[21vh] min-h-[130px] flex-col md:h-[min(52vh,520px)] gap-3 overflow-y-auto p-5 md:p-6" aria-live="polite">
               <AnimatePresence initial={false}>
                 {c.msgs.map((m, k) => (
                   <motion.div key={k} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .25 }}

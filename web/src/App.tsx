@@ -2,6 +2,7 @@ import { MotionConfig, motion } from "framer-motion";
 import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router";
 import Footer from "./components/Footer";
+import FooterBar from "./components/FooterBar";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 
@@ -24,7 +25,7 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       {/* The site sits on an ivory sheet inside a beige frame, like a printed page. */}
-      <div className="mx-auto max-w-[1400px] bg-ivory md:my-3 md:rounded-[32px] md:shadow-[0_1px_0_#0000000a,0_30px_60px_-30px_#25251f33] overflow-clip">
+      <div className="mx-auto mb-[calc(3.5rem+env(safe-area-inset-bottom))] max-w-[1400px] bg-ivory md:mt-3 md:rounded-[32px] md:shadow-[0_1px_0_#0000000a,0_30px_60px_-30px_#25251f33] overflow-clip">
         <Navbar />
         <main className="min-h-[60vh]">
           <Suspense fallback={<div className="min-h-[60vh]" aria-busy="true" />}>
@@ -47,6 +48,7 @@ export default function App() {
         </main>
         <Footer />
       </div>
+      <FooterBar />
     </MotionConfig>
   );
 }
