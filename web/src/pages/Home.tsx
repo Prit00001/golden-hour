@@ -45,7 +45,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-[1280px] px-5 py-24 md:px-8">
         <Reveal className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-16">
-          <Photo src="/images/about.jpg" alt="People helping each other" tone={1} className="aspect-[4/3] w-full rounded-[32px]" />
+          <Photo src="/images/about.jpg" alt="A son helping his father with his phone" tone={1} className="aspect-[4/3] w-full rounded-[32px]" />
           <div>
             <p className="eyebrow">{t("about_eyebrow")}</p>
             <h2 className="mt-3 text-[clamp(2rem,4vw,3rem)] font-extrabold leading-[1.05] tracking-[-.03em]">{t("about_h")}</h2>

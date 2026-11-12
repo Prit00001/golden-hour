@@ -5,12 +5,11 @@ import { Link } from "react-router";
 import { useI18n } from "../i18n/I18n";
 import Photo from "./Photo";
 
-const SLIDES = [
-  { src: "/images/hero-1.jpg", alt: "A person getting help on a phone call" },
-  { src: "/images/hero-2.jpg", alt: "Someone checking their banking app on a smartphone" },
-  { src: "/images/hero-3.jpg", alt: "A calm conversation with a support advisor" },
-  { src: "/images/hero-4.jpg", alt: "Family members reviewing a message together" },
-  { src: "/images/hero-5.jpg", alt: "A person relieved after getting the right help" },
+const SLIDES = [  // AI-generated for Golden Hour (see web/public/images/README.md)
+  { src: "/images/hero-1.jpg", alt: "A woman on a phone call at home, taking notes as she gets guidance" },
+  { src: "/images/hero-2.jpg", alt: "A man on his sofa checking a payment notification on his phone" },
+  { src: "/images/hero-3.jpg", alt: "A helpline worker with a headset, speaking warmly" },
+  { src: "/images/hero-4.jpg", alt: "A woman on her balcony holding her phone, relieved after getting help" },
 ];
 
 // One full-colour card in the middle, its neighbours peeking in at the sides in greyscale.

@@ -25,7 +25,8 @@ export default function About() {
         </div>
         <p className="text-[17px] leading-relaxed text-stone">Golden Hour was created to bridge the gap between experiencing financial fraud and knowing what to do next. We aim to make reporting guidance, complaint preparation and digital safety assistance accessible to everyone, regardless of their language or technical knowledge.</p>
       </Reveal>
-      <Reveal className="mt-12"><Photo src="/images/about.jpg" alt="People helping each other" tone={2} className="aspect-[16/7] w-full rounded-[32px]" /></Reveal>
+      <Reveal className="mt-12"><Photo src="/images/about.jpg" alt="A son helping his father with his phone" tone={2} className="aspect-[16/7] w-full rounded-[32px]" />
+        <p className="mt-2 text-[12px] text-stone">Illustrative image, AI-generated. The people shown are not real.</p></Reveal>
 
       <Reveal className="mx-auto mt-20 max-w-3xl">
         <h2 className="text-[28px] font-bold leading-tight">Why the first hour</h2>
