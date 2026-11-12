@@ -36,6 +36,9 @@
 @utility card { @apply rounded-[24px] border border-line bg-ivory; }
 @utility field { @apply w-full rounded-2xl border border-line bg-ivory px-4 py-3 text-[15px] placeholder:text-stone/70 focus:border-forest focus:outline-none; }
 
+/* Letter-spacing and capitals are for Latin text; in Indian scripts they pull letters apart. */
+.eyebrow:not(:lang(en)) { letter-spacing: normal; text-transform: none; }
+
 /* "Download as PDF" prints just the draft. */
 @media print {
   body * { visibility: hidden; }
