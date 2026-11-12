@@ -54,7 +54,7 @@ const en = {
   case_h: "What we know so far",
   fields: ["Amount", "When", "Paid via", "UTR / Txn ID", "Scammer contact", "Bank", "Scam type"],
   unknown: "not known", confirming: "confirming…", confirmed: "✓ confirmed",
-  start_over: "Start over", call_short: "Emergency? Call 1930",
+  undo: "Undo last answer", start_over: "Start over", call_short: "Emergency? Call 1930",
   greet: "Hello, I'm Golden Hour. Tell me what happened — tap the mic or type below.",
   ready: "Your action plan is ready below.",
   r_h: "Your action plan", r1: "What happened", r2: "What you should do immediately", r3: "Whom you should contact",

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Check, ExternalLink, Landmark, Mail, Mic, Phone, RotateCcw, Send, ShieldCheck, Square } from "lucide-react";
+import { ArrowRight, Check, ExternalLink, Landmark, Mail, Mic, Phone, RotateCcw, Send, ShieldCheck, Square, Undo2 } from "lucide-react";
 import { useEffect, useReducer, useRef, useState, type FormEvent, type ReactNode, type Ref } from "react";
 import { Link, useSearchParams } from "react-router";
 import CopyButton from "../components/CopyButton";
@@ -101,7 +101,11 @@ export default function Assistant() {
                 <Send className="size-5" /><span className="hidden sm:inline">{t("send")}</span>
               </button>
             </form>
-            <p className="px-5 pb-3 pt-1 text-[13px] text-stone md:px-6" aria-live="polite">{label ? t(label) : c.label}</p>
+            <div className="flex items-center justify-between gap-3 px-5 pb-3 pt-1 md:px-6">
+              <p className="text-[13px] text-stone" aria-live="polite">{label ? t(label) : c.label}</p>
+              {c.canUndo && <button type="button" onClick={() => c.undo()} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-stone hover:text-ink">
+                <Undo2 className="size-3.5" />{t("undo")}</button>}
+            </div>
           </section>
         </div>
 

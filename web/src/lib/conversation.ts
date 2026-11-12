@@ -36,6 +36,7 @@ export class Conversation {
   busy = false;
   result: Result | null = null;
   timings: Record<string, number> | null = null;
+  private past: { caseData: Case; history: string; msgs: Msg[]; result: Result | null }[] = [];  // one per answered turn
   private call: Call | null = null;
   private rec: Rec | null = null;
   private noLive = false;
@@ -58,7 +59,19 @@ export class Conversation {
     this.emit();
   }
 
+  get canUndo() { return this.past.length > 0 && !this.busy; }
+  // "Go back one step": restore the case as it was before the last answer. A live call is hung up, because the
+  // server holds its own copy of the case; the next mic tap sends the restored one in its init message.
+  undo() {
+    const prev = this.past.pop();
+    if (!prev || this.busy) return;
+    if (this.call) this.endCall();
+    Object.assign(this, prev);
+    this.emit();
+  }
+
   private show(j: any) {
+    this.past.push({ caseData: this.caseData, history: this.history, msgs: this.msgs, result: this.result });
     this.caseData = j.case; this.history += " " + j.transcript;
     this.msgs = [...this.msgs, { role: "you", text: j.transcript }, ...(j.question ? [{ role: "bot" as const, text: j.question }] : [])];
     if (j.checklist) {
