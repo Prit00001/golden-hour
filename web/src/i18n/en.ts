@@ -76,6 +76,22 @@ const en = {
   ev_count: "{n} of {total} ready",
   ev_warn: "Never share passwords, OTPs, PINs or other banking secrets — not even with someone who says they're from your bank or the police.",
   not_translated: "This page is in English for now. The assistant works fully in your language.",
+  stats_eyebrow: "Why the first hour matters",
+  stats_h: "Fraud is rising. Reporting fast is how money gets stopped.",
+  n1: "₹22,845 crore",
+  stat1: "lost to cyber fraud in India in 2024",
+  n2: "22.6 lakh",
+  stat2: "cybercrimes reported on the national portal in 2024",
+  n3: "₹4,631 crore",
+  stat3: "saved by flagging fraudsters' bank accounts to banks",
+  stats_src: "Source: Ministry of Home Affairs, written reply in the Lok Sabha, as reported by Scroll.in",
+  share_h: "Let a family member help",
+  share_p: "Send your case and the steps to someone you trust, so they can help you call 1930 and the bank.",
+  share_btn: "Share",
+  share_title: "Golden Hour — my fraud case",
+  share_do: "Do now:",
+  track_link: "Track your complaint",
+  plan_src: "Based on official guidance from cybercrime.gov.in (I4C) and the RBI. Reviewed 13 Nov 2026.",
 };
 export default en;
 export type Strings = typeof en;

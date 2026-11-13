@@ -12,6 +12,7 @@ const ComplaintGenerator = lazy(() => import("./pages/ComplaintGenerator"));
 const Resources = lazy(() => import("./pages/Resources"));
 const Article = lazy(() => import("./pages/Resources").then(m => ({ default: m.Article })));
 const About = lazy(() => import("./pages/About"));
+const Track = lazy(() => import("./pages/Track"));
 const Legal = lazy(() => import("./pages/Legal").then(m => ({ default: m.Legal })));
 const NotFound = lazy(() => import("./pages/Legal").then(m => ({ default: m.NotFound })));
 
@@ -39,6 +40,7 @@ export default function App() {
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/resources/:slug" element={<Article />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/track" element={<Track />} />
                 <Route path="/privacy" element={<Legal kind="privacy" />} />
                 <Route path="/terms" element={<Legal kind="terms" />} />
                 <Route path="*" element={<NotFound />} />

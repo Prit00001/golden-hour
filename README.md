@@ -61,6 +61,8 @@ The eval also found a real bug: regional-language number words weren't understoo
 - **Nothing stored.** The case lives in the open connection and the page, and is gone when the call ends. Server logs hold timings only, never transcripts.
 - **Synthetic data only.** All test and eval data is made up; there is no real PII.
 - **Secrets.** The API key comes from the environment (a Render secret in production), never from git.
+- **Cited, dated guidance.** Each article lists its official sources (cybercrime.gov.in, the RBI's 2017 liability circular, the RBI Ombudsman portal, Sanchar Saathi) and when it was last reviewed. The home-page figures come from the Ministry of Home Affairs' Lok Sabha reply.
+- **Family and follow-up.** The action plan can be shared with a trusted person (only when the user taps), and `/track` keeps acknowledgement and bank reference numbers in the browser with the next deadlines (3 working days, 7 days, 30 days for the RBI Ombudsman).
 - **Drafts stay on your device.** The complaint and bank-email generator runs in the browser; the name, phone and description typed there are never sent to the server. It refuses OTPs, PINs, CVVs and card numbers.
 - **Abuse limits.** There is no login, and every call spends Gnani credit, so `app/guard.py` caps live calls (3 at once and 30 an hour per visitor, 20 at once and 400 a day in total), typed turns, and the size of every input. Requests from other websites are refused. The site runs under a strict Content Security Policy: only files from this server (fonts are self-hosted, no CDNs, analytics or inline code), and the container runs as a non-root user. The limits live in memory, so they reset on restart and need Redis if the app ever runs on more than one instance.
 
@@ -105,7 +107,7 @@ Photos: put `hero-1.jpg` … `hero-5.jpg` and `about.jpg` in `web/public/images/
 
 ```bash
 python3 test_flow.py && python3 test_stream.py && python3 test_guard.py   # offline tests
-(cd web && node --experimental-strip-types src/lib/drafts.test.ts)          # complaint templates
+(cd web && node --experimental-strip-types src/lib/drafts.test.ts && node --experimental-strip-types src/lib/track.test.ts)   # drafts, tracker deadlines
 python3 smoke_call.py ws://127.0.0.1:8000/ws/call kn   # a full live call in hi | kn | ta (uses Gnani credit)
 python3 -m eval.run                               # accuracy under noise (uses credit; cached in eval/cache/)
 python3 -m eval.latency wss://golden-hour-bigo.onrender.com/ws/call 2

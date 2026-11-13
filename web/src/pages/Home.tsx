@@ -5,6 +5,7 @@ import EvidenceChecklist from "../components/EvidenceChecklist";
 import FraudCategories from "../components/FraudCategories";
 import Hero from "../components/Hero";
 import HowItWorks from "../components/HowItWorks";
+import ImpactStats from "../components/ImpactStats";
 import Photo from "../components/Photo";
 import ResourceCard from "../components/ResourceCard";
 import Reveal from "../components/Reveal";
@@ -16,6 +17,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <ImpactStats />
       <EmergencyHelp />
       <FraudCategories />
       <HowItWorks />

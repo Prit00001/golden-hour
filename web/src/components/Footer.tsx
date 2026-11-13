@@ -6,7 +6,7 @@ import Logo from "./Logo";
 export default function Footer() {
   const t = (k: keyof typeof en) => en[k] as string;  // the footer stays in English whatever language is picked
   const links: [string, string][] = [["/", t("nav_home")], ["/#how-it-works", t("nav_how")], ["/assistant", t("get_help_short")],
-    ["/resources", t("nav_res")], ["/about", t("nav_about")], ["/privacy", t("privacy")], ["/terms", t("terms")]];
+    ["/resources", t("nav_res")], ["/track", "Follow-up tracker"], ["/about", t("nav_about")], ["/privacy", t("privacy")], ["/terms", t("terms")]];
   return (
     <footer className="bg-cream" lang="en">
       <div className="mx-auto grid grid-cols-1 max-w-[1280px] gap-10 px-5 py-14 md:px-8 md:grid-cols-[minmax(0,1.4fr)_1fr_minmax(0,1fr)]">

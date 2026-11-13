@@ -5,7 +5,8 @@ const PAGES = {
   privacy: { title: "Privacy Policy", body: [
     ["What we keep", "Nothing about your case. During a voice call, your audio is streamed to Gnani.ai to be transcribed and your replies are spoken back; the details you give live only in your browser tab and the open connection, and are gone when the call ends or you close the page. Server logs record timings only, never what you said."],
     ["The complaint and email generators", "These run entirely in your browser. The name, contact details and incident description you type are never sent to our server."],
-    ["In your browser", "We remember your chosen language and which evidence items you've ticked, in your browser's local storage, so they're still there next time. Clearing your browser data removes them."],
+    ["In your browser", "We remember your chosen language, the evidence items you've ticked and anything you enter in the follow-up tracker, in your browser's local storage, so they're still there next time. Clearing your browser data removes them."],
+    ["Sharing with family", "The share and WhatsApp buttons on your action plan send your case summary only when you tap them, to the person you choose. We never send it anywhere ourselves."],
     ["No tracking", "No analytics, advertising or third-party scripts. Fonts are served from our own server."],
     ["Never share secrets", "We will never ask for your OTP, PIN, CVV, card number or passwords. Don't type them anywhere on this site."],
   ] },

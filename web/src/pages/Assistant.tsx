@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Check, ExternalLink, Landmark, Mail, Mic, Phone, RotateCcw, Send, ShieldCheck, Square, Undo2 } from "lucide-react";
+import { ArrowRight, Check, ExternalLink, Landmark, ListChecks, Mail, MessageCircle, Mic, Phone, RotateCcw, Send, Share2, ShieldCheck, Square, Undo2, Users } from "lucide-react";
 import { useEffect, useReducer, useRef, useState, type FormEvent, type ReactNode, type Ref } from "react";
 import { Link, useSearchParams } from "react-router";
 import CopyButton from "../components/CopyButton";
@@ -192,6 +192,10 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
     time: part({ hour: "2-digit", minute: "2-digit", hour12: false }), category: cat >= 0 ? CATEGORIES[cat].id : "",
     description: [known(cs.scam_type) && `It was a ${cs.scam_type} scam.`, known(cs.scammer_contact) && `The fraudster used ${cs.scammer_contact}.`,
       known(cs.payment_mode) && `The money was sent via ${cs.payment_mode}.`].filter(Boolean).join(" ") };
+  // For a family member helping from elsewhere: the case, the steps, and where to call. Sent only when the user taps.
+  const share = [t("share_title"), r.verdict, card, t("share_do") + "\n" + r.checklist.map((s, k) => `${k + 1}. ${s}`).join("\n"),
+    "1930 · https://cybercrime.gov.in", location.origin].join("\n\n");
+  const nativeShare = () => navigator.share?.({ title: t("share_title"), text: share }).catch(() => { /* closed the sheet */ });
 
   return (
     <section ref={ref} className="mt-16 scroll-mt-24">
@@ -211,6 +215,7 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
             ))}
           </ol>
           <a href="tel:1930" className="btn-red mt-5"><Phone className="size-4" />{t("em_call")}</a>
+          <p className="mt-4 text-[12px] leading-relaxed text-stone">{t("plan_src")}</p>
         </Card>
         <Card n={3} h={t("r3")}>
           <ul className="grid gap-3 text-[15px]">
@@ -234,10 +239,23 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
             <div className="mt-5 flex flex-wrap gap-3">
               <Link to="/complaint-generator" state={{ prefill }} className="btn-green">{t("open_gen")}<ArrowRight className="size-4" /></Link>
               <a href={mail} className="btn-line"><Mail className="size-4" />{t("open_mail")}</a>
+              <Link to="/track" state={{ prefill: { fraudDate: prefill.date, bank: prefill.bank } }} className="btn-line"><ListChecks className="size-4" />{t("track_link")}</Link>
             </div>
           </Card>
         </div>
       </div>
+      <motion.div className="mt-4 flex flex-col gap-4 rounded-[24px] bg-mint p-6 md:flex-row md:items-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .5 }}>
+        <span className="grid size-12 shrink-0 place-items-center rounded-full bg-forest text-ivory"><Users className="size-5" /></span>
+        <div className="mr-auto">
+          <h3 className="text-[18px] font-bold">{t("share_h")}</h3>
+          <p className="mt-1 max-w-xl text-[15px] text-forest">{t("share_p")}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {"share" in navigator && <button onClick={nativeShare} className="btn-green"><Share2 className="size-4" />{t("share_btn")}</button>}
+          <a href={"https://wa.me/?text=" + encodeURIComponent(share)} target="_blank" rel="noopener noreferrer" className="btn-line"><MessageCircle className="size-4" />WhatsApp</a>
+          <CopyButton text={share} />
+        </div>
+      </motion.div>
     </section>
   );
 }

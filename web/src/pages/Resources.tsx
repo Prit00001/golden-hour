@@ -1,11 +1,11 @@
-import { ArrowLeft, Phone } from "lucide-react";
+import { ArrowLeft, ExternalLink, Phone } from "lucide-react";
 import { Link, useParams } from "react-router";
 import { Illustration } from "../components/FraudCategories";
 import NotTranslated from "../components/NotTranslated";
 import ResourceCard from "../components/ResourceCard";
 import Reveal from "../components/Reveal";
 import { useI18n } from "../i18n/I18n";
-import { RESOURCES } from "../lib/data";
+import { RESOURCES, REVIEWED } from "../lib/data";
 import { NotFound } from "./Legal";
 
 export default function Resources() {
@@ -49,9 +49,20 @@ export function Article() {
           </section>
         ))}
       </div>
-      <div className="mt-12 flex flex-wrap items-center gap-3 rounded-[24px] bg-cream p-6">
+      <section className="mt-12 border-t border-line pt-6">
+        <h2 className="text-[15px] font-bold">Sources</h2>
+        <ul className="mt-3 grid gap-2">
+          {a.sources.map(src => (
+            <li key={src.url}><a href={src.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-start gap-1.5 text-[14px] text-stone underline-offset-4 hover:text-ink hover:underline">
+              {src.label}<ExternalLink className="mt-1 size-3 shrink-0" /></a></li>
+          ))}
+        </ul>
+        <p className="mt-3 text-[13px] text-stone">Last reviewed {REVIEWED}. Procedures change: always follow what official channels tell you.</p>
+      </section>
+      <div className="mt-8 flex flex-wrap items-center gap-3 rounded-[24px] bg-cream p-6">
         <p className="mr-auto font-display text-[20px] font-bold">{t("em_h")}</p>
         <a href="tel:1930" className="btn-red"><Phone className="size-4" />{t("em_call")}</a>
+        {a.slug === "follow-up-complaint" && <Link to="/track" className="btn-line">Open the follow-up tracker</Link>}
         <Link to="/assistant" className="btn-green">{t("get_help")}</Link>
       </div>
     </article>
