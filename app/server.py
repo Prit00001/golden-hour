@@ -58,6 +58,8 @@ async def harden(request: Request, call_next):
     response.headers.update(HEADERS)
     if request.url.path.startswith("/assets/") and response.status_code == 200:
         response.headers["Cache-Control"] = "public, max-age=31536000, immutable"  # content-hashed file names
+    elif request.url.path.startswith("/images/") and response.status_code == 200:
+        response.headers["Cache-Control"] = "public, max-age=604800"  # site photos: public, fixed names, so a week
     return response
 
 

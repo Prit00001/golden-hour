@@ -34,7 +34,7 @@ export default function ImageCarousel() {
         {SLIDES.map((s, k) => (
           <motion.div key={s.src} className="absolute inset-0" aria-hidden={k !== i} initial={false}
             animate={{ opacity: k === i ? 1 : 0 }} transition={{ duration: 1.1, ease: [.4, 0, .2, 1] }}>
-            <Photo src={s.src} alt={s.alt} tone={k} className="size-full" />
+            <Photo src={s.src} alt={s.alt} tone={k} className="size-full" priority={k === 0 ? "high" : "low"} />
           </motion.div>
         ))}
         <div className="absolute bottom-4 left-4 right-4 rounded-[8px] border border-line bg-paper p-5 md:bottom-7 md:left-7 md:right-auto md:w-[360px]">

@@ -46,6 +46,7 @@ assert all(web.get(p).text == page.text for p in ("/assistant", "/resources/afte
 assert all(web.get(p).status_code == 404 for p in ("/missing.js", "/..%2fserver.py", "/assets/..%2f..%2fserver.py", "/%2e%2e/guard.py"))
 assert "def " not in web.get("/..%2f..%2fapp/server.py").text
 assert web.head("/assistant").status_code == 200
+assert web.get("/assistant").headers["cache-control"] == "no-store"  # pages and replies are never cached
 assert web.post("/turn", data={"text": "hi"}, headers={"origin": "https://evil.example"}).status_code == 403
 assert web.post("/turn", data={"text": "hi", "case": "{not json"}).status_code == 400
 assert web.post("/turn", data={"text": "hi", "case": "[1, 2]"}).status_code == 200
