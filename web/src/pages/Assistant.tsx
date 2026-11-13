@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Check, ExternalLink, Landmark, ListChecks, Mail, MessageCircle, Mic, Phone, RotateCcw, Send, Share2, ShieldCheck, Square, Undo2, Users } from "lucide-react";
 import { useEffect, useReducer, useRef, useState, type FormEvent, type ReactNode, type Ref } from "react";
-import { Link, useSearchParams } from "react-router";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import CopyButton from "../components/CopyButton";
 import EvidenceChecklist from "../components/EvidenceChecklist";
 import { LANGS, useI18n } from "../i18n/I18n";
@@ -29,6 +29,15 @@ export default function Assistant() {
   const log = useRef<HTMLDivElement>(null), plan = useRef<HTMLElement>(null);
 
   useEffect(() => () => conv.current?.destroy(), []);
+  // Arrived from the home page's quick-start box: send what they typed once, then drop it so a reload can't resend it.
+  const location = useLocation(), navigate = useNavigate(), sentInitial = useRef(false);
+  useEffect(() => {
+    const initial = (location.state as { initial?: string } | null)?.initial;
+    if (!initial || sentInitial.current) return;
+    sentInitial.current = true;
+    conv.current?.sendText(initial);
+    navigate(location.pathname + location.search, { replace: true, state: null });
+  }, []);
   useEffect(() => { conv.current?.setLang(lang); }, [lang]);
   useEffect(() => { log.current?.scrollTo({ top: log.current.scrollHeight, behavior: "smooth" }); }, [c.msgs.length, c.busy]);
   useEffect(() => { if (c.result) plan.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }, [c.result]);

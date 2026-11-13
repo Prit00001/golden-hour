@@ -28,7 +28,7 @@ export default function ImageCarousel() {
   return (
     <div className="relative" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel">
-      <div className="relative h-[clamp(360px,46vw,600px)] overflow-hidden">
+      <div className="relative h-[clamp(330px,min(42vw,46vh),560px)] overflow-hidden">
         {SLIDES.map((s, k) => {
           let off = k - i;
           if (off > n / 2) off -= n;
@@ -38,7 +38,7 @@ export default function ImageCarousel() {
             <motion.div key={s.src} className="absolute inset-y-0 left-1/2 w-[84%] md:w-[60%]"
               aria-hidden={!centre}
               initial={false}
-              animate={{ x: `calc(-50% + ${off * 104}%)`, scale: centre ? 1 : .86, opacity: Math.abs(off) > 1 ? 0 : 1,
+              animate={{ x: `calc(-50% + ${off * 94}%)`, scale: centre ? 1 : .86, opacity: Math.abs(off) > 1 ? 0 : 1,
                 filter: centre ? "grayscale(0)" : "grayscale(1)" }}
               transition={{ duration: .8, ease: [.22, 1, .36, 1] }}
               drag={centre ? "x" : false} dragConstraints={{ left: 0, right: 0 }} dragElastic={.2}
