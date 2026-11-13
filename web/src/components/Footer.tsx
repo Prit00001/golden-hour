@@ -8,11 +8,11 @@ export default function Footer() {
   const links: [string, string][] = [["/", t("nav_home")], ["/#how-it-works", t("nav_how")], ["/assistant", t("get_help_short")],
     ["/resources", t("nav_res")], ["/track", "Follow-up tracker"], ["/about", t("nav_about")], ["/privacy", t("privacy")], ["/terms", t("terms")]];
   return (
-    <footer className="bg-cream" lang="en">
+    <footer className="border-t border-line bg-sand" lang="en">
       <div className="mx-auto grid grid-cols-1 max-w-[1280px] gap-10 px-5 py-14 md:px-8 md:grid-cols-[minmax(0,1.4fr)_1fr_minmax(0,1fr)]">
         <div>
           <Logo />
-          <p className="mt-4 max-w-xs font-display text-[22px] font-bold leading-snug">{t("foot_tag")}</p>
+          <p className="mt-5 max-w-xs font-display text-[24px] leading-snug">{t("foot_tag")}</p>
         </div>
         <div>
           <h2 className="eyebrow">{t("foot_explore")}</h2>

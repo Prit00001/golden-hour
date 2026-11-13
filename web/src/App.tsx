@@ -25,8 +25,8 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      {/* The site sits on an ivory sheet inside a beige frame, like a printed page. */}
-      <div className="mx-auto mb-[calc(3.5rem+env(safe-area-inset-bottom))] max-w-[1400px] bg-ivory md:mt-3 md:rounded-[32px] md:shadow-[0_1px_0_#0000000a,0_30px_60px_-30px_#25251f33] overflow-clip">
+      {/* One warm off-white page; sections change tone instead of floating on a frame. */}
+      <div className="mb-[calc(3.5rem+env(safe-area-inset-bottom))] overflow-clip bg-ivory">
         <Navbar />
         <main className="min-h-[60vh]">
           <Suspense fallback={<div className="min-h-[60vh]" aria-busy="true" />}>

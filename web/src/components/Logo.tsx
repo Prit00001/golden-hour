@@ -12,11 +12,22 @@ export function SunMark({ className = "size-8" }: { className?: string }) {
   );
 }
 
+// The header mark is drawn, not boxed: a half sun on the horizon line, so it sits in the page like a printed masthead.
+function HorizonMark() {
+  return (
+    <svg viewBox="0 0 32 22" className="h-[18px] w-[26px]" aria-hidden="true">
+      <path d="M7 17a9 9 0 0 1 18 0z" fill="#A88748" />
+      <path d="M16 2.5v3.2M7.6 6.2l2 2M24.4 6.2l-2 2" stroke="#A88748" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M2 18.5h28" stroke="#25251F" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export default function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="Golden Hour — home">
-      <SunMark />
-      <span className="font-display text-[15px] font-extrabold tracking-[.18em]">GOLDEN HOUR</span>
+    <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label="Golden Hour — home">
+      <HorizonMark />
+      <span className="font-display text-[17px] font-medium uppercase tracking-[.14em]">Golden Hour</span>
     </Link>
   );
 }

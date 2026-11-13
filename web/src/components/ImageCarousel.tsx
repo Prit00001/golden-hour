@@ -12,7 +12,7 @@ const SLIDES = [  // AI-generated for Golden Hour (see web/public/images/README.
   { src: "/images/hero-4.jpg", alt: "A woman on her balcony holding her phone, relieved after getting help" },
 ];
 
-// One full-colour card in the middle, its neighbours peeking in at the sides in greyscale.
+// One photograph at a time, in the page's own width, crossfading: no cut-off neighbours at the edges.
 export default function ImageCarousel() {
   const { t } = useI18n();
   const [i, setI] = useState(0);
@@ -21,47 +21,37 @@ export default function ImageCarousel() {
   const n = SLIDES.length, go = (d: number) => setI(x => (x + d + n) % n);
   useEffect(() => {
     if (paused || still) return;
-    const id = setInterval(() => go(1), 6000);
+    const id = setInterval(() => go(1), 6500);
     return () => clearInterval(id);
   }, [paused, still]);
 
   return (
-    <div className="relative" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
-      aria-roledescription="carousel">
-      <div className="relative h-[clamp(330px,min(42vw,46vh),560px)] overflow-hidden">
-        {SLIDES.map((s, k) => {
-          let off = k - i;
-          if (off > n / 2) off -= n;
-          if (off < -n / 2) off += n;
-          const centre = off === 0;
-          return (
-            <motion.div key={s.src} className="absolute inset-y-0 left-1/2 w-[84%] md:w-[60%]"
-              aria-hidden={!centre}
-              initial={false}
-              animate={{ x: `calc(-50% + ${off * 94}%)`, scale: centre ? 1 : .86, opacity: Math.abs(off) > 1 ? 0 : 1,
-                filter: centre ? "grayscale(0)" : "grayscale(1)" }}
-              transition={{ duration: .8, ease: [.22, 1, .36, 1] }}
-              drag={centre ? "x" : false} dragConstraints={{ left: 0, right: 0 }} dragElastic={.2}
-              onDragEnd={(_, d) => Math.abs(d.offset.x) > 60 && go(d.offset.x < 0 ? 1 : -1)}>
-              <Photo src={s.src} alt={s.alt} tone={k} className="size-full rounded-[28px] md:rounded-[36px]" />
-              {centre && (
-                <motion.div className="absolute bottom-4 left-4 right-4 md:bottom-7 md:left-7 md:right-auto md:w-[360px] rounded-[22px] bg-ivory/95 p-5 shadow-[0_20px_40px_-20px_#25251f55] backdrop-blur"
-                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .35, duration: .5 }}>
-                  <p className="font-display text-[19px] font-bold leading-tight">{t("float_t")}</p>
-                  <p className="mt-1 text-[14px] text-stone">{t("float_p")}</p>
-                  <Link to="/assistant" className="btn-green mt-4 w-full sm:w-auto">{t("start")}<ArrowRight className="size-4" /></Link>
-                </motion.div>
-              )}
-            </motion.div>
-          );
-        })}
-      </div>
-      <div className="mt-5 flex items-center justify-center gap-3">
-        <button className="grid size-11 place-items-center rounded-full border border-line hover:border-ink/40" onClick={() => go(-1)} aria-label={t("prev")}><ChevronLeft className="size-5" /></button>
-        <div className="flex gap-1.5" aria-hidden="true">
-          {SLIDES.map((_, k) => <span key={k} className={`h-1.5 rounded-full transition-all duration-500 ${k === i ? "w-6 bg-ink" : "w-1.5 bg-ink/20"}`} />)}
+    <div className="mx-auto max-w-[1280px] px-5 md:px-8" aria-roledescription="carousel"
+      onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <motion.div className="relative h-[clamp(320px,min(44vw,48vh),580px)] touch-pan-y overflow-hidden rounded-[10px] bg-cream"
+        drag="x" dragConstraints={{ left: 0, right: 0 }} dragElastic={.08}
+        onDragEnd={(_, d) => Math.abs(d.offset.x) > 60 && go(d.offset.x < 0 ? 1 : -1)}>
+        {SLIDES.map((s, k) => (
+          <motion.div key={s.src} className="absolute inset-0" aria-hidden={k !== i} initial={false}
+            animate={{ opacity: k === i ? 1 : 0 }} transition={{ duration: 1.1, ease: [.4, 0, .2, 1] }}>
+            <Photo src={s.src} alt={s.alt} tone={k} className="size-full" />
+          </motion.div>
+        ))}
+        <div className="absolute bottom-4 left-4 right-4 rounded-[8px] border border-line bg-paper p-5 md:bottom-7 md:left-7 md:right-auto md:w-[360px]">
+          <p className="font-display text-[21px] leading-tight">{t("float_t")}</p>
+          <p className="mt-1 text-[14px] text-stone">{t("float_p")}</p>
+          <Link to="/assistant" className="btn-green mt-4 w-full sm:w-auto">{t("start")}<ArrowRight className="size-4" /></Link>
         </div>
-        <button className="grid size-11 place-items-center rounded-full border border-line hover:border-ink/40" onClick={() => go(1)} aria-label={t("next")}><ChevronRight className="size-5" /></button>
+      </motion.div>
+      <div className="mt-4 flex items-center justify-between gap-4">
+        <div className="flex flex-1 gap-1.5" aria-hidden="true">
+          {SLIDES.map((_, k) => <span key={k} className={`h-px flex-1 max-w-16 transition-colors duration-500 ${k === i ? "bg-ink" : "bg-ink/15"}`} />)}
+        </div>
+        <span className="font-display text-[15px] tabular-nums text-stone" aria-live="polite">{String(i + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}</span>
+        <div className="flex gap-1.5">
+          <button className="grid size-9 place-items-center rounded-[6px] border border-line transition-colors hover:border-ink/40 hover:bg-ink/[.03]" onClick={() => go(-1)} aria-label={t("prev")}><ChevronLeft className="size-[18px]" /></button>
+          <button className="grid size-9 place-items-center rounded-[6px] border border-line transition-colors hover:border-ink/40 hover:bg-ink/[.03]" onClick={() => go(1)} aria-label={t("next")}><ChevronRight className="size-[18px]" /></button>
+        </div>
       </div>
     </div>
   );

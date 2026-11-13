@@ -1,40 +1,45 @@
 @import "tailwindcss";
-@import "@fontsource-variable/manrope";
-@import "@fontsource-variable/inter";
+@import "@fontsource-variable/newsreader/opsz.css";
+@import "@fontsource-variable/dm-sans/opsz.css";
 
 @theme {
-  --color-sand: #E4D8C5;
-  --color-ivory: #FAF7F0;
-  --color-cream: #F1EBE1;
+  /* Warm off-white page; depth comes from three close tones, not shadows. */
+  --color-ivory: #F8F5EE;   /* page */
+  --color-paper: #FDFBF7;   /* content surfaces sitting on the page */
+  --color-cream: #F1ECE3;   /* alternate section band */
+  --color-sand: #E9E1D3;    /* footer, deepest tone */
   --color-ink: #25251F;
-  --color-stone: #77746C;
-  --color-gold: #B99559;
+  --color-stone: #6F6C64;
+  --color-gold: #A88748;
   --color-forest: #315C47;
-  --color-mint: #DDE9DE;
-  --color-line: #E6DED2;
+  --color-mint: #E3ECE3;
+  --color-line: #E4DCCF;
   --color-alert: #B94C43;
-  /* Latin text in Manrope / Inter; Indian scripts fall back to the system's Noto fonts. */
-  --font-display: "Manrope Variable", ui-sans-serif, system-ui, "Noto Sans", sans-serif;
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, "Noto Sans", sans-serif;
+  /* Editorial serif for headlines, a readable sans for everything else.
+     Indian scripts fall back to the system's Noto fonts. */
+  --font-display: "Newsreader Variable", "Noto Serif", Georgia, serif;
+  --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, "Noto Sans", sans-serif;
 }
 
 @layer base {
-  html { scroll-behavior: smooth; scroll-padding-top: 96px; }
-  body { @apply bg-sand text-ink font-sans antialiased; }
-  h1, h2, h3 { @apply font-display; text-wrap: balance; overflow-wrap: break-word; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  body { @apply bg-ivory text-ink font-sans antialiased; font-optical-sizing: auto; }
+  h1, h2 { @apply font-display; font-weight: 450; text-wrap: balance; overflow-wrap: break-word; }
+  h3 { @apply font-sans; text-wrap: balance; overflow-wrap: break-word; }
   :focus-visible { @apply outline-2 outline-offset-2 outline-forest; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 }
 
-@utility btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 py-3 text-[15px] font-semibold transition duration-200 active:scale-[.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed; }
-@utility btn-green { @apply btn bg-forest text-ivory hover:bg-[#274a39]; }
+@utility btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] px-[18px] py-[11px] text-[15px] font-medium transition-colors duration-200 cursor-pointer active:translate-y-px disabled:opacity-50 disabled:cursor-not-allowed; }
+@utility btn-green { @apply btn bg-forest text-ivory hover:bg-[#284c3a]; }
 @utility btn-dark { @apply btn bg-ink text-ivory hover:bg-black; }
-@utility btn-line { @apply btn border border-ink/15 bg-ivory hover:border-ink/40; }
+@utility btn-line { @apply btn border border-ink/20 bg-transparent hover:border-ink/45 hover:bg-ink/[.03]; }
 @utility btn-red { @apply btn bg-alert text-ivory hover:bg-[#a3413a]; }
-@utility btn-sm { @apply px-3.5 py-1.5 text-[13px]; }
-@utility eyebrow { @apply text-[13px] font-semibold uppercase tracking-[.14em] text-gold; }
-@utility card { @apply rounded-[24px] border border-line bg-ivory; }
-@utility field { @apply w-full rounded-2xl border border-line bg-ivory px-4 py-3 text-[15px] placeholder:text-stone/70 focus:border-forest focus:outline-none; }
+@utility btn-sm { @apply rounded-[5px] px-3 py-1.5 text-[13px]; }
+@utility eyebrow { @apply font-sans text-[12px] font-medium uppercase tracking-[.16em] text-gold; }
+@utility card { @apply rounded-[10px] border border-line bg-paper; }
+@utility field { @apply w-full rounded-[6px] border border-line bg-paper px-3.5 py-2.5 text-[15px] placeholder:text-stone/70 focus:border-forest focus:outline-none; }
+@utility band { @apply bg-cream; }
 
 /* Letter-spacing and capitals are for Latin text; in Indian scripts they pull letters apart. */
 .eyebrow:not(:lang(en)) { letter-spacing: normal; text-transform: none; }

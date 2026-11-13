@@ -13,14 +13,14 @@ export default function ImpactStats() {
       <Reveal className="grid grid-cols-1 gap-8 border-y border-line py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:items-center">
         <div>
           <p className="eyebrow">{t("stats_eyebrow")}</p>
-          <h2 className="mt-3 text-[clamp(1.6rem,3vw,2.25rem)] font-extrabold leading-[1.1] tracking-[-.025em]">{t("stats_h")}</h2>
+          <h2 className="mt-3 text-[clamp(1.6rem,3vw,2.25rem)] leading-[1.1] tracking-[-.01em]">{t("stats_h")}</h2>
         </div>
         <div>
           <dl className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {stats.map(([n, label], k) => (
               <div key={k}>
                 <dt className="sr-only">{label}</dt>
-                <dd className={`font-display text-[clamp(1.6rem,2.6vw,2.15rem)] font-extrabold leading-none tracking-tight whitespace-nowrap ${k === 2 ? "text-forest" : ""}`}>{n}</dd>
+                <dd className={`font-display text-[clamp(1.6rem,2.6vw,2.15rem)] font-medium leading-none tracking-tight whitespace-nowrap ${k === 2 ? "text-forest" : ""}`}>{n}</dd>
                 <dd className="mt-2 text-[14px] leading-snug text-stone">{label}</dd>
               </div>
             ))}

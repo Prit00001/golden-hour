@@ -57,18 +57,18 @@ export default function Assistant() {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .6 }}>
-            <h1 className="text-[clamp(2.2rem,5vw,3.75rem)] font-extrabold leading-[1.03] tracking-[-.035em]">{t("a_h")}</h1>
+            <h1 className="text-[clamp(2.2rem,5vw,3.75rem)] leading-[1.06] tracking-[-.012em]">{t("a_h")}</h1>
             <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-stone">{t("a_p")}</p>
           </motion.div>
 
           <div className="mt-6 flex flex-wrap items-center gap-2" role="group" aria-label={t("a_lang")}>
             {LANGS.map(l => (
               <button key={l.code} onClick={() => setLang(l.code)} aria-pressed={lang === l.code}
-                className={`rounded-full border px-4 py-2 text-[15px] transition ${lang === l.code ? "border-ink bg-ink text-ivory" : "border-line hover:border-ink/30"}`}>
+                className={`rounded-[6px] border px-3.5 py-1.5 text-[15px] transition-colors ${lang === l.code ? "border-forest bg-forest text-ivory" : "border-line hover:border-ink/35"}`}>
                 {l.native}
               </button>
             ))}
-            {cat >= 0 && <span className="ml-1 rounded-full bg-mint px-3.5 py-2 text-[14px] font-medium text-forest">{t("a_topic")}: {tl("cat_t")[cat]}</span>}
+            {cat >= 0 && <span className="ml-1 rounded-[4px] bg-mint px-2.5 py-1.5 text-[14px] text-forest">{t("a_topic")}: {tl("cat_t")[cat]}</span>}
           </div>
 
           <section className="card mt-6 overflow-hidden">
@@ -76,7 +76,7 @@ export default function Assistant() {
               <AnimatePresence initial={false}>
                 {c.msgs.map((m, k) => (
                   <motion.div key={k} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .25 }}
-                    className={`max-w-[85%] whitespace-pre-wrap break-words rounded-[20px] px-4 py-3 text-[16px] leading-relaxed ${
+                    className={`max-w-[85%] whitespace-pre-wrap break-words rounded-[8px] px-4 py-3 text-[16px] leading-relaxed ${
                       m.role === "you" ? "self-end rounded-br-md bg-forest text-ivory"
                       : m.role === "err" ? "self-start bg-[#f6e3df] text-alert" : "self-start rounded-bl-md bg-cream"}`}>
                     {m.key ? t(m.key) : m.text}
@@ -91,7 +91,7 @@ export default function Assistant() {
             {c.msgs.length === 1 && (
               <div className="flex gap-2 overflow-x-auto border-t border-line px-5 py-3 md:flex-wrap md:px-6 md:py-4">
                 {tl("prompts").map(p => (
-                  <button key={p} onClick={() => c.sendText(p)} className="shrink-0 whitespace-nowrap rounded-full border border-line bg-ivory px-3.5 py-2 text-[14px] hover:border-forest hover:text-forest md:shrink md:whitespace-normal md:text-left">{p}</button>
+                  <button key={p} onClick={() => c.sendText(p)} className="shrink-0 whitespace-nowrap rounded-[6px] border border-line bg-paper px-3 py-1.5 text-[14px] hover:border-forest hover:text-forest md:shrink md:whitespace-normal md:text-left">{p}</button>
                 ))}
               </div>
             )}
@@ -105,7 +105,7 @@ export default function Assistant() {
               </button>
               <label className="sr-only" htmlFor="say">{t("input_ph")}</label>
               <input id="say" value={text} onChange={e => setText(e.target.value)} maxLength={500} autoComplete="off" placeholder={t("input_ph")}
-                className="min-w-0 flex-1 rounded-full border border-line bg-ivory px-5 py-4 text-[17px] placeholder:text-stone/70 focus:border-forest focus:outline-none" />
+                className="min-w-0 flex-1 rounded-[8px] border border-line bg-paper px-4 py-3.5 text-[17px] placeholder:text-stone/70 focus:border-forest focus:outline-none" />
               <button className="btn-green size-14 shrink-0 !p-0 sm:w-auto sm:!px-5" disabled={!text.trim() || c.busy} aria-label={t("send")}>
                 <Send className="size-5" /><span className="hidden sm:inline">{t("send")}</span>
               </button>
@@ -119,17 +119,17 @@ export default function Assistant() {
         </div>
 
         <aside className="grid content-start gap-4 lg:sticky lg:top-24 lg:self-start">
-          <a href="tel:1930" className="flex items-center gap-3 rounded-[24px] bg-alert p-4 text-ivory hover:bg-[#a3413a]">
-            <span className="grid size-11 place-items-center rounded-full bg-ivory/15"><Phone className="size-5" /></span>
+          <a href="tel:1930" className="flex items-center gap-3 rounded-[8px] bg-alert p-4 text-ivory hover:bg-[#a3413a]">
+            <Phone className="size-5 shrink-0" />
             <span className="font-semibold">{t("call_short")}</span>
           </a>
           <div className="card p-5">
             <div className="flex items-center justify-between">
-              <h2 className="text-[16px] font-bold">{t("case_h")}</h2>
+              <h2 className="font-sans text-[16px] font-semibold">{t("case_h")}</h2>
               <span className="text-[14px] text-stone">{filled}/{KEYS.length}</span>
             </div>
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-cream">
-              <motion.div className="h-full rounded-full bg-forest" initial={{ width: 0 }} animate={{ width: `${100 * filled / KEYS.length}%` }} />
+            <div className="mt-3 h-[3px] overflow-hidden bg-line">
+              <motion.div className="h-full bg-forest" initial={{ width: 0 }} animate={{ width: `${100 * filled / KEYS.length}%` }} />
             </div>
             <Since ts={c.caseData.fraud_ts} />
             <ul className="mt-3">
@@ -160,7 +160,7 @@ export default function Assistant() {
 
       {c.result && <Plan ref={plan} c={c} cat={cat} />}
       {hud && c.timings && (
-        <pre className="fixed bottom-3 right-3 z-50 rounded-xl bg-black/85 p-3 font-mono text-[12px] text-[#9fe8c8]">
+        <pre className="fixed bottom-3 right-3 z-50 rounded-[6px] bg-black/85 p-3 font-mono text-[12px] text-[#9fe8c8]">
           {"ms after end of speech\n" + Object.entries(c.timings).map(([k, v]) => k.padEnd(17) + String(v).padStart(6)).join("\n")}
         </pre>
       )}
@@ -176,11 +176,11 @@ function Since({ ts }: { ts?: number }) {
   if (ts == null) return null;
   const m = Math.max(0, Math.floor((now / 1000 - ts) / 60)), rtf = new Intl.RelativeTimeFormat(lang, { numeric: "auto" });
   const ago = m < 60 ? rtf.format(-m, "minute") : m < 1440 ? rtf.format(-Math.floor(m / 60), "hour") : rtf.format(-Math.floor(m / 1440), "day");
-  return <p className={`mt-3 inline-flex rounded-full px-3 py-1 text-[13px] font-semibold ${m < 1440 ? "bg-[#f6e3df] text-alert" : "bg-cream text-stone"}`}>⏱ {ago}</p>;
+  return <p className={`mt-3 inline-flex rounded-[4px] px-2.5 py-1 text-[13px] font-medium ${m < 1440 ? "bg-[#f6e3df] text-alert" : "bg-cream text-stone"}`}>⏱ {ago}</p>;
 }
 
 const Card = ({ n, h, children, tone = "" }: { n: number; h: string; children: ReactNode; tone?: string }) => (
-  <motion.section className={`rounded-[24px] border border-line p-6 ${tone}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: n * .08 }}>
+  <motion.section className={`rounded-[8px] border border-line p-6 ${tone}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: n * .08 }}>
     <p className="font-display text-[13px] font-bold tracking-[.14em] text-gold">0{n}</p>
     <h3 className="mt-1 text-[20px] font-bold">{h}</h3>
     <div className="mt-4">{children}</div>
@@ -208,11 +208,11 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
 
   return (
     <section ref={ref} className="mt-16 scroll-mt-24">
-      <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-[-.03em]">{t("r_h")}</h2>
+      <h2 className="text-[clamp(2rem,3.6vw,2.9rem)] tracking-[-.012em]">{t("r_h")}</h2>
       <div className="mt-8 grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
         <Card n={1} h={t("r1")}>
           <p className="text-[18px] font-semibold leading-snug">{r.verdict}</p>
-          <pre className="mt-4 whitespace-pre-wrap rounded-2xl bg-cream p-4 font-sans text-[14px] leading-relaxed">{card}</pre>
+          <pre className="mt-4 whitespace-pre-wrap rounded-[6px] bg-cream p-4 font-sans text-[14px] leading-relaxed">{card}</pre>
           <div className="mt-3"><CopyButton text={card} label={t("read_call")} /></div>
         </Card>
         <Card n={2} h={t("r2")} tone="bg-[#fbf3f1] border-alert/20">
@@ -228,9 +228,9 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
         </Card>
         <Card n={3} h={t("r3")}>
           <ul className="grid gap-3 text-[15px]">
-            <li><a href="tel:1930" className="flex items-center gap-3 rounded-2xl bg-cream p-3 hover:bg-sand/60"><Phone className="size-5 shrink-0 text-alert" />{t("c_1930")}</a></li>
-            <li className="flex items-center gap-3 rounded-2xl bg-cream p-3"><Landmark className="size-5 shrink-0 text-forest" />{t("c_bank")}</li>
-            <li><a href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-2xl bg-cream p-3 hover:bg-sand/60"><ExternalLink className="size-5 shrink-0" />{t("c_portal")}</a></li>
+            <li><a href="tel:1930" className="flex items-center gap-3 rounded-[6px] bg-cream p-3 hover:bg-sand/60"><Phone className="size-5 shrink-0 text-alert" />{t("c_1930")}</a></li>
+            <li className="flex items-center gap-3 rounded-[6px] bg-cream p-3"><Landmark className="size-5 shrink-0 text-forest" />{t("c_bank")}</li>
+            <li><a href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-[6px] bg-cream p-3 hover:bg-sand/60"><ExternalLink className="size-5 shrink-0" />{t("c_portal")}</a></li>
           </ul>
         </Card>
         <Card n={4} h={t("r4")}><EvidenceChecklist compact /></Card>
@@ -239,7 +239,7 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
             <p className="text-[15px] text-stone">{t("r5_p")}</p>
             <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
               {([[t("complaint_h"), r.complaint], [t("email_h"), r.bank_email]] as const).map(([h, body]) => (
-                <div key={h} className="rounded-2xl bg-cream p-4">
+                <div key={h} className="rounded-[6px] bg-cream p-4">
                   <div className="flex items-center justify-between gap-3"><h4 className="text-[15px] font-semibold">{h}</h4><CopyButton text={body} /></div>
                   <pre lang="en" className="mt-3 max-h-64 overflow-auto whitespace-pre-wrap font-sans text-[14px] leading-relaxed">{body}</pre>
                 </div>
@@ -253,8 +253,8 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
           </Card>
         </div>
       </div>
-      <motion.div className="mt-4 flex flex-col gap-4 rounded-[24px] bg-mint p-6 md:flex-row md:items-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .5 }}>
-        <span className="grid size-12 shrink-0 place-items-center rounded-full bg-forest text-ivory"><Users className="size-5" /></span>
+      <motion.div className="mt-4 flex flex-col gap-4 rounded-[8px] bg-mint p-6 md:flex-row md:items-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .5 }}>
+        <Users className="size-6 shrink-0 text-forest" strokeWidth={1.5} />
         <div className="mr-auto">
           <h3 className="text-[18px] font-bold">{t("share_h")}</h3>
           <p className="mt-1 max-w-xl text-[15px] text-forest">{t("share_p")}</p>

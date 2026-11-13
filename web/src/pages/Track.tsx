@@ -39,7 +39,7 @@ export default function Track() {
       <NotTranslated />
       <div className="max-w-3xl">
         <p className="eyebrow">Follow-up tracker</p>
-        <h1 className="mt-4 text-[clamp(2.2rem,5.5vw,4.25rem)] font-extrabold leading-[1.03] tracking-[-.035em]">Stay on top of your complaint.</h1>
+        <h1 className="mt-4 text-[clamp(2.2rem,5.5vw,4.25rem)] leading-[1.06] tracking-[-.012em]">Stay on top of your complaint.</h1>
         <p className="mt-4 text-[17px] leading-relaxed text-stone">Save your reference numbers and the dates you reported. Golden Hour shows what to do next and by when. Everything stays in this browser.</p>
       </div>
 
@@ -53,7 +53,7 @@ export default function Track() {
             {field("bankFiledOn", "Bank complaint filed on", "date")}
             <div className="sm:col-span-2">{field("bankRef", "Bank complaint reference", "text", "The number your bank gave you")}</div>
           </div>
-          <p className="mt-6 flex gap-2.5 rounded-2xl bg-[#f6e3df] px-4 py-3 text-[13px] leading-relaxed text-alert">
+          <p className="mt-6 flex gap-2.5 rounded-[6px] bg-[#f6e3df] px-4 py-3 text-[13px] leading-relaxed text-alert">
             <ShieldCheck className="mt-0.5 size-4 shrink-0" />Reference numbers only. Never save OTPs, PINs, passwords or card numbers here.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
@@ -67,15 +67,15 @@ export default function Track() {
             const [chip, tone] = CHIP[s.state];
             return (
               <motion.li key={s.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: k * .06 }}
-                className={`rounded-[22px] border p-5 ${s.state === "done" ? "border-forest/20 bg-mint/40" : s.state === "overdue" ? "border-alert/30" : "border-line"}`}>
+                className={`rounded-[8px] border p-5 ${s.state === "done" ? "border-forest/20 bg-mint/40" : s.state === "overdue" ? "border-alert/30" : "border-line"}`}>
                 <div className="flex items-start gap-4">
                   <span className={`grid size-9 shrink-0 place-items-center rounded-full font-display text-[14px] font-bold ${s.state === "done" ? "bg-forest text-ivory" : "bg-cream"}`}>
                     {s.state === "done" ? <Check className="size-4" strokeWidth={3} /> : k + 1}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="mr-auto text-[17px] font-bold leading-snug">{s.title}</h2>
-                      <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[12px] font-semibold ${tone}`}>
+                      <h2 className="mr-auto font-sans text-[17px] font-semibold leading-snug">{s.title}</h2>
+                      <span className={`inline-flex items-center gap-1 rounded-[4px] px-2 py-1 text-[12px] font-medium ${tone}`}>
                         {s.state === "overdue" ? <AlertCircle className="size-3.5" /> : s.state !== "done" && <Clock className="size-3.5" />}
                         {chip}{s.due && s.state !== "done" && s.state !== "waiting" ? ` · ${fmt(s.due)}` : ""}
                       </span>

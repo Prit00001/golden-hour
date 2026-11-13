@@ -24,10 +24,10 @@ export function Legal({ kind }: { kind: keyof typeof PAGES }) {
   return (
     <div className="mx-auto max-w-3xl px-5 pb-24 pt-12 md:pt-16" lang="en">
       <NotTranslated />
-      <h1 className="text-[clamp(2.2rem,5vw,3.5rem)] font-extrabold tracking-[-.03em]">{page.title}</h1>
+      <h1 className="text-[clamp(2.2rem,5vw,3.5rem)] tracking-[-.012em]">{page.title}</h1>
       <p className="mt-2 text-[14px] text-stone">Last updated 12 November 2026</p>
       <div className="mt-10 grid gap-8">
-        {page.body.map(([h, p]) => <section key={h}><h2 className="text-[20px] font-bold">{h}</h2><p className="mt-2 text-[17px] leading-relaxed text-stone">{p}</p></section>)}
+        {page.body.map(([h, p]) => <section key={h}><h2 className="text-[23px]">{h}</h2><p className="mt-2 text-[17px] leading-relaxed text-stone">{p}</p></section>)}
       </div>
     </div>
   );
@@ -36,7 +36,7 @@ export function Legal({ kind }: { kind: keyof typeof PAGES }) {
 export function NotFound() {
   return (
     <div className="mx-auto grid max-w-xl place-items-center px-5 py-32 text-center">
-      <p className="font-display text-[80px] font-extrabold leading-none text-gold">404</p>
+      <p className="font-display text-[80px] font-medium leading-none text-gold">404</p>
       <h1 className="mt-4 text-[28px] font-bold">This page doesn't exist.</h1>
       <p className="mt-2 text-stone">If you need help with a fraud right now, call 1930.</p>
       <div className="mt-6 flex gap-3"><Link to="/" className="btn-line">Home</Link><a href="tel:1930" className="btn-red">Call 1930</a></div>

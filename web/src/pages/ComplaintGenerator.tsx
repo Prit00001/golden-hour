@@ -65,7 +65,7 @@ export default function ComplaintGenerator({ mode }: { mode: Tab }) {
       <NotTranslated />
       <div className="max-w-3xl">
         <p className="eyebrow">{mode === "bank" ? "Bank email generator" : "Complaint generator"}</p>
-        <h1 className="mt-4 text-[clamp(2.2rem,5.5vw,4.25rem)] font-extrabold leading-[1.03] tracking-[-.035em]">
+        <h1 className="mt-4 text-[clamp(2.2rem,5.5vw,4.25rem)] leading-[1.06] tracking-[-.012em]">
           {mode === "bank" ? "Speak to your bank with confidence." : "Your complaint, professionally prepared."}
         </h1>
         <p className="mt-4 text-[17px] leading-relaxed text-stone">
@@ -78,7 +78,7 @@ export default function ComplaintGenerator({ mode }: { mode: Tab }) {
 
       <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
         <form onSubmit={generate} noValidate className="card p-6 md:p-8">
-          <p className="mb-6 flex gap-2.5 rounded-2xl bg-[#f6e3df] px-4 py-3 text-[14px] leading-relaxed text-alert">
+          <p className="mb-6 flex gap-2.5 rounded-[6px] bg-[#f6e3df] px-4 py-3 text-[14px] leading-relaxed text-alert">
             <ShieldAlert className="mt-0.5 size-4 shrink-0" />Never enter your OTP, ATM PIN, UPI PIN, net banking password, CVV or full card number. This form never asks for them.
           </p>
           <div className="grid gap-5 sm:grid-cols-2">
@@ -109,7 +109,7 @@ export default function ComplaintGenerator({ mode }: { mode: Tab }) {
           <AnimatePresence mode="wait">
             {!drafts ? (
               <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="grid min-h-[420px] place-items-center rounded-[24px] border border-dashed border-ink/15 bg-cream/50 p-8 text-center">
+                className="grid min-h-[420px] place-items-center rounded-[8px] border border-dashed border-ink/15 bg-cream/50 p-8 text-center">
                 <div>
                   <FileText className="mx-auto size-10 text-gold" strokeWidth={1.5} />
                   <p className="mt-4 font-display text-[20px] font-bold">Your draft appears here</p>
@@ -129,14 +129,14 @@ export default function ComplaintGenerator({ mode }: { mode: Tab }) {
                   </div>
                 )}
                 <div className="p-5">
-                  <p className="flex gap-2 rounded-2xl bg-[#fbf1dc] px-3.5 py-2.5 text-[13px] leading-relaxed text-[#7a5a1f]">
+                  <p className="flex gap-2 rounded-[6px] bg-[#fbf1dc] px-3.5 py-2.5 text-[13px] leading-relaxed text-[#7a5a1f]">
                     <TriangleAlert className="mt-0.5 size-4 shrink-0" />Check every detail and correct anything wrong before you send or submit it. Golden Hour doesn't send or file anything.
                   </p>
                   {editing ? (
                     <textarea aria-label="Edit draft" value={text} onChange={e => setDrafts({ ...drafts, [tab]: e.target.value })}
                       className="field mt-4 h-[460px] font-mono text-[13px] leading-relaxed" />
                   ) : (
-                    <pre className="print-area mt-4 max-h-[460px] overflow-auto whitespace-pre-wrap rounded-2xl border border-line bg-white p-4 font-sans text-[14px] leading-relaxed">{text}</pre>
+                    <pre className="print-area mt-4 max-h-[460px] overflow-auto whitespace-pre-wrap rounded-[6px] border border-line bg-white p-4 font-sans text-[14px] leading-relaxed">{text}</pre>
                   )}
                   <div className="mt-4 flex flex-wrap gap-2">
                     <button onClick={() => setEditing(e => !e)} className="btn-line btn-sm"><PencilLine className="size-3.5" />{editing ? "Done editing" : "Edit Draft"}</button>

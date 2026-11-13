@@ -1,23 +1,23 @@
 import { Fingerprint, Landmark, Link2, Phone, QrCode, ShieldCheck, ShoppingBag, TrendingUp, FileText, ListChecks, type LucideIcon } from "lucide-react";
 
 // Order matches cat_t / cat_p in the strings. `seed` pre-fills the case where a category settles a field.
-export const CATEGORIES: { id: string; icon: LucideIcon; tint: string; seed?: Record<string, string> }[] = [
-  { id: "upi", icon: QrCode, tint: "bg-[#efe3cc]", seed: { payment_mode: "UPI" } },
-  { id: "banking", icon: Landmark, tint: "bg-mint" },
-  { id: "phishing", icon: Link2, tint: "bg-[#f3dcd6]" },
-  { id: "investment", icon: TrendingUp, tint: "bg-[#e6e1d4]" },
-  { id: "shopping", icon: ShoppingBag, tint: "bg-[#e9e4f0]" },
-  { id: "identity", icon: Fingerprint, tint: "bg-[#dde6ea]" },
+export const CATEGORIES: { id: string; icon: LucideIcon; seed?: Record<string, string> }[] = [
+  { id: "upi", icon: QrCode, seed: { payment_mode: "UPI" } },
+  { id: "banking", icon: Landmark },
+  { id: "phishing", icon: Link2 },
+  { id: "investment", icon: TrendingUp },
+  { id: "shopping", icon: ShoppingBag },
+  { id: "identity", icon: Fingerprint },
 ];
 
 export const REVIEWED = "13 November 2026";  // the date every article and step was last checked against its sources
-export type Article = { slug: string; icon: LucideIcon; tint: string; title: string; desc: string; minutes: number;
+export type Article = { slug: string; icon: LucideIcon; title: string; desc: string; minutes: number;
   sources: { label: string; url: string }[];
   body: { h: string; p?: string; list?: string[] }[] };
 
 // English only for now (the page says so in other languages). Facts kept to what official sources state.
 export const RESOURCES: Article[] = [
-  { slug: "after-upi-fraud", icon: QrCode, tint: "bg-[#efe3cc]", minutes: 3,
+  { slug: "after-upi-fraud", icon: QrCode, minutes: 3,
     sources: [{ label: "National Cyber Crime Reporting Portal (I4C, MHA)", url: "https://cybercrime.gov.in" }, { label: "RBI circular: Limiting liability of customers in unauthorised electronic banking transactions (6 July 2017)", url: "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=11040" }],
     title: "What to do immediately after UPI fraud",
     desc: "The first hour decides a lot. Here is the order to do things in.",
@@ -29,7 +29,7 @@ export const RESOURCES: Article[] = [
       { h: "Good to know", p: "If money left your account without your approval, RBI rules limit your liability when you report it to your bank quickly — within three working days for zero liability in many cases. If you were tricked into approving the payment yourself, report it just as fast: the police complaint is how that money is traced." },
       { h: "Watch out", p: "Anyone who calls promising to recover your money for a fee is another scammer. Real recovery only happens through 1930, the police and your bank, and none of them charge you." },
     ] },
-  { slug: "report-banking-fraud", icon: Landmark, tint: "bg-mint", minutes: 3,
+  { slug: "report-banking-fraud", icon: Landmark, minutes: 3,
     sources: [{ label: "National Cyber Crime Reporting Portal (I4C, MHA)", url: "https://cybercrime.gov.in" }, { label: "RBI Complaint Management System (Integrated Ombudsman)", url: "https://cms.rbi.org.in" }, { label: "RBI circular: Limiting liability of customers in unauthorised electronic banking transactions (6 July 2017)", url: "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=11040" }],
     title: "How to report online banking fraud",
     desc: "Block, report, and put it in writing so there is a record.",
@@ -38,7 +38,7 @@ export const RESOURCES: Article[] = [
       { h: "Report it", list: ["Call 1930 and file on cybercrime.gov.in", "Send a written complaint to your bank (the bank email generator here can draft it)", "Keep every reference and acknowledgement number"] },
       { h: "If the bank doesn't resolve it", p: "If your bank doesn't reply within 30 days, or you aren't satisfied with the reply, you can complain to the RBI Ombudsman at cms.rbi.org.in. Attach your bank complaint and its reference number." },
     ] },
-  { slug: "spot-phishing-links", icon: Link2, tint: "bg-[#f3dcd6]", minutes: 2,
+  { slug: "spot-phishing-links", icon: Link2, minutes: 2,
     sources: [{ label: "National Cyber Crime Reporting Portal (I4C, MHA)", url: "https://cybercrime.gov.in" }, { label: "Sanchar Saathi, Department of Telecommunications (Chakshu)", url: "https://sancharsaathi.gov.in" }],
     title: "How to identify phishing links",
     desc: "Fake links look real. A few checks catch most of them.",
@@ -47,7 +47,7 @@ export const RESOURCES: Article[] = [
       { h: "Red flags in the message", list: ["Urgency: \"your account will be blocked today\"", "KYC, electricity bill or parcel messages asking you to click and pay", "Requests for OTP, PIN, CVV or passwords — banks never ask for these"] },
       { h: "If you already clicked", p: "Don't enter anything else. If you typed a password or card details, change the password and call your bank to block the card straight away. If money moved, call 1930." },
     ] },
-  { slug: "fake-customer-care", icon: Phone, tint: "bg-[#e6e1d4]", minutes: 2,
+  { slug: "fake-customer-care", icon: Phone, minutes: 2,
     sources: [{ label: "Sanchar Saathi, Department of Telecommunications (Chakshu)", url: "https://sancharsaathi.gov.in" }, { label: "National Cyber Crime Reporting Portal (I4C, MHA)", url: "https://cybercrime.gov.in" }],
     title: "How to recognise fake customer care numbers",
     desc: "Scammers buy search ads and post fake helpline numbers.",
@@ -56,7 +56,7 @@ export const RESOURCES: Article[] = [
       { h: "Signs it's a scam", list: ["They ask you to install a screen-sharing app such as AnyDesk or TeamViewer", "They ask you to enter your UPI PIN to \"receive\" a refund — a UPI PIN is only ever used to send money", "They ask for an OTP, or for a small \"verification\" payment"] },
       { h: "Report the number", p: "You can report suspected fraud calls and messages on the government's Sanchar Saathi portal (sancharsaathi.gov.in, under Chakshu)." },
     ] },
-  { slug: "preserve-evidence", icon: ListChecks, tint: "bg-[#dde6ea]", minutes: 2,
+  { slug: "preserve-evidence", icon: ListChecks, minutes: 2,
     sources: [{ label: "National Cyber Crime Reporting Portal (I4C, MHA)", url: "https://cybercrime.gov.in" }],
     title: "How to preserve digital evidence",
     desc: "What to keep, and how, so your complaint holds up.",
@@ -65,7 +65,7 @@ export const RESOURCES: Article[] = [
       { h: "Keep it safe", list: ["Put copies in one folder, and on a second device or in cloud storage", "Note down the timeline while you still remember it", "Don't open suspicious links again to take screenshots"] },
       { h: "Never share", p: "Evidence never includes your passwords, OTPs, PINs or CVV. No official will ask for them." },
     ] },
-  { slug: "follow-up-complaint", icon: FileText, tint: "bg-[#e9e4f0]", minutes: 2,
+  { slug: "follow-up-complaint", icon: FileText, minutes: 2,
     sources: [{ label: "National Cyber Crime Reporting Portal (I4C, MHA)", url: "https://cybercrime.gov.in" }, { label: "RBI Complaint Management System (Integrated Ombudsman)", url: "https://cms.rbi.org.in" }],
     title: "How to follow up on a cybercrime complaint",
     desc: "After you file: tracking, your bank and what to expect.",

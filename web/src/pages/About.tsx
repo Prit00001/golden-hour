@@ -21,11 +21,11 @@ export default function About() {
       <Reveal className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-end">
         <div>
           <p className="eyebrow">About us</p>
-          <h1 className="mt-4 text-[clamp(2.4rem,6vw,4.75rem)] font-extrabold leading-[1.02] tracking-[-.035em]">We believe no one should face financial fraud alone.</h1>
+          <h1 className="mt-4 text-[clamp(2.4rem,6vw,4.75rem)] leading-[1.06] tracking-[-.012em]">We believe no one should face financial fraud alone.</h1>
         </div>
         <p className="text-[17px] leading-relaxed text-stone">Golden Hour was created to bridge the gap between experiencing financial fraud and knowing what to do next. We aim to make reporting guidance, complaint preparation and digital safety assistance accessible to everyone, regardless of their language or technical knowledge.</p>
       </Reveal>
-      <Reveal className="mt-12"><Photo src="/images/about.jpg" alt="A son helping his father with his phone" tone={2} className="aspect-[16/7] w-full rounded-[32px]" />
+      <Reveal className="mt-12"><Photo src="/images/about.jpg" alt="A son helping his father with his phone" tone={2} className="aspect-[16/7] w-full rounded-[12px]" />
         <p className="mt-2 text-[12px] text-stone">Illustrative image, AI-generated. The people shown are not real.</p></Reveal>
 
       <Reveal className="mx-auto mt-20 max-w-3xl">
@@ -40,12 +40,12 @@ export default function About() {
       <div className="mt-20 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {VALUES.map((v, k) => (
           <Reveal key={v.h} delay={k * .06} className="card p-6">
-            <span className="grid size-11 place-items-center rounded-full bg-mint text-forest"><v.icon className="size-5" /></span>
+            <v.icon className="size-6 text-forest" strokeWidth={1.5} />
             <h3 className="mt-5 text-[20px] font-bold">{v.h}</h3>
             <p className="mt-2 text-[15px] leading-relaxed text-stone">{v.p}</p>
           </Reveal>
         ))}
-        <Reveal delay={.3} className="flex flex-col justify-between rounded-[24px] bg-ink p-6 text-ivory">
+        <Reveal delay={.3} className="flex flex-col justify-between rounded-[8px] bg-ink p-6 text-ivory">
           <p className="font-display text-[24px] font-bold leading-snug">{t("foot_tag")}</p>
           <Link to="/assistant" className="btn mt-6 self-start bg-gold text-ink hover:bg-[#c9a66b]">{t("get_help")}<ArrowRight className="size-4" /></Link>
         </Reveal>

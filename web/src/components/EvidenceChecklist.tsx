@@ -19,26 +19,26 @@ export default function EvidenceChecklist({ compact = false }: { compact?: boole
       <div className="flex items-center justify-between gap-4 text-[14px] font-medium">
         <span>{t("ev_count", { n: done.length, total: items.length })}</span><span className="text-stone">{pct}%</span>
       </div>
-      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-cream" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
-        <motion.div className="h-full rounded-full bg-forest" initial={false} animate={{ width: `${pct}%` }} transition={{ duration: .5 }} />
+      <div className="mt-2 h-[3px] overflow-hidden bg-line" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+        <motion.div className="h-full bg-forest" initial={false} animate={{ width: `${pct}%` }} transition={{ duration: .5 }} />
       </div>
-      <ul className={`mt-5 grid gap-2 ${compact ? "" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
+      <ul className={`mt-5 grid grid-cols-1 gap-x-8 border-t border-line ${compact ? "" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
         {items.map((label, k) => {
           const on = done.includes(k);
           return (
-            <li key={k}>
+            <li key={k} className="border-b border-line">
               <button type="button" onClick={() => toggle(k)} aria-pressed={on}
-                className={`flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-[15px] transition ${on ? "border-forest/30 bg-mint" : "border-line hover:border-ink/25"}`}>
-                <span className={`grid size-6 shrink-0 place-items-center rounded-full border transition ${on ? "border-forest bg-forest text-ivory" : "border-ink/25"}`}>
-                  {on && <Check className="size-3.5" strokeWidth={3} />}
+                className="group flex w-full items-center gap-3 py-3.5 text-left text-[15px]">
+                <span className={`grid size-[18px] shrink-0 place-items-center rounded-[4px] border transition-colors ${on ? "border-forest bg-forest text-ivory" : "border-ink/30 group-hover:border-forest"}`}>
+                  {on && <Check className="size-3" strokeWidth={3} />}
                 </span>
-                <span className={on ? "text-forest" : ""}>{label}</span>
+                <span className={`transition-colors ${on ? "text-stone line-through decoration-forest/50" : "group-hover:text-forest"}`}>{label}</span>
               </button>
             </li>
           );
         })}
       </ul>
-      <p className="mt-5 flex gap-2.5 rounded-2xl bg-[#f6e3df] px-4 py-3 text-[14px] leading-relaxed text-alert">
+      <p className="mt-6 flex gap-2.5 border-l-2 border-alert pl-3.5 text-[14px] leading-relaxed text-alert">
         <ShieldAlert className="mt-0.5 size-4 shrink-0" />{t("ev_warn")}
       </p>
     </div>
