@@ -6,10 +6,12 @@ import CopyButton from "../components/CopyButton";
 import NotTranslated from "../components/NotTranslated";
 import en from "../i18n/en";
 import { CATEGORIES } from "../lib/data";
-import { bankEmailDraft, complaintDraft, EMPTY, validate, type Form } from "../lib/drafts";
+import { bankEmailDraft, complaintDraft, EMPTY, followUpEmail, incidentSummary, validate, type Form } from "../lib/drafts";
 
 const ACCOUNT_TYPES = ["Savings account", "Current account", "Credit card", "Debit card", "UPI / wallet", "Other"];
-type Tab = "complaint" | "bank";
+type Tab = "complaint" | "bank" | "summary" | "followup";
+const TAB_LABEL: Record<Tab, string> = { complaint: "Cybercrime complaint", bank: "Bank email", summary: "Incident summary", followup: "Follow-up email" };
+const FILE: Record<Tab, string> = { complaint: "cybercrime-complaint", bank: "bank-email", summary: "incident-summary", followup: "follow-up-email" };
 
 function download(name: string, blob: Blob) {
   const a = document.createElement("a");
@@ -23,7 +25,7 @@ async function docx(name: string, text: string) {
   download(name, await Packer.toBlob(doc));
 }
 
-export default function ComplaintGenerator({ mode }: { mode: Tab }) {
+export default function ComplaintGenerator({ mode }: { mode: "complaint" | "bank" }) {
   const { state } = useLocation() as { state?: { prefill?: Partial<Form> & { category?: string } } };
   const pre = state?.prefill;
   const catTitle = (id?: string) => en.cat_t[CATEGORIES.findIndex(c => c.id === id)] || "";
@@ -33,7 +35,7 @@ export default function ComplaintGenerator({ mode }: { mode: Tab }) {
   const [tab, setTab] = useState<Tab>(mode);
   const [editing, setEditing] = useState(false);
   const out = useRef<HTMLDivElement>(null);
-  const tabs: Tab[] = mode === "bank" ? ["bank"] : ["complaint", "bank"];
+  const tabs: Tab[] = mode === "bank" ? ["bank", "followup"] : ["complaint", "bank", "summary", "followup"];
 
   const set = (k: keyof Form) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setF({ ...f, [k]: e.target.value }); if (errors[k]) setErrors({ ...errors, [k]: undefined });
@@ -43,7 +45,7 @@ export default function ComplaintGenerator({ mode }: { mode: Tab }) {
     const errs = validate(f);
     setErrors(errs);
     if (Object.keys(errs).length) { document.getElementById("f-" + Object.keys(errs)[0])?.focus(); return; }
-    setDrafts({ complaint: complaintDraft(f), bank: bankEmailDraft(f) }); setEditing(false);
+    setDrafts({ complaint: complaintDraft(f), bank: bankEmailDraft(f), summary: incidentSummary(f), followup: followUpEmail(f) }); setEditing(false);
     setTimeout(() => out.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   };
   const reset = () => { setF(EMPTY); setErrors({}); setDrafts(null); setEditing(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
@@ -58,7 +60,7 @@ export default function ComplaintGenerator({ mode }: { mode: Tab }) {
   const attrs = (k: keyof Form) => ({ id: "f-" + k, value: f[k], onChange: set(k), "aria-invalid": !!errors[k],
     "aria-describedby": errors[k] ? "e-" + k : undefined, className: `field ${errors[k] ? "!border-alert" : ""}` });
   const text = drafts?.[tab] ?? "";
-  const fileBase = tab === "bank" ? "bank-email" : "cybercrime-complaint";
+  const fileBase = FILE[tab], isEmail = tab === "bank" || tab === "followup";
 
   return (
     <div className="mx-auto max-w-[1280px] px-5 pb-24 pt-12 md:px-8 md:pt-16" lang="en">
@@ -119,11 +121,11 @@ export default function ComplaintGenerator({ mode }: { mode: Tab }) {
             ) : (
               <motion.div key="out" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="card overflow-hidden">
                 {tabs.length > 1 && (
-                  <div className="flex border-b border-line" role="tablist">
+                  <div className="flex overflow-x-auto border-b border-line" role="tablist">
                     {tabs.map(k => (
                       <button key={k} role="tab" aria-selected={tab === k} onClick={() => { setTab(k); setEditing(false); }}
-                        className={`flex-1 px-4 py-3.5 text-[14px] font-semibold transition ${tab === k ? "bg-ivory text-ink shadow-[inset_0_-2px_0_#315C47]" : "bg-cream/60 text-stone hover:text-ink"}`}>
-                        {k === "complaint" ? "Cybercrime complaint" : "Bank email"}
+                        className={`flex-1 whitespace-nowrap px-4 py-3.5 text-[14px] font-medium transition ${tab === k ? "bg-paper text-ink shadow-[inset_0_-2px_0_#285A45]" : "bg-cream/60 text-stone hover:text-ink"}`}>
+                        {TAB_LABEL[k]}
                       </button>
                     ))}
                   </div>
@@ -140,10 +142,10 @@ export default function ComplaintGenerator({ mode }: { mode: Tab }) {
                   )}
                   <div className="mt-4 flex flex-wrap gap-2">
                     <button onClick={() => setEditing(e => !e)} className="btn-line btn-sm"><PencilLine className="size-3.5" />{editing ? "Done editing" : "Edit Draft"}</button>
-                    <CopyButton text={text} label={tab === "bank" ? "Copy Email" : "Copy Text"} />
+                    <CopyButton text={text} label={isEmail ? "Copy Email" : "Copy Text"} />
                     <button onClick={() => { setEditing(false); setTimeout(() => window.print(), 50); }} className="btn-line btn-sm"><Printer className="size-3.5" />Download as PDF</button>
                     <button onClick={() => docx(fileBase + ".docx", text)} className="btn-line btn-sm"><Download className="size-3.5" />Download as DOCX</button>
-                    {tab === "bank" && <button onClick={() => download("bank-email.txt", new Blob([text], { type: "text/plain" }))} className="btn-line btn-sm"><Mail className="size-3.5" />Download Email</button>}
+                    {isEmail && <button onClick={() => download(fileBase + ".txt", new Blob([text], { type: "text/plain" }))} className="btn-line btn-sm"><Mail className="size-3.5" />Download Email</button>}
                   </div>
                   <p className="mt-3 text-[12px] text-stone">"Download as PDF" opens your browser's print dialog — choose "Save as PDF".</p>
                 </div>

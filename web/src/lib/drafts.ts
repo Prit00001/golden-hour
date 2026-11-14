@@ -105,3 +105,47 @@ export function bankEmailDraft(f: Form) {
     f.name.trim(), f.phone.trim(), ...(f.email.trim() ? [f.email.trim()] : []),
   ].join("\n");
 }
+
+export function incidentSummary(f: Form) {
+  return [
+    "TRANSACTION INCIDENT SUMMARY",
+    "",
+    `What happened: ${f.category}`,
+    `When: ${at(f)}`,
+    `Amount lost: Rs. ${rs(f.amount)}`,
+    `Bank and account type: ${f.bank.trim()} (${f.accountType})`,
+    `Transaction ID / UTR: ${f.utr.trim() || "not available"}`,
+    "",
+    "In my own words:",
+    f.description.trim(),
+    "",
+    "Reported by: " + f.name.trim() + ", " + f.phone.trim(),
+  ].join("\n");
+}
+
+// Sent days after the first complaint; the reference numbers aren't on the form, so they stay as marked placeholders.
+export function followUpEmail(f: Form) {
+  const bank = f.bank.trim();
+  return [
+    `To: ${bank} — Customer Care / Grievance Redressal`,
+    "",
+    `Subject: Follow-up on my complaint about a fraudulent transaction of Rs. ${rs(f.amount)} on ${long(f.date)}`,
+    "",
+    "Dear Sir/Madam,",
+    "",
+    `I am following up on the complaint I made about a fraudulent transaction on my account (${f.accountType}).`,
+    "",
+    "- Complaint reference number: [add your bank complaint reference]",
+    "- Date of my complaint: [add the date]",
+    `- Amount: Rs. ${rs(f.amount)}, on ${at(f)}`,
+    `- Transaction ID / UTR: ${f.utr.trim() || "not available"}`,
+    "- Cybercrime acknowledgement number: [add it if you have one]",
+    "",
+    "Please tell me in writing the current status of my complaint, what action has been taken, and when I can expect a resolution.",
+    "",
+    "If the complaint is not resolved within 30 days of my original complaint, I understand I may approach the RBI Ombudsman.",
+    "",
+    "Yours faithfully,",
+    f.name.trim(), f.phone.trim(), ...(f.email.trim() ? [f.email.trim()] : []),
+  ].join("\n");
+}

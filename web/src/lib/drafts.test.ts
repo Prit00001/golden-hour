@@ -1,6 +1,6 @@
 // Run: node --experimental-strip-types src/lib/drafts.test.ts
 import assert from "node:assert/strict";
-import { bankEmailDraft, complaintDraft, EMPTY, validate } from "./drafts.ts";
+import { bankEmailDraft, complaintDraft, EMPTY, followUpEmail, incidentSummary, validate } from "./drafts.ts";
 
 const ok = { ...EMPTY, name: "Asha Verma", phone: "98765 43210", email: "", bank: "State Bank of India", accountType: "Savings account",
   date: "2026-11-12", time: "14:05", category: "UPI Fraud", amount: "40,000", utr: "412345678901",
@@ -21,4 +21,8 @@ assert.ok(c.includes("(UPI Fraud)") && m.includes("the result of UPI Fraud"), "a
 assert.ok(m.includes("Subject: Fraudulent transaction of Rs. 40,000 on 12 November 2026") && m.includes("XXXX"));
 assert.ok(!/@\w+\.(com|in)/.test(m), "never invents a bank email address");
 assert.ok(bankEmailDraft({ ...ok, utr: "" }).includes("UTR: not available"));
+const sum = incidentSummary(ok), fu = followUpEmail(ok);
+assert.ok(sum.includes("Amount lost: Rs. 40,000") && sum.includes("UPI Fraud") && sum.includes("Asha Verma"));
+assert.ok(fu.includes("Follow-up on my complaint") && fu.includes("[add your bank complaint reference]") && fu.includes("RBI Ombudsman"));
+assert.ok(!/@\w+\.(com|in)/.test(fu), "never invents a bank email address");
 console.log("drafts ok");

@@ -1,4 +1,4 @@
-import { Fingerprint, Landmark, Link2, Phone, QrCode, ShieldCheck, ShoppingBag, TrendingUp, FileText, ListChecks, type LucideIcon } from "lucide-react";
+import { CircleHelp, CreditCard, Fingerprint, KeyRound, MessagesSquare, Landmark, Link2, Phone, QrCode, ShieldCheck, ShoppingBag, TrendingUp, FileText, ListChecks, type LucideIcon } from "lucide-react";
 
 // Order matches cat_t / cat_p in the strings. `seed` pre-fills the case where a category settles a field.
 export const CATEGORIES: { id: string; icon: LucideIcon; seed?: Record<string, string> }[] = [
@@ -11,6 +11,19 @@ export const CATEGORIES: { id: string; icon: LucideIcon; seed?: Record<string, s
 ];
 
 export const REVIEWED = "13 November 2026";  // the date every article and step was last checked against its sources
+// Step 1 of Get Help. Order matches g_t / g_p in the strings. `seed` fills what the choice already tells us,
+// so the conversation skips that question; values are ones flow.py understands (payment modes) or free text (scam type).
+export const GET_HELP: { id: string; icon: LucideIcon; seed?: Record<string, string> }[] = [
+  { id: "upi", icon: QrCode, seed: { payment_mode: "UPI" } },
+  { id: "bank", icon: Landmark, seed: { payment_mode: "net banking" } },
+  { id: "card", icon: CreditCard, seed: { payment_mode: "card" } },
+  { id: "phishing", icon: Link2, seed: { scam_type: "phishing / fake website" } },
+  { id: "investment", icon: TrendingUp, seed: { scam_type: "investment scam" } },
+  { id: "social", icon: MessagesSquare, seed: { scam_type: "social media scam" } },
+  { id: "otp", icon: KeyRound, seed: { scam_type: "OTP fraud" } },
+  { id: "other", icon: CircleHelp },
+];
+
 export type Article = { slug: string; icon: LucideIcon; title: string; desc: string; minutes: number;
   sources: { label: string; url: string }[];
   body: { h: string; p?: string; list?: string[] }[] };
@@ -77,3 +90,21 @@ export const RESOURCES: Article[] = [
     ] },
 ];
 export const SHIELD = ShieldCheck;
+
+// Government sources, each opened and checked on 13 Nov 2026. Shown apart from Golden Hour's own guides.
+export const OFFICIAL = {
+  helpline: { label: "National Cyber Crime Helpline: 1930", url: "tel:1930", desc: "Call to report financial fraud as soon as it happens." },
+  portal: { label: "National Cyber Crime Reporting Portal", url: "https://cybercrime.gov.in", desc: "File a cybercrime complaint online and track its status." },
+  rbiLiability: { label: "RBI circular on customer liability (6 July 2017)", url: "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=11040", desc: "Why reporting an unauthorised transaction to your bank within 3 working days matters." },
+  rbiCms: { label: "RBI Complaint Management System", url: "https://cms.rbi.org.in", desc: "Escalate to the RBI Ombudsman if your bank doesn't resolve your complaint in 30 days." },
+  sancharSaathi: { label: "Sanchar Saathi (Chakshu), Department of Telecommunications", url: "https://sancharsaathi.gov.in", desc: "Report suspected fraud calls and messages." },
+} as const;
+
+export const RESOURCE_GROUPS: { title: string; desc: string; guides: string[]; official: (keyof typeof OFFICIAL)[] }[] = [
+  { title: "Immediate emergency actions", desc: "The first hour: what to do, in order.", guides: ["after-upi-fraud"], official: ["helpline", "portal"] },
+  { title: "Bank contact and complaints", desc: "Blocking your account and putting the complaint in writing.", guides: ["report-banking-fraud"], official: ["rbiLiability"] },
+  { title: "Cybercrime reporting", desc: "Filing on the national portal, with the evidence it needs.", guides: ["preserve-evidence"], official: ["portal"] },
+  { title: "UPI and payment fraud", desc: "When money left through a UPI app, card or net banking.", guides: ["after-upi-fraud"], official: ["rbiLiability"] },
+  { title: "Online scams", desc: "Fake links, fake customer care and calls that try to rush you.", guides: ["spot-phishing-links", "fake-customer-care"], official: ["sancharSaathi"] },
+  { title: "Victim rights and follow-up", desc: "Tracking your complaint and escalating when nothing happens.", guides: ["follow-up-complaint"], official: ["rbiCms", "portal"] },
+];

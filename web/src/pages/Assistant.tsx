@@ -6,7 +6,8 @@ import CopyButton from "../components/CopyButton";
 import EvidenceChecklist from "../components/EvidenceChecklist";
 import { LANGS, useI18n } from "../i18n/I18n";
 import { Conversation, type Case } from "../lib/conversation";
-import { CATEGORIES } from "../lib/data";
+import { CATEGORIES, GET_HELP } from "../lib/data";
+import { LineIcon } from "../components/FraudCategories";
 
 const KEYS = ["amount", "datetime", "payment_mode", "txn_id", "scammer_contact", "bank", "scam_type"];
 const IST = { timeZone: "Asia/Kolkata" } as const;
@@ -17,10 +18,15 @@ const fmt = (c: Case, k: string, v: any) => k === "amount" ? "₹" + Number(v).t
 
 export default function Assistant() {
   const { lang, setLang, t, tl } = useI18n();
-  const [params] = useSearchParams();
-  const cat = CATEGORIES.findIndex(c => c.id === params.get("category"));
+  const [params, setParams] = useSearchParams();
+  const pickId = params.get("category");
+  const cat = CATEGORIES.findIndex(c => c.id === pickId);
+  // The topic comes from step 1 here (eight types) or from a home-page card (six types); either can be in the URL.
+  const g = GET_HELP.findIndex(x => x.id === pickId);
+  const topic = g >= 0 ? { seed: GET_HELP[g].seed ?? {}, label: tl("g_t")[g] }
+    : cat >= 0 ? { seed: CATEGORIES[cat].seed ?? {}, label: tl("cat_t")[cat] } : null;
   const [, force] = useReducer(x => x + 1, 0);
-  const make = () => new Conversation(lang, force, cat >= 0 ? CATEGORIES[cat].seed : {});
+  const make = () => new Conversation(lang, force, topic?.seed ?? {});
   const conv = useRef<Conversation | null>(null);
   if (!conv.current) conv.current = make();
   const c = conv.current;
@@ -51,6 +57,16 @@ export default function Assistant() {
   const label = (["idle", "listening", "hearing", "speaking", "working"] as const).find(k => k === c.label);
   const filled = KEYS.filter(k => c.caseData[k] != null).length;
   const fields = tl("fields");
+  const [skipped, setSkipped] = useState(false);
+  const picking = !topic && !skipped && c.msgs.length === 1 && !c.busy && !(location.state as { initial?: string } | null)?.initial;
+  const stage = picking ? 0 : c.result ? 2 : 1;
+  // Step 1: swap the old choice's pre-fill for the new one (only before the conversation starts).
+  const choose = (id: string | null) => {
+    const cd = { ...c.caseData };
+    for (const k of Object.keys(topic?.seed ?? {})) delete cd[k];
+    c.caseData = { ...cd, ...(GET_HELP.find(x => x.id === id)?.seed ?? {}) };
+    setSkipped(false); setParams(id ? { category: id } : {}, { replace: true }); force();
+  };
 
   return (
     <div className="mx-auto max-w-[1280px] px-5 pb-24 pt-10 md:px-8 md:pt-14">
@@ -68,54 +84,90 @@ export default function Assistant() {
                 {l.native}
               </button>
             ))}
-            {cat >= 0 && <span className="ml-1 rounded-[4px] bg-mint px-2.5 py-1.5 text-[14px] text-forest">{t("a_topic")}: {tl("cat_t")[cat]}</span>}
+            {topic && <span className="ml-1 rounded-[4px] bg-mint px-2.5 py-1.5 text-[14px] text-forest">{t("a_topic")}: {topic.label}
+              {c.msgs.length === 1 && <button onClick={() => choose(null)} className="ml-2 font-medium underline underline-offset-2">{t("change")}</button>}</span>}
           </div>
 
-          <section className="card mt-6 overflow-hidden">
-            <div ref={log} className="flex h-[21vh] min-h-[130px] flex-col md:h-[min(52vh,520px)] gap-3 overflow-y-auto p-5 md:p-6" aria-live="polite">
-              <AnimatePresence initial={false}>
-                {c.msgs.map((m, k) => (
-                  <motion.div key={k} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .25 }}
-                    className={`max-w-[85%] whitespace-pre-wrap break-words rounded-[8px] px-4 py-3 text-[16px] leading-relaxed ${
-                      m.role === "you" ? "self-end rounded-br-md bg-forest text-ivory"
-                      : m.role === "err" ? "self-start bg-[#f6e3df] text-alert" : "self-start rounded-bl-md bg-cream"}`}>
-                    {m.key ? t(m.key) : m.text}
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-              {c.busy && <div className="flex gap-1 self-start px-4 py-3" aria-label={t("working")}>
-                {[0, 1, 2].map(k => <motion.span key={k} className="size-2 rounded-full bg-stone" animate={{ opacity: [.25, 1, .25] }} transition={{ duration: 1, repeat: Infinity, delay: k * .15 }} />)}
-              </div>}
-            </div>
+          {/* Where they are in the journey: five plain steps, the current one marked. */}
+          <ol className="mt-7 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-4 text-[13px]" aria-label="Steps">
+            {tl("steps").map((label, k) => {
+              const at = k === 0 ? 0 : k === 1 ? 1 : 2, done = stage > at, now = stage === at;
+              const body = <><span className={`mr-1.5 inline-grid size-5 place-items-center rounded-full text-[11px] ${done ? "bg-forest text-ivory" : now ? "border border-forest text-forest" : "border border-line"}`}>
+                {done ? <Check className="size-3" strokeWidth={3} /> : k + 1}</span>{label}</>;
+              const anchor = stage === 2 && k >= 2 ? ["plan-now", "plan-drafts", "plan-next"][k - 2] : null;
+              return <li key={k} aria-current={now ? "step" : undefined} className={`flex items-center ${now || done ? "text-ink" : "text-stone"} ${now ? "font-medium" : ""}`}>
+                {anchor ? <a href={"#" + anchor} className="flex items-center hover:text-forest">{body}</a> : body}</li>;
+            })}
+          </ol>
 
-            {c.msgs.length === 1 && (
-              <div className="flex gap-2 overflow-x-auto border-t border-line px-5 py-3 md:flex-wrap md:px-6 md:py-4">
-                {tl("prompts").map(p => (
-                  <button key={p} onClick={() => c.sendText(p)} className="shrink-0 whitespace-nowrap rounded-[6px] border border-line bg-paper px-3 py-1.5 text-[14px] hover:border-forest hover:text-forest md:shrink md:whitespace-normal md:text-left">{p}</button>
+          {picking ? (
+            <section className="mt-6" aria-labelledby="gh-q">
+              <h2 id="gh-q" className="text-[clamp(1.6rem,3vw,2.1rem)] leading-tight">{t("gh_q")}</h2>
+              <p className="mt-1.5 text-[15px] text-stone">{t("gh_sub")}</p>
+              <div className="mt-5 grid grid-cols-1 border-t border-line sm:grid-cols-2">
+                {GET_HELP.map((x, k) => (
+                  <button key={x.id} onClick={() => choose(x.id)}
+                    className="group flex items-start gap-4 border-b border-line px-1 py-4 text-left transition-colors hover:bg-paper sm:px-4 sm:[&:nth-child(odd)]:border-r">
+                    <LineIcon icon={x.icon} className="mt-0.5 size-[22px] shrink-0" />
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[16px] font-medium group-hover:text-forest">{tl("g_t")[k]}</span>
+                      <span className="mt-0.5 block text-[14px] leading-snug text-stone">{tl("g_p")[k]}</span>
+                    </span>
+                    <ArrowRight className="mt-1 size-4 shrink-0 text-stone transition-transform group-hover:translate-x-0.5 group-hover:text-forest" />
+                  </button>
                 ))}
               </div>
-            )}
-
-            <form onSubmit={submit} className="flex items-center gap-2 border-t border-line bg-cream/60 p-3 md:p-4">
-              <button type="button" onClick={() => c.toggleMic()} disabled={c.busy}
-                aria-label={c.live ? t("stop") : t("idle")} title={c.live ? t("stop") : t("idle")}
-                className={`relative grid size-14 shrink-0 place-items-center rounded-full text-ivory transition disabled:opacity-40 ${c.live ? "bg-alert" : "bg-ink hover:bg-black"}`}>
-                {c.live && <motion.span className="absolute inset-0 rounded-full bg-alert" animate={{ scale: [1, 1.35], opacity: [.45, 0] }} transition={{ duration: 1.4, repeat: Infinity }} />}
-                {c.live ? <Square className="relative size-5 fill-current" /> : <Mic className="size-6" />}
+              <button onClick={() => setSkipped(true)} className="mt-5 inline-flex items-center gap-1.5 text-[15px] font-medium text-forest underline-offset-4 hover:underline">
+                {t("gh_skip")}<ArrowRight className="size-4" />
               </button>
-              <label className="sr-only" htmlFor="say">{t("input_ph")}</label>
-              <input id="say" value={text} onChange={e => setText(e.target.value)} maxLength={500} autoComplete="off" placeholder={t("input_ph")}
-                className="min-w-0 flex-1 rounded-[8px] border border-line bg-paper px-4 py-3.5 text-[17px] placeholder:text-stone/70 focus:border-forest focus:outline-none" />
-              <button className="btn-green size-14 shrink-0 !p-0 sm:w-auto sm:!px-5" disabled={!text.trim() || c.busy} aria-label={t("send")}>
-                <Send className="size-5" /><span className="hidden sm:inline">{t("send")}</span>
-              </button>
-            </form>
-            <div className="flex items-center justify-between gap-3 px-5 pb-3 pt-1 md:px-6">
-              <p className="text-[13px] text-stone" aria-live="polite">{label ? t(label) : c.label}</p>
-              {c.canUndo && <button type="button" onClick={() => c.undo()} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-stone hover:text-ink">
-                <Undo2 className="size-3.5" />{t("undo")}</button>}
-            </div>
-          </section>
+            </section>
+          ) : (
+          <section className="card mt-6 overflow-hidden">
+              <div ref={log} className="flex h-[21vh] min-h-[130px] flex-col md:h-[min(52vh,520px)] gap-3 overflow-y-auto p-5 md:p-6" aria-live="polite">
+                <AnimatePresence initial={false}>
+                  {c.msgs.map((m, k) => (
+                    <motion.div key={k} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .25 }}
+                      className={`max-w-[85%] whitespace-pre-wrap break-words rounded-[8px] px-4 py-3 text-[16px] leading-relaxed ${
+                        m.role === "you" ? "self-end rounded-br-md bg-forest text-ivory"
+                        : m.role === "err" ? "self-start bg-[#f6e3df] text-alert" : "self-start rounded-bl-md bg-cream"}`}>
+                      {m.key ? t(m.key) : m.text}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+                {c.busy && <div className="flex gap-1 self-start px-4 py-3" aria-label={t("working")}>
+                  {[0, 1, 2].map(k => <motion.span key={k} className="size-2 rounded-full bg-stone" animate={{ opacity: [.25, 1, .25] }} transition={{ duration: 1, repeat: Infinity, delay: k * .15 }} />)}
+                </div>}
+              </div>
+  
+              {c.msgs.length === 1 && (
+                <div className="flex gap-2 overflow-x-auto border-t border-line px-5 py-3 md:flex-wrap md:px-6 md:py-4">
+                  {tl("prompts").map(p => (
+                    <button key={p} onClick={() => c.sendText(p)} className="shrink-0 whitespace-nowrap rounded-[6px] border border-line bg-paper px-3 py-1.5 text-[14px] hover:border-forest hover:text-forest md:shrink md:whitespace-normal md:text-left">{p}</button>
+                  ))}
+                </div>
+              )}
+  
+              <form onSubmit={submit} className="flex items-center gap-2 border-t border-line bg-cream/60 p-3 md:p-4">
+                <button type="button" onClick={() => c.toggleMic()} disabled={c.busy}
+                  aria-label={c.live ? t("stop") : t("idle")} title={c.live ? t("stop") : t("idle")}
+                  className={`relative grid size-14 shrink-0 place-items-center rounded-full text-ivory transition disabled:opacity-40 ${c.live ? "bg-alert" : "bg-ink hover:bg-black"}`}>
+                  {c.live && <motion.span className="absolute inset-0 rounded-full bg-alert" animate={{ scale: [1, 1.35], opacity: [.45, 0] }} transition={{ duration: 1.4, repeat: Infinity }} />}
+                  {c.live ? <Square className="relative size-5 fill-current" /> : <Mic className="size-6" />}
+                </button>
+                <label className="sr-only" htmlFor="say">{t("input_ph")}</label>
+                <input id="say" value={text} onChange={e => setText(e.target.value)} maxLength={500} autoComplete="off" placeholder={t("input_ph")}
+                  className="min-w-0 flex-1 rounded-[8px] border border-line bg-paper px-4 py-3.5 text-[17px] placeholder:text-stone/70 focus:border-forest focus:outline-none" />
+                <button className="btn-green size-14 shrink-0 !p-0 sm:w-auto sm:!px-5" disabled={!text.trim() || c.busy} aria-label={t("send")}>
+                  <Send className="size-5" /><span className="hidden sm:inline">{t("send")}</span>
+                </button>
+              </form>
+              <div className="flex items-center justify-between gap-3 px-5 pb-3 pt-1 md:px-6">
+                <p className="text-[13px] text-stone" aria-live="polite">{label ? t(label) : c.label}</p>
+                {c.canUndo && <button type="button" onClick={() => c.undo()} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-stone hover:text-ink">
+                  <Undo2 className="size-3.5" />{t("undo")}</button>}
+              </div>
+            </section>
+          )}
         </div>
 
         <aside className="grid content-start gap-4 lg:sticky lg:top-24 lg:self-start">
@@ -179,10 +231,10 @@ function Since({ ts }: { ts?: number }) {
   return <p className={`mt-3 inline-flex rounded-[4px] px-2.5 py-1 text-[13px] font-medium ${m < 1440 ? "bg-[#f6e3df] text-alert" : "bg-cream text-stone"}`}>⏱ {ago}</p>;
 }
 
-const Card = ({ n, h, children, tone = "" }: { n: number; h: string; children: ReactNode; tone?: string }) => (
-  <motion.section className={`rounded-[8px] border border-line p-6 ${tone}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: n * .08 }}>
-    <p className="font-display text-[13px] font-bold tracking-[.14em] text-gold">0{n}</p>
-    <h3 className="mt-1 text-[20px] font-bold">{h}</h3>
+const Card = ({ n, h, children, tone = "", id }: { n: number; h: string; children: ReactNode; tone?: string; id?: string }) => (
+  <motion.section id={id} className={`scroll-mt-24 rounded-[8px] border border-line bg-paper p-6 ${tone}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: n * .08 }}>
+    <p className="font-display text-[14px] text-gold-ink">0{n}</p>
+    <h3 className="mt-1 text-[19px] font-semibold">{h}</h3>
     <div className="mt-4">{children}</div>
   </motion.section>
 );
@@ -215,7 +267,7 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
           <pre className="mt-4 whitespace-pre-wrap rounded-[6px] bg-cream p-4 font-sans text-[14px] leading-relaxed">{card}</pre>
           <div className="mt-3"><CopyButton text={card} label={t("read_call")} /></div>
         </Card>
-        <Card n={2} h={t("r2")} tone="bg-[#fbf3f1] border-alert/20">
+        <Card n={2} h={t("r2")} id="plan-now" tone="!bg-[#fbf5f2] border-alert/25">
           <ol className="grid gap-3">
             {r.checklist.map((s, k) => (
               <li key={k} className="flex gap-3 text-[16px] leading-relaxed">
@@ -235,7 +287,7 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
         </Card>
         <Card n={4} h={t("r4")}><EvidenceChecklist compact /></Card>
         <div className="lg:col-span-2">
-          <Card n={5} h={t("r5")}>
+          <Card n={5} h={t("r5")} id="plan-drafts">
             <p className="text-[15px] text-stone">{t("r5_p")}</p>
             <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
               {([[t("complaint_h"), r.complaint], [t("email_h"), r.bank_email]] as const).map(([h, body]) => (
@@ -250,6 +302,16 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
               <a href={mail} className="btn-line"><Mail className="size-4" />{t("open_mail")}</a>
               <Link to="/track" state={{ prefill: { fraudDate: prefill.date, bank: prefill.bank } }} className="btn-line"><ListChecks className="size-4" />{t("track_link")}</Link>
             </div>
+          </Card>
+        </div>
+        <div className="lg:col-span-2">
+          <Card n={6} h={t("later_h")} id="plan-next">
+            <ol className="grid gap-2.5">
+              {tl("later").map((s, k) => (
+                <li key={k} className="flex gap-3 text-[16px] leading-relaxed"><span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-gold" />{s}</li>
+              ))}
+            </ol>
+            <Link to="/track" state={{ prefill: { fraudDate: prefill.date, bank: prefill.bank } }} className="btn-line mt-5"><ListChecks className="size-4" />{t("track_link")}</Link>
           </Card>
         </div>
       </div>

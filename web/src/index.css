@@ -4,16 +4,18 @@
 
 @theme {
   /* Warm off-white page; depth comes from three close tones, not shadows. */
-  --color-ivory: #F8F5EE;   /* page */
-  --color-paper: #FDFBF7;   /* content surfaces sitting on the page */
-  --color-cream: #F1ECE3;   /* alternate section band */
-  --color-sand: #E9E1D3;    /* footer, deepest tone */
-  --color-ink: #25251F;
-  --color-stone: #6F6C64;
-  --color-gold: #A88748;
-  --color-forest: #315C47;
+  --color-ivory: #F8F6F0;   /* page */
+  --color-paper: #FCFBF7;   /* content surfaces sitting on the page */
+  --color-cream: #F0EEE6;   /* alternate section band */
+  --color-sand: #E7E4DA;    /* footer, deepest tone */
+  --color-ink: #242620;
+  --color-stone: #6E6D66;
+  --color-gold: #B99A60;   /* rules, marks */
+  --color-gold-ink: #85692F; /* gold for small text: 4.6:1 on the page */
+  --color-forest: #285A45;
+  --color-deep: #183D30;
   --color-mint: #E3ECE3;
-  --color-line: #E4DCCF;
+  --color-line: #E3E0D7;
   --color-alert: #B94C43;
   /* Editorial serif for headlines, a readable sans for everything else.
      Indian scripts fall back to the system's Noto fonts. */
@@ -31,12 +33,12 @@
 }
 
 @utility btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] px-[18px] py-[11px] text-[15px] font-medium transition-colors duration-200 cursor-pointer active:translate-y-px disabled:opacity-50 disabled:cursor-not-allowed; }
-@utility btn-green { @apply btn bg-forest text-ivory hover:bg-[#284c3a]; }
+@utility btn-green { @apply btn bg-forest text-ivory hover:bg-deep; }
 @utility btn-dark { @apply btn bg-ink text-ivory hover:bg-black; }
 @utility btn-line { @apply btn border border-ink/20 bg-transparent hover:border-ink/45 hover:bg-ink/[.03]; }
 @utility btn-red { @apply btn bg-alert text-ivory hover:bg-[#a3413a]; }
 @utility btn-sm { @apply rounded-[5px] px-3 py-1.5 text-[13px]; }
-@utility eyebrow { @apply font-sans text-[12px] font-medium uppercase tracking-[.16em] text-gold; }
+@utility eyebrow { @apply font-sans text-[12px] font-medium uppercase tracking-[.16em] text-gold-ink; }
 @utility card { @apply rounded-[10px] border border-line bg-paper; }
 @utility field { @apply w-full rounded-[6px] border border-line bg-paper px-3.5 py-2.5 text-[15px] placeholder:text-stone/70 focus:border-forest focus:outline-none; }
 @utility band { @apply bg-cream; }

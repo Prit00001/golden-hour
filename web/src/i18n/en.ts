@@ -92,6 +92,15 @@ const en = {
   share_do: "Do now:",
   track_link: "Track your complaint",
   plan_src: "Based on official guidance from cybercrime.gov.in (I4C) and the RBI. Reviewed 13 Nov 2026.",
+  gh_q: "What happened?",
+  gh_sub: "Choose the closest one. You can change details later.",
+  gh_skip: "Not sure? Just tell us in your own words",
+  change: "Change",
+  g_t: ["UPI fraud", "Bank account fraud", "Credit/debit card fraud", "Phishing & fake websites", "Investment scams", "Social media scams", "OTP/PIN scams", "Other fraud"],
+  g_p: ["Money sent or taken through a UPI app", "Money left your account without your permission", "Unknown charges, or card details stolen", "You clicked a link or entered details on a fake site", "Fake trading, shares or high-return schemes", "Someone on WhatsApp, Instagram or Facebook tricked you", "You shared an OTP or PIN with a caller", "Something else — tell us in your own words"],
+  steps: ["What happened", "Your situation", "Act now", "Drafts", "Next steps"],
+  later_h: "Later today and this week",
+  later: ["Send a written complaint to your bank within 3 working days.", "If you haven't yet, file the complaint on cybercrime.gov.in and keep the acknowledgement number.", "Check your complaint status after 7 days.", "If the bank hasn't resolved it within 30 days, go to the RBI Ombudsman."],
 };
 export default en;
 export type Strings = typeof en;
