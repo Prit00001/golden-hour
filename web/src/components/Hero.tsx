@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, FileText, Languages, ListChecks } from "lucide-react";
 import { Link } from "react-router";
 import { useI18n } from "../i18n/I18n";
-import ImageCarousel from "./ImageCarousel";
+import HeroPhoto from "./HeroPhoto";
 
 export default function Hero() {
   const { t, tl } = useI18n();
@@ -23,7 +23,7 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
-      <div className="mt-12 md:mt-14"><ImageCarousel /></div>
+      <div className="mt-12 md:mt-14"><HeroPhoto /></div>
       <ul className="mx-auto mt-10 grid max-w-[1280px] grid-cols-1 px-5 sm:grid-cols-3 md:px-8">
         {tl("trust").map((label, k) => {
           const Icon = icons[k];
