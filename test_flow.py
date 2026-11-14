@@ -180,3 +180,59 @@ assert extract("Abhi 20 minute pehle UPI se 40,000 kat gaye")["amount"] == 40000
 assert extract("50000 भेजे थे")["amount"] == 50000
 assert extract("9876543210 se call aaya, 2 baje gaye")["amount"] is None
 print("debit verbs ok")
+
+# Numbers Prisma writes as words: Hindi 13-99 and Kannada fused tens ("ಇಪ್ಪತ್ತೈದು" = 25), and hundreds.
+assert extract("मेरे पच्चीस हज़ार रुपये कट गए")["amount"] == 25000
+assert extract("सत्तासी हज़ार रुपये")["amount"] == 87000 and extract("पंद्रह हज़ार रुपये")["amount"] == 15000
+assert extract("ನಾನು ಇಪ್ಪತ್ತೈದು ಸಾವಿರ ರೂಪಾಯಿ ಕಳುಹಿಸಿದೆ")["amount"] == 25000
+assert extract("ತೊಂಬತ್ತೊಂಬತ್ತು ಸಾವಿರ ರೂಪಾಯಿ")["amount"] == 99000 and extract("ಇಪ್ಪತ್ತಮೂರು ಸಾವಿರ ರೂಪಾಯಿ")["amount"] == 23000
+assert extract("ಹದಿನೈದು ಸಾವಿರ ರೂಪಾಯಿ")["amount"] == 15000 and extract("पाँच सौ रुपये कट गए")["amount"] == 500
+
+# NEFT/RTGS UTRs start with the bank's IFSC code; a plain 12-digit UPI UTR and a phone still work as before.
+assert extract("UTR SBIN412345678901")["txn_id"] == "SBIN412345678901"
+assert extract("UTR है SBIN 4123 4567 8901")["txn_id"] == "SBIN412345678901"
+assert extract("sbin412345678901")["txn_id"] == "SBIN412345678901"
+assert extract("RTGS UTR SBINR52024111500123456")["txn_id"] == "SBINR52024111500123456"
+assert extract("mera UTR 412345678901 hai")["txn_id"] == "412345678901"
+assert extract("HDFC se 40,000 kat gaye, 9876543210 se call aaya")["txn_id"] is None
+assert spoken_id("SBIN412345678901") == "S B I N, 4 1 2 3, 4 5 6 7, 8 9 0 1"
+
+# A UTR or phone read in groups arrives in two pieces over the live call: hold the first, say "go on", join them.
+def call(lines, lg, seed={"payment_mode": "UPI"}):
+    c, h, outs = dict(seed), "", []
+    for s in lines:
+        o, _ = advance(c, h, s, now=NOW, lang_hint=lg)
+        c, h = o["case"], h + " " + s
+        outs.append(o)
+    return outs, c
+outs, c = call(["30 ನಿಮಿಷ ಹಿಂದೆ ಪೊಲೀಸ್ ಎಂದು ಹೇಳಿ ಹೆದರಿಸಿದರು, ನಾನು ಇಪ್ಪತ್ತೈದು ಸಾವಿರ ರೂಪಾಯಿ ಕಳುಹಿಸಿದೆ.", "Canara Bank",
+                "9123456780 ಈ ನಂಬರ್ ಇಂದ ಕರೆ ಬಂತು.", "ಹೌದು.", "UTR 5234", "5, 6, 7, 8, 9, 0, 1, 2.", "ಹೌದು."], "kn")
+assert outs[4].get("partial") and outs[4]["question"] == "ಹೂಂ, ಮುಂದೆ ಹೇಳಿ." and c["partial"] is None
+assert c["amount"] == 25000 and c["txn_id"] == "523456789012" and "verdict" in outs[-1]
+outs, c = call(["Abhi 20 minute pehle KYC update ke naam pe 40,000 kat gaye, SBI account se", "98765 se",
+                "43210 se call aaya", "haan", "UTR SBIN 4123", "4567 8901", "haan"], "hi")
+assert outs[1].get("partial") and outs[4].get("partial") and "verdict" in outs[-1]
+assert c["scammer_contact"] == "9876543210" and c["txn_id"] == "SBIN412345678901"
+# Not holding: "don't know", a whole UTR, or a piece that isn't digits.
+outs, c = call(["Abhi 40,000 kat gaye SBI se", "9876543210", "haan", "aaj subah", "KYC", "pata nahi"], "hi")
+assert c["txn_id"] == "not known" and not any(o.get("partial") for o in outs)
+# The browser holds the case between turns, so the held piece is checked like the rest.
+assert clean_case({"partial": "UTR 5234"})["partial"] == "UTR 5234"
+assert clean_case({"partial": "1" * 12})["partial"] is None and clean_case({"partial": 5})["partial"] is None
+print("voice numbers ok")
+
+# One recorded clip with a pause inside comes back from REST STT as "UTR 52345678. 9012".
+outs, c = call(["Abhi 40,000 kat gaye SBI se", "9876543210", "haan", "aaj subah", "KYC", "UTR 52345678. 9012"], "hi")
+assert c["txn_id"] == "523456789012" and not outs[-1].get("partial")
+# A lower-case word before the digits is not a bank code.
+outs, c = call(["Abhi 40,000 kat gaye SBI se", "9876543210", "haan", "aaj subah", "KYC", "mera 52345678. 9012"], "hi")
+assert c["txn_id"] == "523456789012"
+print("one-piece UTR ok")
+
+# "SBIN" said aloud: STT writes "SBI N" (SBI is one of its keyterms).
+assert extract("UTR है, SBI N412345678901।")["txn_id"] == "SBIN412345678901"
+assert extract("UTR SBI N 412345678901.")["txn_id"] == "SBIN412345678901"
+outs, c = call(["Abhi 40,000 kat gaye SBI se", "9876543210", "haan", "aaj subah", "KYC", "UTR SBI N 4123", "4567 8901"], "hi")
+assert outs[-2].get("partial") and c["txn_id"] == "SBIN412345678901"
+assert extract("SBI se 40,000 kat gaye")["txn_id"] is None and extract("SBI account 412345678901")["txn_id"] == "412345678901"
+print("spoken bank code ok")

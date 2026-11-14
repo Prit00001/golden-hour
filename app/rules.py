@@ -73,7 +73,7 @@ WHEN_SPAN = re.compile(
 MULT = {"हज़ार": 1000, "हजार": 1000, "hazar": 1000, "hazaar": 1000, "thousand": 1000, "k": 1000,
         "लाख": 100000, "lakh": 100000, "lac": 100000, "करोड़": 10**7, "crore": 10**7,
         "ಸಾವಿರ": 1000, "ಲಕ್ಷ": 100000, "ஆயிரம்": 1000, "லட்சம்": 100000, "వేలు": 1000, "వేల": 1000,
-        "లక్ష": 100000, "হাজার": 1000, "লাখ": 100000}
+        "లక్ష": 100000, "হাজার": 1000, "লাখ": 100000, "सौ": 100, "sau": 100, "hundred": 100}
 RUPEES = r"रुपये|रुपए|रूपये|rupees|rupaye|rs|ರೂಪಾಯಿ\S*|ரூபாய்\S*|రూపాయ\S*|টাকা\S*|रुपय\S*"
 # "40,000 kat gaye": no ₹ or rupee word, but a debit verb right after the number says it's money.
 DEBITED = re.compile(r"(?<![\d,])(\d[\d,]*)\s*(?:कट|kat|cut|debit|deduct|निकल|nikal|चले|chale|गए|गये|gaye|gay|भेजे|bheje|sent|transfer|paid)",
@@ -108,6 +108,23 @@ NUM_WORDS = {"शून्य": 0, "ज़ीरो": 0, "जीरो": 0, "ए
              "আশি": 80, "নব্বই": 90,
              "दोन": 2, "पाच": 5, "सहा": 6, "नऊ": 9, "दहा": 10, "अकरा": 11, "बारा": 12, "वीस": 20, "चाळीस": 40,
              "पन्नास": 50, "ऐंशी": 80, "नव्वद": 90}
+# Hindi 13-99 that aren't round tens: each is its own word ("पच्चीस हज़ार" = 25,000), so they are listed.
+NUM_WORDS.update(dict(zip("तेरह चौदह पंद्रह सोलह सत्रह अठारह उन्नीस".split(), range(13, 20))))
+NUM_WORDS.update({"पन्द्रह": 15})
+for _tens, _words in [(20, "इक्कीस बाईस तेईस चौबीस पच्चीस छब्बीस सत्ताईस अट्ठाईस उनतीस"),
+                      (30, "इकतीस बत्तीस तैंतीस चौंतीस पैंतीस छत्तीस सैंतीस अड़तीस उनतालीस"),
+                      (40, "इकतालीस बयालीस तैंतालीस चवालीस पैंतालीस छियालीस सैंतालीस अड़तालीस उनचास"),
+                      (50, "इक्यावन बावन तिरपन चौवन पचपन छप्पन सत्तावन अट्ठावन उनसठ"),
+                      (60, "इकसठ बासठ तिरसठ चौंसठ पैंसठ छियासठ सड़सठ अड़सठ उनहत्तर"),
+                      (70, "इकहत्तर बहत्तर तिहत्तर चौहत्तर पचहत्तर छिहत्तर सतहत्तर अठहत्तर उन्यासी"),
+                      (80, "इक्यासी बयासी तिरासी चौरासी पचासी छियासी सत्तासी अट्ठासी नवासी"),
+                      (90, "इक्यानवे बानवे तिरानवे चौरानवे पचानवे छियानवे सत्तानवे अट्ठानवे निन्यानवे")]:
+    NUM_WORDS.update({w: _tens + i + 1 for i, w in enumerate(_words.split())})
+# Kannada 13-19, and 21-99 fused from tens + units: ಇಪ್ಪತ್ತು (20) + ಐದು (5) -> ಇಪ್ಪತ್ತೈದು (25).
+NUM_WORDS.update(dict(zip("ಹದಿಮೂರು ಹದಿನಾಲ್ಕು ಹದಿನೈದು ಹದಿನಾರು ಹದಿನೇಳು ಹದಿನೆಂಟು ಹತ್ತೊಂಬತ್ತು".split(), range(13, 20))))
+_KN_UNITS = ["ೊಂದು", "ೆರಡು", "ಮೂರು", "ನಾಲ್ಕು", "ೈದು", "ಾರು", "ೇಳು", "ೆಂಟು", "ೊಂಬತ್ತು"]  # how 1-9 attach
+for _word in ["ಇಪ್ಪತ್ತು", "ಮೂವತ್ತು", "ನಲವತ್ತು", "ಐವತ್ತು", "ಅರವತ್ತು", "ಎಪ್ಪತ್ತು", "ಎಂಬತ್ತು", "ತೊಂಬತ್ತು"]:
+    NUM_WORDS.update({_word[:-1] + u: NUM_WORDS[_word] + i + 1 for i, u in enumerate(_KN_UNITS)})
 ROMAN_NUMS = {"shunya": 0, "zero": 0, "ek": 1, "do": 2, "teen": 3, "char": 4, "chaar": 4, "paanch": 5,
               "panch": 5, "chhe": 6, "saat": 7, "aath": 8, "nau": 9, "das": 10, "bees": 20, "tees": 30,
               "chalis": 40, "chaalis": 40, "pachas": 50, "pachaas": 50}
@@ -159,9 +176,18 @@ def _join_spaced_digits(text):
     return re.sub(r"(?<=\d)[\s-]+(?=\d)", "", text)
 
 
+# NEFT/RTGS UTRs start with the sending bank's 4-letter IFSC code: SBIN + 12 digits (16 characters), SBINN + 11,
+# or SBINR + 17 (22, RTGS). Spoken, STT may put a space after the code ("SBIN 4123 4567 8901") or inside it
+# ("SBI N4123...": SBI is one of its keyterms); that is only trusted for an upper-case code, so
+# "mera 412345678901" stays a plain 12-digit UTR.
+BANK_CODE = r"[A-Z]{3}\s?[A-Z][NR]?"
+BANK_UTR = re.compile(r"(?<![A-Za-z0-9])(?:(" + BANK_CODE + r")[\s-]?|((?i:[a-z]{4}[nr]?)))(\d{11,17})(?!\d)")
+
+
 def extract(transcript: str) -> dict:
     t = normalize(transcript)
     joined = _join_spaced_digits(t)
+    bank_utr = BANK_UTR.search(joined)
     utr = re.search(r"(?<!\d)\d{12}(?!\d)", joined)
     phone = re.search(r"(?<!\d)(?:\+?91)?([6-9]\d{9})(?!\d)", joined)
     upi = re.search(r"[\w.\-]{2,}@[a-z]{2,}", t, re.I)
@@ -184,7 +210,8 @@ def extract(transcript: str) -> dict:
         "amount": amount,
         "datetime": when.strip() if when else None,
         "payment_mode": _find(t, PAYMENT),
-        "txn_id": utr.group(0) if utr else None,
+        "txn_id": (re.sub(r"\s", "", bank_utr.group(1) or bank_utr.group(2)).upper() + bank_utr.group(3)) if bank_utr
+        else (utr.group(0) if utr else None),
         "scammer_contact": upi.group(0) if upi else (phone.group(1) if phone else None),
         "bank": _find(t, BANKS),
         "scam_type": _find(t, SCAMS),

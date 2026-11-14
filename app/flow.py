@@ -232,6 +232,12 @@ LINES = {
     },
 }
 RECENT_H = 24  # 1930 can still ask banks to hold money that hasn't left the mule accounts
+ID_DIGITS = {"txn_id": 12, "scammer_contact": 10}  # fewer digits than this is only part of the ID
+# Said after a UTR or phone number that stopped short ("UTR 5234..."): wait for the rest.
+for _lg, _go_on in {"hi": "जी, आगे बोलिए।", "en": "Go on, I'm listening.", "kn": "ಹೂಂ, ಮುಂದೆ ಹೇಳಿ.",
+                    "ta": "சரி, மேலே சொல்லுங்கள்.", "te": "సరే, ఇంకా చెప్పండి.", "bn": "হ্যাঁ, বলতে থাকুন।",
+                    "mr": "हो, पुढे सांगा."}.items():
+    LINES[_lg]["go_on"] = _go_on
 
 IST = timezone(timedelta(hours=5, minutes=30))  # India has no DST
 
@@ -253,6 +259,8 @@ def clean_case(raw) -> dict:
     case["confirming"] = raw.get("confirming") if raw.get("confirming") in READ_BACK else None
     case["fraud_ts"] = ts if type(ts) in (int, float) and 0 < ts < 4e9 else None  # also rejects NaN/Infinity
     case["urged"] = raw.get("urged") is True
+    part = raw.get("partial")
+    case["partial"] = text(part, 80) if isinstance(part, str) and 0 < len(_digits(part)) < ID_DIGITS["txn_id"] else None
     day = raw.get("fraud_day")
     case["fraud_day"] = day if type(day) is int and 0 < day < 4e9 else None
     return case
@@ -276,7 +284,9 @@ def spoken_id(v: str) -> str:
     if "@" in v or not d:
         return v
     size = 5 if len(d) == 10 else 4  # phone 98765 43210, UTR 4123 4567 8901
-    return ", ".join(" ".join(d[i:i + size]) for i in range(0, len(d), size))
+    groups = ", ".join(" ".join(d[i:i + size]) for i in range(0, len(d), size))
+    code = re.match(r"[A-Za-z]+", v)  # NEFT/RTGS UTR: the bank code first, letter by letter ("S B I N, 4 1 2 3, ...")
+    return " ".join(code.group(0).upper()) + ", " + groups if code else groups
 
 
 def day_offset(text: str) -> Optional[int]:
@@ -378,7 +388,8 @@ def advance(case: dict, history: str, said: str, now: Optional[float] = None, la
     """One conversation turn. Returns (payload for the browser, text to speak).
 
     Besides the field values, the case carries: meta {field: {confirmed, source_text}}, confirming (the ID
-    just read back), fraud_ts (epoch s, for the countdown) and urged (urgency said once)."""
+    just read back), fraud_ts (epoch s, for the countdown), urged (urgency said once) and partial (the first
+    piece of a UTR or phone number still being read out)."""
     now = time.time() if now is None else now
     case = {**new_case(), **case}
     meta = {**(case.get("meta") or {})}
@@ -397,6 +408,21 @@ def advance(case: dict, history: str, said: str, now: Optional[float] = None, la
         got[asked] = NOT_KNOWN
     elif asked in FREE_TEXT and got.get(asked) is None and said.strip():
         got[asked] = said.strip()[:80]  # their own words are fine for the complaint
+
+    # A UTR or phone number read in groups can arrive in two pieces: the live STT ends an utterance at a pause
+    # ("UTR 5234" ... "5678 9012"). Hold a piece too short to be the answer, say "go on", and read it with the next.
+    held, case["partial"], guard = case.get("partial") or "", None, said
+    if asked in ID_DIGITS and got.get(asked) is None and _digits(said):
+        # Join just the digits ("98765 se" + "43210 se call aaya", "UTR 5234" + "5, 6, 7, 8, ...", or one piece
+        # with a stop inside: "UTR 52345678. 9012"), keeping a bank code it started with ("UTR SBIN 4123" +
+        # "4567 8901" -> SBIN412345678901). A lower-case code counts only when joined to its digits.
+        both = (held + " " + said).strip()
+        code = re.search(r"(?<![A-Za-z])(?:(" + rules.BANK_CODE + r")(?=[\s-]*\d)|([a-z]{4}[nr]?)(?=\d))", both)
+        joined = extract(re.sub(r"\s", "", code.group(1) or code.group(2)) + _digits(both) if code else _digits(both))[asked]
+        if joined:
+            got[asked], guard = joined, both  # the merge guard must see the digits from both pieces
+        elif len(_digits(held + said)) < ID_DIGITS[asked]:
+            case["partial"] = (held + " " + said).strip()[-80:]
 
     overwrite = set()
     if fixing:  # "nahi, 50,000 the" / "SBI nahi, HDFC" / "actually kal raat"
@@ -420,7 +446,7 @@ def advance(case: dict, history: str, said: str, now: Optional[float] = None, la
             case["confirming"] = confirming  # unclear: ask again
 
     before = dict(case)
-    case = merge(case, got, said, overwrite)
+    case = merge(case, got, guard, overwrite)
     for f in FIELDS:
         if case[f] != before[f] and f != "language":
             meta[f] = {"confirmed": False, "source_text": said}
@@ -440,14 +466,18 @@ def advance(case: dict, history: str, said: str, now: Optional[float] = None, la
 
     lg, lead = lang(case), ""
     ts = case.get("fraud_ts")
-    if ts is not None and now - ts <= RECENT_H * 3600 and not case.get("urged"):
+    if ts is not None and now - ts <= RECENT_H * 3600 and not case.get("urged") and not case["partial"]:
         case["urged"], lead = True, LINES[lg]["urgent"] + " "
     if case["confirming"]:
         f = case["confirming"]
         question = LINES[lg]["readback"].format(name=LINES[lg][f], value=spoken_id(str(case[f])))
+    elif case["partial"]:
+        question = LINES[lg]["go_on"]
     else:
         question = next_question(case)
     out = {"transcript": heard, "case": case, "question": question}
+    if case["partial"]:
+        out["partial"] = True  # the live call waits a moment before saying "go on": the rest is usually coming
     if question:
         return out, lead + question
     out["verdict"] = verdict(case, now)

@@ -22,6 +22,7 @@ from app.llm import env
 
 STT_URL = "wss://api.vachana.ai/stt/v3/stream"
 SILENCE_MS = 600  # pause that ends an utterance; lower is snappier but cuts off slow speakers
+PARTIAL_WAIT = 2.5  # after half a UTR or phone number, how long to wait for the rest before saying "go on"
 
 
 def sentences(text: str) -> list:
@@ -50,6 +51,7 @@ class Call:
     def __init__(self, ws: WebSocket):
         self.ws, self.case, self.history = ws, flow.new_case(), ""
         self.reply = None  # the reply task currently speaking
+        self.holding = False  # that task is waiting for the rest of a number, not speaking yet
 
     async def send(self, **msg):
         await self.ws.send_json(msg)
@@ -74,6 +76,14 @@ class Call:
         out, speak = flow.advance(self.case, self.history, said, lang_hint=lang_hint)
         self.case, self.history = out["case"], (self.history + " " + said)[-guard.MAX_HISTORY:]
         marks["extract_done"] = time.monotonic()
+        if out.get("partial"):
+            # Half a number: the caller is usually still reading it. The case already holds the piece; if they
+            # speak again this task is cancelled and the next utterance completes it. Silence: say "go on".
+            self.holding = True
+            try:
+                await asyncio.sleep(PARTIAL_WAIT)
+            finally:
+                self.holding = False
         await self.send(type="turn", **out)
         await self.speak(speak, marks, flow.lang(self.case))
 
@@ -164,6 +174,8 @@ async def run(ws: WebSocket):
         async for raw in stt:
             m = json.loads(raw)
             if m["type"] == "speech_start":
+                if call.holding:
+                    call.reply.cancel()  # the rest of the number is coming
                 await call.send(type="state", state="hearing")
             elif m["type"] == "transcript" and m.get("text", "").strip():
                 now = time.monotonic()
