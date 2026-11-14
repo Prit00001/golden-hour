@@ -75,6 +75,9 @@ MULT = {"हज़ार": 1000, "हजार": 1000, "hazar": 1000, "hazaar": 
         "ಸಾವಿರ": 1000, "ಲಕ್ಷ": 100000, "ஆயிரம்": 1000, "லட்சம்": 100000, "వేలు": 1000, "వేల": 1000,
         "లక్ష": 100000, "হাজার": 1000, "লাখ": 100000}
 RUPEES = r"रुपये|रुपए|रूपये|rupees|rupaye|rs|ರೂಪಾಯಿ\S*|ரூபாய்\S*|రూపాయ\S*|টাকা\S*|रुपय\S*"
+# "40,000 kat gaye": no ₹ or rupee word, but a debit verb right after the number says it's money.
+DEBITED = re.compile(r"(?<![\d,])(\d[\d,]*)\s*(?:कट|kat|cut|debit|deduct|निकल|nikal|चले|chale|गए|गये|gaye|gay|भेजे|bheje|sent|transfer|paid)",
+                     re.I)
 AMOUNT = re.compile(r"(₹|rs\.?|inr)?\s*(\d[\d,]*(?:\.\d+)?)\s*((?:" + "|".join(MULT) + r")(?![a-z]))?\s*"
                     r"(" + RUPEES + ")?", re.I)
 
@@ -172,6 +175,8 @@ def extract(transcript: str) -> dict:
         if cur or mult or word:
             amount = int(float(raw) * MULT.get((mult or "").lower(), 1))
             break
+    if amount is None:
+        amount = next((int(n) for n in (m.group(1).replace(",", "") for m in DEBITED.finditer(t)) if 0 < len(n) <= 8), None)
 
     spans = [m.group(0) for m in WHEN_SPAN.finditer(t)]
     when = next((w for w in spans if re.search(r"\d", w)), spans[0] if spans else None)

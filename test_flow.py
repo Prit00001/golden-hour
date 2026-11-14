@@ -174,3 +174,9 @@ for said, date, old in [("parso hua tha", "09 Nov 2026", True), ("परसो�
 assert clean_case({"fraud_day": 1.5})["fraud_day"] is None and clean_case(cs)["fraud_day"] == cs["fraud_day"]
 assert at(fraud_time("2 din pehle 3 baje", NOW)) == "09 15:00"
 print("day words ok")
+
+# "40,000 kat gaye" is the amount even without ₹ or "rupaye"; a time or a phone number next to it is not.
+assert extract("Abhi 20 minute pehle UPI se 40,000 kat gaye")["amount"] == 40000
+assert extract("50000 भेजे थे")["amount"] == 50000
+assert extract("9876543210 se call aaya, 2 baje gaye")["amount"] is None
+print("debit verbs ok")
