@@ -24,7 +24,7 @@
 }
 
 @layer base {
-  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
   body { @apply bg-ivory text-ink font-sans antialiased; font-optical-sizing: auto; }
   h1, h2 { @apply font-display; font-weight: 450; text-wrap: balance; overflow-wrap: break-word; }
   h3 { @apply font-sans; text-wrap: balance; overflow-wrap: break-word; }
