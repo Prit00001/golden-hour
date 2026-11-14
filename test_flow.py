@@ -158,3 +158,19 @@ assert at(fraud_time(extract("12000 रुपये कट गए अभी 20 m
 r = extract("ನಾನು ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಮೂಲಕ ಕಳುಹಿಸಿದೆ, ಪುಲೀಸ್ ಎಂದು ಹೇಳಿದರು")
 assert r["payment_mode"] == "net banking" and r["scam_type"] == "digital arrest"
 print("eval fixes ok")
+
+from app.flow import LINES, clean_case  # noqa: E402
+# A day word with no clock time saves the real date (NOW is Wed 11 Nov), not just "parso".
+for said, date, old in [("parso hua tha", "09 Nov 2026", True), ("परसों हुआ", "09 Nov 2026", True),
+                        ("kal hua", "10 Nov 2026", False), ("aaj subah", "11 Nov 2026", False),
+                        ("3 din pehle hua", "08 Nov 2026", True)]:
+    c = {"language": "hi", "amount": 5000, "payment_mode": "UPI", "bank": "SBI", "scammer_contact": "not known",
+         "scam_type": "other", "txn_id": "not known"}
+    out, _ = advance(c, "x", said, now=NOW)
+    cs = out["case"]
+    assert cs["datetime"].startswith(date) and cs["fraud_ts"] is None and cs["fraud_day"], (said, cs["datetime"])
+    assert (out["verdict"] == LINES["hi"]["old"]) == old, said
+    assert date in out["complaint"]
+assert clean_case({"fraud_day": 1.5})["fraud_day"] is None and clean_case(cs)["fraud_day"] == cs["fraud_day"]
+assert at(fraud_time("2 din pehle 3 baje", NOW)) == "09 15:00"
+print("day words ok")

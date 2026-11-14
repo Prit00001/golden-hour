@@ -245,12 +245,12 @@ function Plan({ ref, c, cat }: { ref: Ref<HTMLElement>; c: Conversation; cat: nu
   const card = KEYS.map((k, i) => fields[i] + ": " + (cs[k] == null ? "—" : cs[k] === "not known" ? t("unknown") : fmt(cs, k, cs[k]))).join("\n");
   const [subj, ...body] = r.bank_email.split("\n");
   const mail = "mailto:?subject=" + encodeURIComponent(subj.replace(/^Subject:\s*/, "")) + "&body=" + encodeURIComponent(body.join("\n").trim());
-  const when = cs.fraud_ts != null ? new Date(cs.fraud_ts * 1000) : null;
+  const stamp = cs.fraud_ts ?? cs.fraud_day, when = stamp != null ? new Date(stamp * 1000) : null;
   const part = (o: Intl.DateTimeFormatOptions) => when ? when.toLocaleString("en-CA", { ...IST, ...o }) : "";
   const known = (v: any) => v != null && v !== "not known";
   const prefill = { amount: cs.amount ? String(cs.amount) : "", bank: known(cs.bank) ? cs.bank : "",
     utr: known(cs.txn_id) ? cs.txn_id : "", date: part({ year: "numeric", month: "2-digit", day: "2-digit" }),
-    time: part({ hour: "2-digit", minute: "2-digit", hour12: false }), category: cat >= 0 ? CATEGORIES[cat].id : "",
+    time: cs.fraud_ts != null ? part({ hour: "2-digit", minute: "2-digit", hour12: false }) : "", category: cat >= 0 ? CATEGORIES[cat].id : "",
     description: [known(cs.scam_type) && `It was a ${cs.scam_type} scam.`, known(cs.scammer_contact) && `The fraudster used ${cs.scammer_contact}.`,
       known(cs.payment_mode) && `The money was sent via ${cs.payment_mode}.`].filter(Boolean).join(" ") };
   // For a family member helping from elsewhere: the case, the steps, and where to call. Sent only when the user taps.

@@ -60,13 +60,14 @@ NIGHT = "रात|raat|night|ರಾತ್ರಿ|இரவு|రాత్రి
 CLOCK = r"बजे|baje|am|pm|a\.m\.|p\.m\.|ಗಂಟೆಗೆ|ಗಂಟೆ|மணிக்கு|மணி|గంటలకు|గంటకు|টায়|টায়|টা(?!কা)|वाजता"
 MINUTE = "मिनट|min|minute|ನಿಮಿಷ|நிமிட|నిమిష|মিনিট|मिनिट"
 HOUR = "घंटे|घंटा|ghante|ghanta|hour|ಗಂಟೆ|மணி நேர|மணிநேர|గంట|ঘণ্টা|तास"
+DAY = "दिन|din|day|ದಿನ|நாள்|நாட்கள|రోజు|রোজ|দিন|दिवस"
 AGO = "पहले|pehle|pahle|ago|ಹಿಂದೆ|முன்பு|முன்|క్రితం|আগে|पूर्वी|आधी"
 
 WHEN = "(" + "|".join([TODAY, YESTERDAY, DAY_BEFORE, NOW, MORNING, LATER, NIGHT]) + ")"
 WHEN_SPAN = re.compile(
     WHEN + r"(?:(?:\s+\S+){0,3}?\s*\d{1,2}(?::\d{2})?\s*(?:" + CLOCK + "))?"
     r"|(?<![\d,])\d{1,2}(?::\d{2})?\s*(?:" + CLOCK + ")"
-    r"|\d+\s*(?:" + MINUTE + "|" + HOUR + r")\S*\s*(?:" + AGO + ")",
+    r"|\d+\s*(?:" + MINUTE + "|" + HOUR + "|" + DAY + r")\S*\s*(?:" + AGO + ")",
     re.I,
 )
 MULT = {"हज़ार": 1000, "हजार": 1000, "hazar": 1000, "hazaar": 1000, "thousand": 1000, "k": 1000,

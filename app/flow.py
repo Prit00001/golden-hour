@@ -253,6 +253,8 @@ def clean_case(raw) -> dict:
     case["confirming"] = raw.get("confirming") if raw.get("confirming") in READ_BACK else None
     case["fraud_ts"] = ts if type(ts) in (int, float) and 0 < ts < 4e9 else None  # also rejects NaN/Infinity
     case["urged"] = raw.get("urged") is True
+    day = raw.get("fraud_day")
+    case["fraud_day"] = day if type(day) is int and 0 < day < 4e9 else None
     return case
 
 
@@ -277,6 +279,18 @@ def spoken_id(v: str) -> str:
     return ", ".join(" ".join(d[i:i + size]) for i in range(0, len(d), size))
 
 
+def day_offset(text: str) -> Optional[int]:
+    """How many days back: "parso" 2, "kal" 1, "aaj" 0, "3 din pehle" 3. None if no day is named."""
+    t = rules.normalize(text or "").lower()
+    n = re.search(r"(\d+)\s*(?:" + rules.DAY + r")\S*\s*(?:" + rules.AGO + ")", t)
+    if n:
+        return min(int(n.group(1)), 365)
+    for words, days in ((rules.DAY_BEFORE, 2), (rules.YESTERDAY, 1), (rules.TODAY, 0)):
+        if re.search(words, t):
+            return days
+    return None
+
+
 def fraud_time(text: str, now: float) -> Optional[int]:
     """Best-effort epoch seconds for "आज दोपहर 2 बजे" / "kal raat 11 baje" / "40 minute pehle". None if no clock time."""
     t, cur = rules.normalize(text).lower(), datetime.fromtimestamp(now, IST)
@@ -288,7 +302,7 @@ def fraud_time(text: str, now: float) -> Optional[int]:
     if not clock:
         return int(now) if re.search(rules.NOW, t) else None
     h, m, unit = int(clock.group(1)) % 24, int(clock.group(2) or 0), clock.group(3)
-    days = 2 if re.search(rules.DAY_BEFORE, t) else 1 if re.search(rules.YESTERDAY, t) else 0
+    days = day_offset(t) or 0
     if unit.startswith("p") and h < 12:
         h += 12
     elif not unit.startswith("a") and h < 12:
@@ -313,6 +327,9 @@ def verdict(case: dict, now: float) -> str:
     """Hard-coded, like the checklist: how urgent this is, never a promise of recovery."""
     lg, ts = lang(case), case.get("fraud_ts")
     if ts is None:
+        day = case.get("fraud_day")  # only the day is known: "old" once that whole day is past the window
+        if day is not None and now - (day + 86400) > RECENT_H * 3600:
+            return LINES[lg]["old"]
         return LINES[lg]["unknown_time"]
     if now - ts > RECENT_H * 3600:
         return LINES[lg]["old"]
@@ -410,6 +427,12 @@ def advance(case: dict, history: str, said: str, now: Optional[float] = None, la
     case["meta"] = meta
     if case["datetime"] != before["datetime"]:
         case["fraud_ts"] = fraud_time(case["datetime"], now)
+        days = None if case["fraud_ts"] is not None else day_offset(case["datetime"])
+        case["fraud_day"] = None
+        if days is not None:  # "parso" alone: save the real date, so the complaint doesn't just say "parso"
+            day = datetime.fromtimestamp(now, IST).replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=days)
+            case["fraud_day"] = int(day.timestamp())
+            case["datetime"] = day.strftime("%d %b %Y") + " (" + case["datetime"][:60] + ")"
     for f in READ_BACK:
         if case[f] not in (None, NOT_KNOWN) and case[f] != before[f]:
             case["confirming"] = f
