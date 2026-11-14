@@ -1,11 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, LifeBuoy, Menu, X } from "lucide-react";
+import { ArrowRight, ExternalLink, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import { useI18n } from "../i18n/I18n";
 import LanguageSelector from "./LanguageSelector";
 import Logo from "./Logo";
 
+// A masthead: a slim deep-green strip with the emergency line and language, then the name set in the centre
+// with the sections split either side, like the front page of a paper.
 export default function Navbar() {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
@@ -20,47 +22,50 @@ export default function Navbar() {
     { to: "/about", label: t("nav_about") },
   ];
   const active = (to: string) => (to === "/" ? pathname === "/" && !hash : to.startsWith("/#") ? pathname === "/" && hash === to.slice(1) : pathname.startsWith(to));
+  const item = (l: typeof links[0]) => (
+    <NavLink key={l.to} to={l.to} aria-current={active(l.to) ? "page" : undefined}
+      className={`whitespace-nowrap text-[14px] underline-offset-[6px] transition-colors hover:text-ink hover:underline hover:decoration-line
+        ${active(l.to) ? "text-ink underline decoration-forest decoration-1" : "text-stone"}`}>{l.label}</NavLink>
+  );
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-ivory/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-[68px] max-w-[1280px] items-center gap-6 px-5 md:px-8">
-        <Logo />
-        <nav className="hidden h-full items-center gap-7 xl:ml-10 xl:flex" aria-label="Main">
-          {links.map(l => (
-            <NavLink key={l.to} to={l.to} aria-current={active(l.to) ? "page" : undefined}
-              className={`relative flex h-full items-center whitespace-nowrap text-[14px] transition-colors hover:text-ink
-                after:absolute after:inset-x-0 after:bottom-[-1px] after:h-px after:bg-forest after:transition-transform after:duration-300
-                ${active(l.to) ? "text-ink after:scale-x-100" : "text-stone after:scale-x-0 hover:after:scale-x-100 hover:after:bg-line"}`}>
-              {l.label}
-            </NavLink>
-          ))}
-        </nav>
-        <div className="ml-auto flex items-center gap-1.5">
-          <LanguageSelector className="hidden sm:inline-flex" />
-          <Link to="/#help-now" className="grid size-9 place-items-center rounded-[6px] text-alert transition-colors hover:bg-ink/[.04]" aria-label={t("emergency_link")} title={t("emergency_link")}>
-            <LifeBuoy className="size-[18px]" />
-          </Link>
-          <Link to="/assistant" className="btn-green ml-2 hidden !py-2 text-[14px] md:inline-flex">{t("get_help")}<ArrowRight className="size-4" /></Link>
-          <button className="grid size-9 place-items-center rounded-[6px] text-ink hover:bg-ink/[.04] xl:hidden" onClick={() => setOpen(o => !o)}
-            aria-expanded={open} aria-controls="mobile-nav" aria-label={open ? t("close") : t("menu")}>
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
+    <>
+      <div className="bg-deep text-ivory">
+        <div className="mx-auto flex h-9 max-w-[1280px] items-center gap-5 px-5 text-[13px] md:px-8">
+          <a href="tel:1930" className="inline-flex items-center gap-1.5 font-medium hover:underline underline-offset-4">
+            <Phone className="size-3.5" />{t("call_short")}
+          </a>
+          <a href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer" className="hidden items-center gap-1 text-ivory/75 hover:text-ivory sm:inline-flex">
+            cybercrime.gov.in<ExternalLink className="size-3" />
+          </a>
+          <LanguageSelector tone="dark" className="ml-auto inline-flex" />
         </div>
       </div>
-      <AnimatePresence>
-        {open && (
-          <motion.nav id="mobile-nav" aria-label="Main" className="xl:hidden overflow-hidden border-t border-line"
-            initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: .25 }}>
-            <div className="flex flex-col gap-1 px-5 py-4 md:px-8">
-              {links.map(l => <Link key={l.to} to={l.to} className="rounded-[6px] px-3 py-3 text-[17px] font-medium hover:bg-cream">{l.label}</Link>)}
-              <div className="mt-3 flex flex-wrap gap-2">
-                <LanguageSelector className="inline-flex sm:hidden" />
-                <Link to="/assistant" className="btn-green md:hidden">{t("get_help")}<ArrowRight className="size-4" /></Link>
+      <header className="sticky top-0 z-40 border-b border-line bg-ivory/95 backdrop-blur-sm">
+        <div className="mx-auto grid h-[64px] max-w-[1280px] grid-cols-[1fr_auto] items-center gap-6 px-5 md:px-8 xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
+          <nav className="hidden items-center gap-7 xl:flex" aria-label="Main">{links.slice(0, 3).map(item)}</nav>
+          <Logo />
+          <div className="flex items-center justify-end gap-7">
+            <nav className="hidden items-center gap-7 xl:flex" aria-label="More">{links.slice(3).map(item)}</nav>
+            <Link to="/assistant" className="btn-green hidden !px-4 !py-2 text-[14px] md:inline-flex">{t("get_help")}<ArrowRight className="size-4" /></Link>
+            <button className="-mr-1.5 grid size-9 place-items-center rounded-[6px] text-ink hover:bg-ink/[.04] xl:hidden" onClick={() => setOpen(o => !o)}
+              aria-expanded={open} aria-controls="mobile-nav" aria-label={open ? t("close") : t("menu")}>
+              {open ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
+          </div>
+        </div>
+        <AnimatePresence>
+          {open && (
+            <motion.nav id="mobile-nav" aria-label="Main" className="overflow-hidden border-t border-line xl:hidden"
+              initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: .25 }}>
+              <div className="flex flex-col px-5 py-2 md:px-8">
+                {links.map(l => <Link key={l.to} to={l.to} className="border-b border-line py-3.5 font-display text-[20px] last:border-0">{l.label}</Link>)}
+                <Link to="/assistant" className="btn-green my-4 md:hidden">{t("get_help")}<ArrowRight className="size-4" /></Link>
               </div>
-            </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
-    </header>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   );
 }
